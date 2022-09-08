@@ -1,11 +1,11 @@
 <template>
     <div class="container-fluid mt-3 pt-3 text-center justify-content-center align-items-center bg-image"
-        :class="{'tourleft':leftup, 'tourright':leftup==false}" @mouseover="getCursor($event)"
+        :class="{'tourleft':upplace=='left', 'tourright':upplace=='right'}"
         :style="{backgroundImage:`url(${'img/tour_background.png'})`}"
-        style="object-fit: contain; background-repeat: no-repeat;">
+        style="object-fit: contain; background-repeat: no-repeat;" id="tour">
         <div class="d-flex">
             <transition :appear="true" name="left">
-                <div class="col-4 mr-3 bg-white shadow rounded-3" :class="'float'+props.index" id="left"
+                <div @mouseover="getleft($event)" @mouseleave="leaveCursor($event)" id="left" class="col-4 mr-3 bg-white shadow rounded-3" :class="'float'+props.index"
                     style="border-bottom-left-radius: 20px; height: 170px;text-align: left;">
                     <div class="mx-3">
                         <h3 class="mt-2" style="text-align: center;">{{tour.name}}/{{index}}/{{$page.component}}</h3>
@@ -21,16 +21,20 @@
                 </div>
             </transition>
             <transition :appear="true" name="center">
-                <div class="col-4 mx-3 bg-white shadow rounded-3" id="center">
-                    <n-carousel keyboard :direction="direction" class="rounded-3" autoplay
+                <div @mouseover="getcenter()" @mouseleave="leaveCursor($event)" class="col-4 mx-3 bg-white shadow rounded-3" id="center">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m52!1m12!1m3!1d3178032.860928466!2d58.36552423384894!3d38.934313986368686!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m37!3e0!4m5!1s0x3f6ffe1bab3684d9%3A0x3cde013f62d3ade9!2sAshgabat%2C%20Turkmenistan!3m2!1d37.9600766!2d58.3260629!4m5!1s0x402c1a2c8507ce31%3A0xc0682af196323024!2sAwaza%20der%C3%BDa%2C%20Turkmenistan!3m2!1d39.958283099999996!2d52.8569665!4m5!1s0x3f62b4f7b4d79731%3A0x1b7a8833c89ceca!2sDerweze%2C%20Turkmenistan!3m2!1d40.173957099999996!2d58.4169385!4m5!1s0x3f4170abd6e93cc7%3A0xbbae37e82e0dccce!2sMerv%2C%20Turkmenistan!3m2!1d37.664426!2d62.1747186!4m5!1s0x3f44e0040d5c38dd%3A0x5ca437696975e741!2sTurkmenabat%2C%20Turkmenistan!3m2!1d39.0041313!2d63.568808!4m5!1s0x41ddad1280665aad%3A0xbc519b36baa4f375!2zS8O2bmXDvHJnZW5jaCwgVHVya21lbmlzdGFu!3m2!1d42.324218699999996!2d59.1818543!5e0!3m2!1sen!2sus!4v1662656011952!5m2!1sen!2sus"
+                        width="100%" height="100%" style="border:0;"  class="rounded-3" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">asdfsdfsfsdf</iframe>
+                    <!-- <n-carousel keyboard :direction="direction" class="rounded-3" autoplay
                         :dot-placement="direction === 'vertical' ? 'right' : 'bottom'" style="height: 170px" draggable>
                         <img :src="'img/1.jpeg'" class="img-fluid rounded-start" alt="..." style="object-fit: cover;">
                         <img :src="'img/2.jpeg'" class="img-fluid rounded-start" alt="..." style="object-fit: cover;">
-                    </n-carousel>
+                    </n-carousel>  -->
                 </div>
             </transition>
             <transition :appear="true" name="right">
-                <div id="right" class="col-4 ml-3 bg-white shadow overflow-auto rounded-3" :class="'float'+props.index"
+                <div @mouseover="getright($event)" @mouseleave="leaveCursor($event)" id="right" class="col-4 ml-3 bg-white shadow overflow-auto rounded-3" :class="'float'+props.index"
                     style="border-top-right-radius: 20px;height: 170px;">
                     <p class="m-3">{{tour.body}}</p>
                 </div>
@@ -42,87 +46,127 @@
 import gsap from 'gsap';
 import { isInteger } from 'lodash-es';
 import { NCarousel } from 'naive-ui';
-import {computed, onMounted, onUnmounted,onBeforeUnmount, ref, Transition, watch} from 'vue';
+import { computed, onMounted, onUnmounted, onBeforeUnmount, ref, Transition, watch } from 'vue';
 import { Sine } from 'gsap/all';
 import { Inertia } from '@inertiajs/inertia';
 let direction = ref('vertical');
 const props = defineProps(['tour', 'index'])
 let total_places = ref(0);
-let leftup = ref(false);
+let upplace = ref('');
 let page = ref(Inertia.page.component);
 
 // onUnmounted(()=>{
 //     gsap.globalTimeline.clear();
 // });
-onBeforeUnmount(()=>{
+onBeforeUnmount(() => {
     gsap.globalTimeline.clear();
 });
 onMounted(() => {
     setTimeout(() => {
         // floating containers
-    const can = Inertia.page.component=='front/Tours'?'.float'+props.index:null;
-    const randomX = props.index % 2 === 0 ? random(10, 20) : random(10, 20);
-    const randomY = props.index % 2 === 0 ? random(5, 10) : random(2, 6);
-    const randomDelay = random(0, 1);
-    const randomTime = props.index % 2 === 0 ? random(1,1) : random(1, 1);
-    const randomTime2 = random(1, 1);
-    const randomAngle = random(5, 2);
-    
-    // call functions 
-    moveX(can, 1);
-    moveY(can, -1);
-    rotate(can, 1);
-    // end call function 
-    
-    gsap.set(can, {
-      x: 0,
-      y: 0,
-      rotation: 0
-    });
-    
-    function rotate(target, direction) {
-        if(target){
-            gsap.to(target, {duration: randomTime2(), 
-              rotation: randomAngle(direction),
-              // delay: randomDelay(),
-              ease: "slow(0.7, 0.7, false)",
-              onComplete: rotate,
-              onCompleteParams: [target, direction * -1]
-            });
+        // const can = Inertia.page.component=='front/Tours'?'.float'+props.index:null;
+        const can = '.float' + props.index;
+        const randomX = props.index % 2 === 0 ? random(10, 20) : random(10, 20);
+        const randomY = props.index % 2 === 0 ? random(5, 10) : random(2, 6);
+        const randomDelay = random(0, 1);
+        const randomTime = props.index % 2 === 0 ? random(1, 1) : random(1, 1);
+        const randomTime2 = random(1, 1);
+        const randomAngle = random(5, 2);
+
+        // call functions 
+        moveX(can, 1);
+        moveY(can, -1);
+        rotate(can, 1);
+        // end call function 
+
+        gsap.set(can, {
+            x: 0,
+            y: 0,
+            rotation: 0
+        });
+
+        function rotate(target, direction) {
+            if (target) {
+                gsap.to(target, {
+                    duration: randomTime2(),
+                    rotation: randomAngle(direction),
+                    // delay: randomDelay(),
+                    ease: "slow(0.7, 0.7, false)",
+                    onComplete: rotate,
+                    onCompleteParams: [target, direction * -1]
+                });
+            }
         }
-    }
-    
-    function moveX(target, direction) {
-        if(target){ 
-            gsap.to(target, {duration:randomTime(),
-              x: randomX(direction),
-              ease: "slow(0.7, 0.7, false)",
-              onComplete: moveX,
-              onCompleteParams: [target, direction * -1]
-            });
+
+        function moveX(target, direction) {
+            if (target) {
+                gsap.to(target, {
+                    duration: randomTime(),
+                    x: randomX(direction),
+                    ease: "slow(0.7, 0.7, false)",
+                    onComplete: moveX,
+                    onCompleteParams: [target, direction * -1]
+                });
+            }
         }
-    }
-    
-    function moveY(target, direction) {
-        console.log(target);
-        if(target){
-            gsap.to(target, {duration:randomTime(),
-              y: randomY(direction),
-              ease: "slow(0.7, 0.7, false)",
-              onComplete: moveY,
-              onCompleteParams: [target, direction * -1]
-            });
+
+        function moveY(target, direction) {
+            if (target) {
+                gsap.to(target, {
+                    duration: randomTime(),
+                    y: randomY(direction),
+                    ease: "slow(0.7, 0.7, false)",
+                    onComplete: moveY,
+                    onCompleteParams: [target, direction * -1]
+                });
+            }
         }
-    }
-    
-    function random(min, max) {
-      const delta = max - min;
-      return (direction = 1) => (min + delta * Math.random()) * direction;
-    }
+
+        function random(min, max) {
+            const delta = max - min;
+            return (direction = 1) => (min + delta * Math.random()) * direction;
+        }
     }, 2000);
-    console.log('mounted');
 });
+
 // ^^^ here mounted finished
+
+
+// function getCursor(e) {
+//     let divided_width = document.getElementById("tour").clientWidth / 3;
+//     let cursorX = e.screenX;
+//     let sscreen = screen.width;
+//     let extra = (sscreen - document.getElementById("tour").clientWidth)/2;
+//     console.log(divided_width+divided_width+extra);
+//     console.log('cursor-'+cursorX);
+//     if(cursorX < (divided_width+extra)){
+//         upplace.value = 'left';
+//     }else if (cursorX > (divided_width+divided_width+extra)) {
+//         upplace.value = 'right';
+//     }else{
+//         upplace.value = 'center';
+//     }
+//     console.log(upplace.value);
+
+//     gsap.globalTimeline.pause()
+// }
+
+function getleft($e){
+    upplace.value = 'left'
+    gsap.globalTimeline.pause();
+}
+function getcenter($e){
+    gsap.globalTimeline.pause();
+}
+function getright($e){
+    upplace.value = 'right'
+    gsap.globalTimeline.pause();
+}
+
+function leaveCursor($event) {
+    upplace.value = '';
+    gsap.globalTimeline.resume();
+}
 
 const total_places_count = computed(() => {
     props.tour.days.forEach(day => {
@@ -130,18 +174,6 @@ const total_places_count = computed(() => {
     });
     return total_places;
 })
-
-function getCursor(e){
-    // console.log(e.screenX);
-    let divided_width = screen.width / 2;
-    if (e.screenX>divided_width) {
-        leftup.value = false;
-    }else{
-        leftup.value = true;
-    }
-    return console.log(leftup.value);
-        
-}
 
 </script>
 <style>
@@ -221,11 +253,19 @@ function getCursor(e){
 
 .tourleft:hover {
     transform: rotate(3deg);
-    scale: 1.05;
 }
 
 .tourright:hover {
     transform: rotate(-3deg);
+}
+
+/* .tourcenter:hover {
+    transform: rotate(-3deg);
     scale: 1.05;
+} */
+
+#tour:hover {
+    /* transform: rotate(-3deg); */
+    scale: 1.1;
 }
 </style>

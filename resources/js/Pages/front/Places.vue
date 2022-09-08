@@ -37,7 +37,7 @@ import { computed, onMounted, ref, TransitionGroup, watch } from "vue";
 import { Inertia } from '@inertiajs/inertia';
 import gsap from 'gsap';
 import { NSelect, NInput, NInputGroup } from 'naive-ui';
-import {ScrollTrigger} from 'gsap/ScrollTrigger'
+import {ScrollTrigger} from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 let props = defineProps(
@@ -79,7 +79,8 @@ const beforeEnter = (el) => {
         opacity:0
     })
     // el.style.transform = el.dataset.index % 2 === 0 ? 'translateX(300px)' : 'translateX(-300px)'
-    // el.style.opacity = 0
+    // el.style.transform = 'translateX(100px)';
+    // el.style.opacity = 0;
 }
 
 const enter = (el, done) => {
@@ -92,14 +93,14 @@ const enter = (el, done) => {
             // markers: true,
             onUpdate: (self) => {
                 ScrollTrigger.refresh();
-    }
+            }
         },
+        opacity: 1,
         duration: 1.2,
         x: 0,
         y: 0,
-        // opacity: 1,
         ease: 'bounce.out',
-        // onComplete: done,
+        // onComplete: ScrollTrigger.disable(),
         // delay: 0.2,
     })
 }
