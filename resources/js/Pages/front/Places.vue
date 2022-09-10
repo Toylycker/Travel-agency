@@ -18,7 +18,7 @@
     </div>
     <transition-group tag="div" name="plist" :appear="true" @before-enter="beforeEnter" @enter="enter">
         <Place class="mx-3 place" v-for="(place, index) in places.data" :data-index="index" :key="place.id" :place="place"
-            :even="true ? (index % 2 === 0) :false"></Place>
+            :even="(index % 2 === 0)?true :false"></Place>
     </transition-group>
 
     <!-- Paginator  -->

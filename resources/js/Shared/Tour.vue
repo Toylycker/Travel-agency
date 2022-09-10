@@ -25,7 +25,7 @@
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m52!1m12!1m3!1d3178032.860928466!2d58.36552423384894!3d38.934313986368686!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m37!3e0!4m5!1s0x3f6ffe1bab3684d9%3A0x3cde013f62d3ade9!2sAshgabat%2C%20Turkmenistan!3m2!1d37.9600766!2d58.3260629!4m5!1s0x402c1a2c8507ce31%3A0xc0682af196323024!2sAwaza%20der%C3%BDa%2C%20Turkmenistan!3m2!1d39.958283099999996!2d52.8569665!4m5!1s0x3f62b4f7b4d79731%3A0x1b7a8833c89ceca!2sDerweze%2C%20Turkmenistan!3m2!1d40.173957099999996!2d58.4169385!4m5!1s0x3f4170abd6e93cc7%3A0xbbae37e82e0dccce!2sMerv%2C%20Turkmenistan!3m2!1d37.664426!2d62.1747186!4m5!1s0x3f44e0040d5c38dd%3A0x5ca437696975e741!2sTurkmenabat%2C%20Turkmenistan!3m2!1d39.0041313!2d63.568808!4m5!1s0x41ddad1280665aad%3A0xbc519b36baa4f375!2zS8O2bmXDvHJnZW5jaCwgVHVya21lbmlzdGFu!3m2!1d42.324218699999996!2d59.1818543!5e0!3m2!1sen!2sus!4v1662656011952!5m2!1sen!2sus"
                         width="100%" height="100%" style="border:0;"  class="rounded-3" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade">asdfsdfsfsdf</iframe>
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
                     <!-- <n-carousel keyboard :direction="direction" class="rounded-3" autoplay
                         :dot-placement="direction === 'vertical' ? 'right' : 'bottom'" style="height: 170px" draggable>
                         <img :src="'img/1.jpeg'" class="img-fluid rounded-start" alt="..." style="object-fit: cover;">
@@ -66,7 +66,7 @@ onMounted(() => {
         // floating containers
         // const can = Inertia.page.component=='front/Tours'?'.float'+props.index:null;
         const can = '.float' + props.index;
-        const randomX = props.index % 2 === 0 ? random(10, 20) : random(10, 20);
+        const randomX = props.index % 2 === 0 ? random(10, 20) : random(15, 25);
         const randomY = props.index % 2 === 0 ? random(5, 10) : random(2, 6);
         const randomDelay = random(0, 1);
         const randomTime = props.index % 2 === 0 ? random(1, 1) : random(1, 1);
@@ -130,26 +130,6 @@ onMounted(() => {
 });
 
 // ^^^ here mounted finished
-
-
-// function getCursor(e) {
-//     let divided_width = document.getElementById("tour").clientWidth / 3;
-//     let cursorX = e.screenX;
-//     let sscreen = screen.width;
-//     let extra = (sscreen - document.getElementById("tour").clientWidth)/2;
-//     console.log(divided_width+divided_width+extra);
-//     console.log('cursor-'+cursorX);
-//     if(cursorX < (divided_width+extra)){
-//         upplace.value = 'left';
-//     }else if (cursorX > (divided_width+divided_width+extra)) {
-//         upplace.value = 'right';
-//     }else{
-//         upplace.value = 'center';
-//     }
-//     console.log(upplace.value);
-
-//     gsap.globalTimeline.pause()
-// }
 
 function getleft($e){
     upplace.value = 'left'
