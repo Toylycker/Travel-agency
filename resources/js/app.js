@@ -7,6 +7,7 @@ import { InertiaProgress } from '@inertiajs/progress';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import { createPinia } from 'pinia';
+import VueSplide from '@splidejs/vue-splide';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
@@ -18,6 +19,7 @@ createInertiaApp({
         return createApp({ render: () => h(app, props) })
             .use(plugin)
             .use(createPinia)
+            .use(VueSplide)
             .use(ZiggyVue, Ziggy)
             .mount(el);
     },

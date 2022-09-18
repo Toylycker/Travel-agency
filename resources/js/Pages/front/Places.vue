@@ -11,19 +11,31 @@
                 <n-input-group class="mt-3 d-flex">
                     <n-select v-model:value="category" label-field="name" value-field="name" filterable
                         :options="showcategories" />
-                    <n-input v-model:value="search" type="text" placeholder="search..." />
+                    <n-input v-model:value="search" type="text" placeholder="search..." clearable>
+                        <template #clear-icon>
+                            <n-icon :component="TextClearFormatting16Regular" />
+                        </template>
+                    </n-input>
                 </n-input-group>
             </div>
         </div>
     </div>
-    <transition-group tag="div" name="plist" :appear="true" @before-enter="beforeEnter" @enter="enter">
-        <Place class="mx-3 place" v-for="(place, index) in places.data" :data-index="index" :key="place.id" :place="place"
-            :even="(index % 2 === 0)?true :false"></Place>
-    </transition-group>
 
-    <!-- Paginator  -->
-    <span>{{plalen}}</span>
-    <Pagination :links='places.links'/>
+    <div v-if="show">
+        <transition-group tag="div" name="plist" :appear="true" @before-enter="beforeEnter" @enter="enter">
+            <Place class="mx-3 place" v-for="(place, index) in places.data" :data-index="index" :key="place.id"
+                :place="place" :even="(index % 2 === 0)?true :false"></Place>
+        </transition-group>
+    
+        <!-- Paginator  -->
+        <span>{{plalen}}</span>
+        <Pagination :links='places.links' />
+    </div>
+    
+    <div v-else class="text-center">
+        <h3>Sorry. We could not find matching information.</h3>
+        <img :src="'img/noMatch.png'" class="img-fluid rounded-start" alt="..." style="object-fit: contain;">
+    </div>
 
 
 
@@ -36,8 +48,9 @@ import Pagination from '@/Shared/Pagination.vue';
 import { computed, onMounted, ref, TransitionGroup, watch } from "vue";
 import { Inertia } from '@inertiajs/inertia';
 import gsap from 'gsap';
-import { NSelect, NInput, NInputGroup } from 'naive-ui';
-import {ScrollTrigger} from 'gsap/ScrollTrigger';
+import { NSelect, NInput, NInputGroup, NIcon } from 'naive-ui';
+import {TextClearFormatting16Regular} from '@vicons/fluent';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 let props = defineProps(
@@ -46,7 +59,8 @@ let props = defineProps(
         'categories': Array,
         'title': String,
         'search': String,
-        'category': String
+        'category': String,
+        'show': Boolean
     }
 )
 
@@ -54,21 +68,23 @@ let search = ref(props.search);
 let category = ref(props.category);
 let some = ref([]);
 
+
 const showcategories = computed(() => {
-    some=props.categories
-    some.splice(0,0,{'id':0, 'name':'all'});
+    some = props.categories
+    some.splice(0, 0, { 'id': 0, 'name': 'all' });
     return some;
 })
 
-const plalen = computed(()=>{
+const plalen = computed(() => {
     return props.places.data.length
 })
 
 
-watch([search, category],([newsearch, newcategory], [prevsearch, prevcategory]) => {
+watch([search, category], ([newsearch, newcategory], [prevsearch, prevcategory]) => {
     console.log(newsearch);
     console.log(newcategory);
-    Inertia.get('/places', { search: newsearch, category: newcategory}, { preserveState: true, replace: true });
+    Inertia.get('/places', { search: newsearch, category: newcategory }, { preserveState: true, replace: true });
+    console.log(props.show);
 })
 
 // animation stuff start
@@ -76,7 +92,7 @@ watch([search, category],([newsearch, newcategory], [prevsearch, prevcategory]) 
 const beforeEnter = (el) => {
     gsap.from(el, {
         x: el.dataset.index % 2 === 0 ? 300 : -300,
-        opacity:0
+        opacity: 0
     })
     // el.style.transform = el.dataset.index % 2 === 0 ? 'translateX(300px)' : 'translateX(-300px)'
     // el.style.transform = 'translateX(100px)';

@@ -19,8 +19,6 @@ return new class extends Migration
             $table->text('body')->nullable();
             $table->integer('viewed')->nullable();
             $table->integer('liked')->nullable();
-            $table->unsignedBigInteger('location_id')->nullable();
-            $table->foreign('location_id')->references('id')->on('locations')->nullOnDelete();
             $table->timestamps();
         });
     }

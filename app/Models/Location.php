@@ -26,11 +26,6 @@ class Location extends Model
         return $this->hasMany(Place::class);
     }
 
-    public function posts()
-    {
-        return $this->hasMany(Post::class);
-    }
-
     public function hotels()
     {
         return $this->hasMany(Hotel::class);

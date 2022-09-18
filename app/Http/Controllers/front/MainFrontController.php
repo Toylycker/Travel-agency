@@ -5,6 +5,8 @@ namespace App\Http\Controllers\front;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Place;
+use App\Models\Post;
+use App\Models\Subject;
 use App\Models\Tour;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -38,7 +40,8 @@ class MainFrontController extends Controller
             'title' => 'The Best PLace In The World',
             'search' => $search,
             'category' => $category?$category->name:null,
-            'categories'=>Category::get()
+            'categories'=>Category::get(),
+            'show' => $places->count()>0?true:false
         ]);
     }
 
@@ -50,9 +53,38 @@ class MainFrontController extends Controller
         return Inertia::render('front/Tours', compact('tours'));
     }
 
-    public function blog()
+    public function blog(Request $request)
     {
-        return Inertia::render('front/Blog');
+        $request->validate([
+            'search'=>'nullable|string|max:10',
+            'subject' =>'nullable|max:15'
+        ]);
+
+        // return $request;
+
+        $search = ($request->search)?$request->search:null;
+        $subject = ($request->subject)?Subject::findOrFail($request->subject):null;
+
+        $posts = Post::when($subject, function ($query,$subject){
+            $query->whereHas('subjects', function ($query) use ($subject){
+                $query->where('name', $subject->name);
+            });
+        })
+        ->when($search, function ($query, $search){
+            $query->where(function ($query)use ($search){
+                $query->where('title', 'like', '%' . $search . '%');
+                $query->orWhere('body', 'like', '%' . $search . '%');
+            });
+        })
+        ->paginate( 10, ['id', 'title', 'body'])->withQueryString();
+
+        return Inertia::render('front/Blog', [
+            'posts'=> $posts,
+            'search' => $search,
+            'f_subject' => $subject?$subject->id:null,
+            'subjects'=>Subject::get(),
+            'show' =>$posts->count()>0?true:false
+        ]);
     }
 
     public function hotels()
