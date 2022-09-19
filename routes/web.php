@@ -23,6 +23,8 @@ Route::get('/blog', [MainFrontController::class, 'blog'])->name('blog');
 Route::get('/hotels', [MainFrontController::class, 'hotels'])->name('hotels');
 Route::get('/contact', [MainFrontController::class, 'contact'])->name('contact');
 
+Route::get('/places/resultlength', [MainFrontController::class, 'resultlength'])->name('resultlength');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

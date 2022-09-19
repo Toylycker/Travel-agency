@@ -2,67 +2,12 @@
 
     <Head title="Blog" />
 
-    <div class="d-flex container-fluid justify-content-center mt-3" style="align-items:center">
-        <Splide class="border-3 container-fluid border-top" :options="{ 
-                    rewind : true,
-                   perPage: 3,
-                   height: '4.1rem',
-                   width: '50rem',
-                   draggable: true,
-                    arrows: false,
-                    type   : 'loop',
-                    breakpoints: {
-            1024: {
-              perPage: 3,
-             
-            },
-            767: {
-              perPage: 2,
-          
-            },
-            640: {
-              perPage: 2,
-        
-            },
-          },
-        }" aria-label="My Favorite Subjects">
-            <SplideSlide @click="f_subject = 0">
-                <h5 class="mx-3" :class="{'border-bottom':f_subject==false || f_subject==0 || f_subject==undefined}"
-                    style="align-self:center;">
-                    All</h5>
-            </SplideSlide>
-            <SplideSlide v-for="subject in subjects" :key="subject.id" @click="f_subject = subject.id">
-                <h5 class="mx-3" :class="{'border-bottom':f_subject==subject.id}" style="align-self:center;">
-                    {{subject.name}}</h5>
-            </SplideSlide>
-        </Splide>
-    </div>
-
-    <div class="d-flex justify-content-center" style="align-items:center;">
-        <n-input type="text" placeholder="Search" v-model:value="search" round clearable autosize
-            style="min-width: 50%;">
-            <template #clear-icon>
-                <n-icon :component="TextClearFormatting16Regular" />
-            </template>
-        </n-input>
-    </div>
+    <SearchForBlogVue :subjects='subjects' :search='search' :subject='subject' @for-posts='getPosts' />
 
     <div v-if="show">
         <transition-group class="row justify-content-center my-3" tag="div" :appear="true"
             @before-enter="beforeEnter" @enter="enter">
-            <div v-for="(post, i) in posts.data" :key="post.id" :data-i="i"
-                class="col-lg-4 col-md-6 col-sm-12 my-3">
-                <div class="position-relative tm-thumbnail-container">
-                    <img :src="'img/1.jpeg'" class="img-fluid rounded-start img" alt="...">
-                </div>
-                <div class="p-4 overflow-hidden shadow content rounded-start">
-                    <div class="rounded-3 overflow-hidden" style="height: 250px;">
-                        <h3 class="tm-text-primary mb-3 overflow-hidden tm-catalog-item-title">{{post.title}}</h3>
-                        <p class="tm-catalog-item-text overflow-hidden" style="word-wrap: break-word;">{{post.body}}
-                        </p>
-                    </div>
-                </div>
-            </div>
+                <PostForBlogVue v-for="(post, i) in posts.data" :key="post.id" :data-i="i" :post="post" />
         </transition-group>
 
         <div class="my-3">
@@ -85,17 +30,18 @@ import Pagination from '@/Shared/Pagination.vue';
 import { Inertia } from '@inertiajs/inertia';
 import { NInput, NIcon } from 'naive-ui';
 import { TextClearFormatting16Regular } from '@vicons/fluent';
+import SearchForBlogVue from '@/Shared/SearchForBlog.vue';
 import gsap from 'gsap/all';
+import PostForBlogVue from '@/Shared/PostForBlog.vue';
 
-const props = defineProps(['posts', 'f_subject', 'subjects', 'search', 'show']);
 
-let f_subject = ref(props.f_subject);
-let search = ref(props.search);
+const props = defineProps(['posts', 'subject', 'subjects', 'search', 'show']);
 
-watch([f_subject, search,], ([newsubject, newsearch,], [oldsubject, oldsearch,]) => {
-    console.log('wacthed');
-    Inertia.get('/blog', { subject: newsubject, search: newsearch }, { preserveState: true, replace: true });
-})
+
+function getPosts(imports){
+    // console.log(imports);
+    Inertia.get('/blog', { subject: imports.newsubject, search: imports.newsearch }, {replace: true });
+}
 
 // staggered animation effect start
 const beforeEnter = (el) =>{
@@ -121,7 +67,6 @@ const enter = (el, done) =>{
 
 <script>
 import FrontLayout from '@/Layouts/frontLayout.vue';
-import { secondsInDay } from 'date-fns';
 export default { layout: FrontLayout }
 </script>
 

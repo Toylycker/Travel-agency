@@ -4,18 +4,25 @@
 
     <div class="d-flex justify-content-between">
         <div class="">
-            <p id="hello">Places</p>
+            <h1>Places</h1>
         </div>
         <div class="d-flex">
             <div class="mx-3">
                 <n-input-group class="mt-3 d-flex">
                     <n-select v-model:value="category" label-field="name" value-field="name" filterable
                         :options="showcategories" />
-                    <n-input v-model:value="search" type="text" placeholder="search..." clearable>
+                    <n-input v-model:value="vsearch" type="text" placeholder="search..." clearable>
                         <template #clear-icon>
                             <n-icon :component="TextClearFormatting16Regular" />
                         </template>
                     </n-input>
+                    <n-button round @click="searchposts()" :disabled="vsearch == null && category ==null">
+                        <span v-show="vsearch != null || category !=null">{{potentialSearchResultLength}}</span>
+                        <template #icon>
+                            <n-icon :component="Search16Regular">
+                            </n-icon>
+                        </template>
+                    </n-button>
                 </n-input-group>
             </div>
         </div>
@@ -26,12 +33,12 @@
             <Place class="mx-3 place" v-for="(place, index) in places.data" :data-index="index" :key="place.id"
                 :place="place" :even="(index % 2 === 0)?true :false"></Place>
         </transition-group>
-    
+
         <!-- Paginator  -->
         <span>{{plalen}}</span>
         <Pagination :links='places.links' />
     </div>
-    
+
     <div v-else class="text-center">
         <h3>Sorry. We could not find matching information.</h3>
         <img :src="'img/noMatch.png'" class="img-fluid rounded-start" alt="..." style="object-fit: contain;">
@@ -48,8 +55,8 @@ import Pagination from '@/Shared/Pagination.vue';
 import { computed, onMounted, ref, TransitionGroup, watch } from "vue";
 import { Inertia } from '@inertiajs/inertia';
 import gsap from 'gsap';
-import { NSelect, NInput, NInputGroup, NIcon } from 'naive-ui';
-import {TextClearFormatting16Regular} from '@vicons/fluent';
+import { NSelect, NInput, NInputGroup, NIcon, NButton } from 'naive-ui';
+import { TextClearFormatting16Regular, Search16Regular } from '@vicons/fluent';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
@@ -60,11 +67,12 @@ let props = defineProps(
         'title': String,
         'search': String,
         'category': String,
-        'show': Boolean
+        'show': Boolean,
+        'potentialSearchResultLength':Number
     }
 )
 
-let search = ref(props.search);
+let vsearch = ref(props.search);
 let category = ref(props.category);
 let some = ref([]);
 
@@ -80,12 +88,21 @@ const plalen = computed(() => {
 })
 
 
-watch([search, category], ([newsearch, newcategory], [prevsearch, prevcategory]) => {
-    console.log(newsearch);
-    console.log(newcategory);
-    Inertia.get('/places', { search: newsearch, category: newcategory }, { preserveState: true, replace: true });
-    console.log(props.show);
+// watch([ category], ([newcategory], [ prevcategory]) => {
+//     console.log(newcategory);
+//     Inertia.get('/places', { search: vsearch.value, category: newcategory }, { replace: true, only:['places','categories','title','search','category','show','potentialSearchResultLength'] });
+// })
+
+function searchposts(){
+    Inertia.get('/places', { search: vsearch.value, category: category.value }, { replace: true });
+    console.log(category.value + '/////'+vsearch.value);
+}
+
+watch([vsearch, category], ([newsearch], [prevsearch]) => {
+    Inertia.get('/places/resultlength', { search: newsearch, category: category.value }, { preserveState: true, only: ['potentialSearchResultLength'], replace: true });
 })
+
+
 
 // animation stuff start
 
