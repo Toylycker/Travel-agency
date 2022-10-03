@@ -1,13 +1,12 @@
 <template>
     <div class="d-flex container-fluid justify-content-center mt-3" style="align-items:center">
-        <Splide class="border-3 container-fluid border-top" :options="{ 
+        <Splide class="border-3 container-fluid border-top rounded-3" :options="{ 
                     rewind : true,
                    perPage: 3,
                    height: '4.1rem',
                    width: '50rem',
                    draggable: true,
                     arrows: false,
-                    type   : 'loop',
                     breakpoints: {
             1024: {
               perPage: 3,

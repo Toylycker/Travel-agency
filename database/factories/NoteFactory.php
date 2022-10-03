@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Hotel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Room>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Note>
  */
-class RoomFactory extends Factory
+class NoteFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +17,7 @@ class RoomFactory extends Factory
     public function definition()
     {
         return [
-            'name'=>$this->faker->word(),
-            'hotel_id'=>Hotel::inRandomOrder()->first()->id
+            'name'=>$this->faker->word()
         ];
     }
 }

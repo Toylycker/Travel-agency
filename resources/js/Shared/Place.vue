@@ -1,6 +1,6 @@
 <template >
 
-    <div class="col-12 shadow contentt" v-if="even">
+    <div class="col-12 shadow contentt"  v-if="even">
         <div class="mb-3">
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-sm-12">
@@ -42,14 +42,15 @@
 
 </template>
 <script setup>
+import { Inertia } from '@inertiajs/inertia';
 import { NCarousel } from 'naive-ui';
 import {ref} from 'vue';
 let direction = ref('vertical');
-defineProps(["place", "even"])
+defineProps(["place", "even"]);
 </script>
 <style>
     .contentt:hover{
-        border-radius: 15%;
-        background: rgb(246, 244, 244);
+        border-radius: 15px;
+        background: rgb(167, 255, 72);
     }
 </style>

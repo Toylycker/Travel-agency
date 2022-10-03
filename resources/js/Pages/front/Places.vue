@@ -9,6 +9,8 @@
         <div class="d-flex">
             <div class="mx-3">
                 <n-input-group class="mt-3 d-flex">
+                    <n-select v-model:value="location" label-field="name" value-field="id" filterable
+                        :options="showlocations" />
                     <n-select v-model:value="category" label-field="name" value-field="name" filterable
                         :options="showcategories" />
                     <n-input v-model:value="vsearch" type="text" placeholder="search..." clearable>
@@ -16,8 +18,8 @@
                             <n-icon :component="TextClearFormatting16Regular" />
                         </template>
                     </n-input>
-                    <n-button round @click="searchposts()" :disabled="vsearch == null && category ==null">
-                        <span v-show="vsearch != null || category !=null">{{potentialSearchResultLength}}</span>
+                    <n-button round @click="searchposts()" :disabled="vsearch == null && category ==null && location==null">
+                        <span v-show="vsearch != null || category !=null||location!=null">{{potentialSearchResultLength}}</span>
                         <template #icon>
                             <n-icon :component="Search16Regular">
                             </n-icon>
@@ -30,12 +32,11 @@
 
     <div v-if="show">
         <transition-group tag="div" name="plist" :appear="true" @before-enter="beforeEnter" @enter="enter">
-            <Place class="mx-3 place" v-for="(place, index) in places.data" :data-index="index" :key="place.id"
+            <Place @click="showPLace(place.id)" class="mx-3 place" v-for="(place, index) in places.data" :data-index="index" :key="place.id"
                 :place="place" :even="(index % 2 === 0)?true :false"></Place>
         </transition-group>
 
         <!-- Paginator  -->
-        <span>{{plalen}}</span>
         <Pagination :links='places.links' />
     </div>
 
@@ -61,45 +62,51 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 let props = defineProps(
-    {
-        'places': Object,
-        'categories': Array,
-        'title': String,
-        'search': String,
-        'category': String,
-        'show': Boolean,
-        'potentialSearchResultLength':Number
-    }
+    [
+        'places',
+        'categories',
+        'title',
+        'search',
+        'category',
+        'show',
+        'locations',
+        'location',
+        'potentialSearchResultLength'
+]
 )
 
 let vsearch = ref(props.search);
 let category = ref(props.category);
-let some = ref([]);
+let location = ref(props.location?props.location.id:props.location);
 
 
+let categoriesWithAll = ref([]);
 const showcategories = computed(() => {
-    some = props.categories
-    some.splice(0, 0, { 'id': 0, 'name': 'all' });
-    return some;
+    categoriesWithAll = props.categories
+    categoriesWithAll.splice(0, 0, { 'id': 0, 'name': 'all' });
+    return categoriesWithAll;
 })
 
-const plalen = computed(() => {
-    return props.places.data.length
+let locationWithAll = ref([]);
+const showlocations = computed(() => {
+    locationWithAll = props.locations
+    locationWithAll.splice(0, 0, { 'id': 0, 'name': 'all' });
+    return locationWithAll;
 })
 
-
-// watch([ category], ([newcategory], [ prevcategory]) => {
-//     console.log(newcategory);
-//     Inertia.get('/places', { search: vsearch.value, category: newcategory }, { replace: true, only:['places','categories','title','search','category','show','potentialSearchResultLength'] });
-// })
+let showPLace = (id)=>{
+    // console.log('clicked');
+    Inertia.get('places/show/'+id);
+}
 
 function searchposts(){
-    Inertia.get('/places', { search: vsearch.value, category: category.value }, { replace: true });
+    Inertia.get('/places', { search: vsearch.value, category: category.value, location:location.value, count:props.potentialSearchResultLength }, { replace: true });
     console.log(category.value + '/////'+vsearch.value);
 }
 
-watch([vsearch, category], ([newsearch], [prevsearch]) => {
-    Inertia.get('/places/resultlength', { search: newsearch, category: category.value }, { preserveState: true, only: ['potentialSearchResultLength'], replace: true });
+watch([vsearch, category, location], ([newsearch, newcategory, newlocation], [prevsearch,  prevcategory, prevlocation], ) => {
+    console.log(newsearch+''+newcategory+''+newlocation);
+    Inertia.get('/places/resultlength', { search: newsearch, category: newcategory, location:newlocation }, { preserveState: true, only: ['potentialSearchResultLength'], replace: true });
 })
 
 

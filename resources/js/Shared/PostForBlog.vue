@@ -14,9 +14,6 @@
 </template>
 <script setup>
 const props = defineProps(['post']);
-console.log(props.post);
-
-
 </script>
 <style>
 

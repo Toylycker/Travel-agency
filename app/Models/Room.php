@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Room extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    public $timestamps = false;
 
     /**
      * Get the hotel that owns the Room
@@ -33,5 +35,10 @@ class Room extends Model
     public function videos()
     {
         return $this->morphMany(Video::class, 'videoable');
+    }
+
+    public function prices()
+    {
+        return $this->morphMany(Price::class, 'priceable');
     }
 }

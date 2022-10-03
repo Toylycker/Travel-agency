@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Location;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,11 @@ class HotelFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'location_id'=>Location::inRandomOrder()->first()->id,
+            'name' => $this->faker->word(),
+            'stars'=>rand(1,5),
+            'body'=> $this->faker->sentence(6)
+
         ];
     }
 }

@@ -31,6 +31,18 @@
             <Link class="nav-link" :class="{ 'active': $page.component == 'front/ContactUs' }" :href="route('contact')">
             Contact Us</Link>
           </li>
+          <li class="nav-item" v-if="$page.props.auth===null">
+            <Link class="nav-link" :class="{ 'active': $page.component == 'Auth/Login' }" :href="route('login')">
+            Login</Link>
+          </li>
+          <li class="nav-item" v-if="$page.props.auth===null">
+            <Link class="nav-link" :class="{ 'active': $page.component == 'Auth/Register' }" :href="route('register')">
+            Register</Link>
+          </li>
+          <li class="nav-item" v-if="$page.props.auth!=null">
+            <Link class="nav-link" :class="{ 'active': $page.component == 'Auth/Logout' }" :href="route('logout')" method="post" as="button">
+            logout</Link>
+          </li>
         </ul>
       </div>
     </div>

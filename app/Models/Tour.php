@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tour extends Model
 {
@@ -22,17 +23,10 @@ class Tour extends Model
         return $this->hasMany(Day::class);
     }
 
-    // public function places()
-    // {
-    //     return $this->hasManyThrough(
-    //         Place::class,
-    //         Day::class,
-    //         'tour_id', // Foreign key on users table...
-    //         'dayPLaces', // Foreign key on posts table...
-    //         'id', // Local key on countries table...
-    //         'id' // Local key on users table...
-    //     );
-    // }
+    public function notes(): BelongsToMany
+    {
+        return $this->belongsToMany(Note::class, 'note_tours')->withPivot(['status']) ;
+    }
 
 
 
@@ -59,5 +53,10 @@ class Tour extends Model
     public function texts()
     {
         return $this->morphMany(Text::class, 'textable');
+    }
+
+    public function prices()
+    {
+        return $this->morphMany(Price::class, 'priceable');
     }
 }

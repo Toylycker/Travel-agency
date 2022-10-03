@@ -5,17 +5,15 @@
         style="background-size: contain;background-position: center;  background-repeat: no-repeat;" id="tour">
         <div class="d-flex">
             <transition :appear="true" name="left">
-                <div @mouseover="getleft($event)" @mouseleave="leaveCursor($event)" id="left" class="col-4 mr-3 bg-white shadow rounded-3 overflow-auto" :class="'float'+props.index"
+                <div @mouseover="getleft($event)" @mouseleave="leaveCursor($event)" id="left" class="col-4 mr-3 bg-white shadow rounded-3 overflow-auto" :class="'float'"
                     style="border-bottom-left-radius: 20px; height: 170px;text-align: left;">
                     <div class="mx-3">
-                        <h3 class="mt-2" style="text-align: center;">{{tour.name}}/{{index}}/{{$page.component}}</h3>
-                        <div class="row">
-                            <h5 class="mx-3 col">total days:{{tour.total_days}}</h5>
-                            <h5 class="my-3 col">total nights:{{tour.total_nights}}</h5>
-                        </div>
-                        <div class="row">
-                            <h5 class="mx-3 col">visiting places:{{total_places_count}}</h5>
-                            <h5 class="my-3 col">price:{{tour.price}}$</h5>
+                        <h3 class="mt-2" style="text-align: center;">{{tour.name}}</h3>
+                        <div class="container">
+                            <h5 class="mx-3 col">Total days:{{tour.total_days}}</h5>
+                            <h5 class="mx-3 col">Visiting places:{{total_places_count}}</h5>
+                            <h5 class="mx-3 col">Price:{{tour.price}}$</h5>
+
                         </div>
                     </div>
                 </div>
@@ -34,7 +32,7 @@
                 </div>
             </transition>
             <transition :appear="true" name="right">
-                <div @mouseover="getright($event)" @mouseleave="leaveCursor($event)" id="right" class="col-4 ml-3 bg-white shadow overflow-auto rounded-3" :class="'float'+props.index"
+                <div @mouseover="getright($event)" @mouseleave="leaveCursor($event)" id="right" class="col-4 ml-3 bg-white shadow overflow-auto rounded-3" :class="'float'"
                     style="border-top-right-radius: 20px;height: 170px;">
                     <p class="m-3">{{tour.body}}</p>
                 </div>
@@ -53,7 +51,6 @@ let direction = ref('vertical');
 const props = defineProps(['tour', 'index'])
 let total_places = ref(0);
 let upplace = ref('');
-let page = ref(Inertia.page.component);
 
 // onUnmounted(()=>{
 //     gsap.globalTimeline.clear();
@@ -65,7 +62,7 @@ onMounted(() => {
     setTimeout(() => {
             // floating containers
             // const can = Inertia.page.component=='front/Tours'?'.float'+props.index:null;
-            const can = '.float' + props.index;
+            const can = '.float';
             const randomX = props.index % 2 === 0 ? random(10, 20) : random(15, 25);
             const randomY = props.index % 2 === 0 ? random(5, 10) : random(2, 6);
             const randomDelay = random(0, 1);

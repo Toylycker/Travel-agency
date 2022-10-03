@@ -41,6 +41,7 @@ import Place from '@/Shared/Place.vue';
 import gsap from "gsap";
 import { Sine } from 'gsap/all';
 
+
 const beforeEnter = (el)=>{
 el.style.transform = 'translateY(-60px)'
 el.style.opacity = 0

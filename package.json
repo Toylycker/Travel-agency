@@ -28,6 +28,7 @@
         "bootstrap": "^5.2.0",
         "gsap": "^3.11.0",
         "pinia": "^2.0.19",
+        "swiper": "^8.4.2",
         "vue-scramble-text": "^1.0.1"
     }
 }
