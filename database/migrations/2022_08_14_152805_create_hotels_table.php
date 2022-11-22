@@ -18,11 +18,12 @@ return new class extends Migration
             $table->unsignedBigInteger('location_id')->index();
             $table->foreign('location_id')->references('id')->on('locations')->cascadeOnDelete();
             $table->string('name');
+            $table->string('map')->nullable();
+            $table->string('main_image')->nullable();
             $table->integer('stars')->default(5);
             $table->text('body');
-            $table->unsignedInteger('viewed')->default(0);
-            $table->boolean('recommended')->default(0);
-            $table->unsignedInteger('liked')->default(0);
+            $table->unsignedInteger('viewed')->default(0)->nullable();
+            $table->boolean('recommended')->default(0)->nullable();
         });
     }
 

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Day;
 use App\Models\Hotel;
+use App\Models\Image;
 use App\Models\Note;
 use App\Models\Tour;
 use App\Models\PLace;
@@ -24,13 +25,20 @@ class TourFactory extends Factory
             }
 
             $randForPrice = rand(3, 5);
-
             for ($i=0; $i <= $randForPrice; $i++) { 
                 Price::create([
                  'name'=>$this->faker->word(),
                  'price'=>rand(100,200), 
                  'priceable_id'=>$tour->id,
                 'priceable_type'=>'App\Models\Tour']);
+            }
+
+            $randForImage = rand(2, 3);
+            for ($i=0; $i <= $randForImage; $i++) { 
+                Image::create([
+                 'name'=>'https://source.unsplash.com/random', 
+                 'imageable_id'=>$tour->id,
+                 'imageable_type'=>'App\Models\Tour']);
             }
 
 
@@ -62,8 +70,8 @@ class TourFactory extends Factory
             'name'=>$this->faker->sentence(1),
             'body' => $this->faker->paragraph(6),
             'total_days' => $rand,
-            'total_nights' => $rand+1,
-            'price' => rand(1000, 2000)
+            'price' => rand(1000, 2000),
+            'main_image'=>'https://source.unsplash.com/random'
         ];
     }
 }

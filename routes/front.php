@@ -5,6 +5,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+Route::post('/places', [MainFrontController::class, 'resultlength'])->name('resultlength');
+Route::post('/contact', [MainFrontController::class, 'storeContact'])->name('storeContact');
 
 Route::get('/', [MainFrontController::class, 'index'])->name('home');
 // these are what you see on navbar(start)
@@ -17,10 +19,8 @@ Route::get('/contact', [MainFrontController::class, 'contact'])->name('contact')
 
 Route::get('/tours/show/{id}', [MainFrontController::class, 'showtour'])->name('tour.show');
 Route::get('/places/show/{id}', [MainFrontController::class, 'showplace'])->name('place.show');
+Route::get('/blog/show/{id}', [MainFrontController::class, 'showpost'])->name('blog.show');
 
-
-
-Route::get('/places/resultlength', [MainFrontController::class, 'resultlength'])->name('resultlength');
 
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Dashboard');

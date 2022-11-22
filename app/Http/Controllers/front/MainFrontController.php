@@ -9,6 +9,7 @@ use App\Models\Hotel;
 use App\Models\Location;
 use App\Models\Place;
 use App\Models\Post;
+use App\Models\ReceivedMessage;
 use App\Models\Subject;
 use App\Models\Tour;
 use Illuminate\Http\Request;
@@ -44,7 +45,7 @@ class MainFrontController extends Controller
         })
         ->when($search, function ($query, $search){
             $query->where('name', 'like', '%' . $search . '%');
-        })->paginate( 10, ['id', 'name', 'body'])->withQueryString();
+        })->with('images', 'texts')->paginate( 10, ['id', 'name', 'body'])->withQueryString();
         return Inertia::render('front/Places', [
             'places'=> $places,
             'title' => 'The Best PLace In The World',
@@ -62,15 +63,21 @@ class MainFrontController extends Controller
     {
         $tours = Tour::with(['days'=> function($query){
             $query->withCount('places');
-        }, 'days.places'])->paginate(4)->withQueryString();
+        }, 'days.places'])->paginate(4);
         return Inertia::render('front/Tours', compact('tours'));
     }
 
     public function showtour($id){
         $tour = Tour::findOrFail($id);
-        $tour = Tour::where('id', $id)->with('notes', 'prices')->first();
+        $tour = Tour::where('id', $id)->with('notes', 'prices', 'images')->first();
         $days = Day::where('tour_id', $tour->id)->with(['places', 'hotels'])->orderBy('day_number')->get();
         return Inertia::render('front/ShowTour', ['tour'=>$tour, 'days'=>$days]);
+    }
+
+    public function showPost($id)
+    {
+        $post = Post::where('id', $id)->with(['texts', 'images'])->first();
+        return Inertia::render('front/ShowPost', ['post'=>$post]);
     }
 
     public function showplace($id){
@@ -102,7 +109,8 @@ class MainFrontController extends Controller
                 $query->orWhere('body', 'like', '%' . $search . '%');
             });
         })
-        ->paginate( 10, ['id', 'title', 'body'])->withQueryString();
+        ->with('images', 'texts', 'videos')
+        ->paginate( 10, ['id', 'title', 'body', 'main_image'])->withQueryString();
 
         $subjects=Subject::when($subject, function ($query,$subject){
             $query->whereNot('id', $subject->id);
@@ -122,13 +130,13 @@ class MainFrontController extends Controller
         $request->validate([
             'location' => 'numeric|nullable'
         ]);
-        $location = $request->has('location')?Location::findOrFail($request->location):null;
-        $hotels = Hotel::when($location, function ($query) use ($location){
+        $location = $request->location?Location::findOrFail($request->location):null;
+        $hotels = Hotel::with('images', 'rooms')->when($location, function ($query) use ($location){
             $query->where('location_id', $location->id);
         })->
         paginate(6)->withQueryString();
         $locations = Location::has('hotels')->get();
-        return Inertia::render('front/Hotels', ['hotels'=>$hotels, 'locations'=>$locations, 'location'=>$location]);
+        return Inertia::render('front/Hotels', ['hotels'=>$hotels, 'locations'=>$locations, 'location'=>$location?$location->id:0]);
     }
 
     public function contact()
@@ -163,6 +171,20 @@ class MainFrontController extends Controller
         return Inertia::render('front/Places', [
             'potentialSearchResultLength' =>$places->count()
         ]);
+
+
+    }
+
+    public function storeContact(Request $request)
+    {
+        $request->validate([
+            'email'=>'email|required',
+            'message'=>'string|required'
+        ]);
+
+        ReceivedMessage::create(['email'=>$request->email, 'message'=>$request->message]);
+
+        return Redirect()->back();
 
     }
 }

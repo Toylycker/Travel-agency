@@ -59,4 +59,12 @@ class Tour extends Model
     {
         return $this->morphMany(Price::class, 'priceable');
     }
+
+    public function included() {
+        return $this->notes()->wherePivot('status', 'included');
+    }
+
+    public function non_included() {
+        return $this->notes()->wherePivot('status', 'non_included');
+    }
 }

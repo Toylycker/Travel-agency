@@ -1,7 +1,8 @@
 <template>
     <div class="col-lg-4 col-md-6 col-sm-12 my-3">
         <div class="position-relative tm-thumbnail-container">
-            <img :src="'img/1.jpeg'" class="img-fluid rounded-start img" alt="...">
+            <img v-if="post.main_image" :src="'/storage/blog/'+post.main_image" class="img-fluid rounded-start img" alt="...">
+            <img v-else :src="'img/1.jpeg'" class="img-fluid rounded-start img" alt="...">
         </div>
         <div class="p-4 overflow-hidden shadow content rounded-start">
             <div class="rounded-3 overflow-hidden" style="height: 250px;">

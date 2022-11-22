@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title', 100)->default('text');
+            $table->string('main_image', 100)->nullable();
             $table->text('body')->nullable();
             $table->integer('viewed')->nullable();
-            $table->integer('liked')->nullable();
+            $table->boolean('recommended')->nullable();
             $table->timestamps();
         });
     }

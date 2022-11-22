@@ -2,7 +2,7 @@
 
     <Head title="Places" />
 
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between mb-3 g-0">
         <div class="">
             <h1>Places</h1>
         </div>
@@ -32,7 +32,7 @@
 
     <div v-if="show">
         <transition-group tag="div" name="plist" :appear="true" @before-enter="beforeEnter" @enter="enter">
-            <Place @click="showPLace(place.id)" class="mx-3 place" v-for="(place, index) in places.data" :data-index="index" :key="place.id"
+            <Place @click="showPLace(place.id)" class="place" v-for="(place, index) in places.data" :data-index="index" :key="place.id"
                 :place="place" :even="(index % 2 === 0)?true :false"></Place>
         </transition-group>
 
@@ -59,6 +59,7 @@ import gsap from 'gsap';
 import { NSelect, NInput, NInputGroup, NIcon, NButton } from 'naive-ui';
 import { TextClearFormatting16Regular, Search16Regular } from '@vicons/fluent';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.globalTimeline.play()
 gsap.registerPlugin(ScrollTrigger);
 
 let props = defineProps(
@@ -96,7 +97,7 @@ const showlocations = computed(() => {
 
 let showPLace = (id)=>{
     // console.log('clicked');
-    Inertia.get('places/show/'+id);
+    Inertia.get('/places/show/'+id);
 }
 
 function searchposts(){
@@ -106,7 +107,7 @@ function searchposts(){
 
 watch([vsearch, category, location], ([newsearch, newcategory, newlocation], [prevsearch,  prevcategory, prevlocation], ) => {
     console.log(newsearch+''+newcategory+''+newlocation);
-    Inertia.get('/places/resultlength', { search: newsearch, category: newcategory, location:newlocation }, { preserveState: true, only: ['potentialSearchResultLength'], replace: true });
+    Inertia.post('/places', { search: newsearch, category: newcategory, location:newlocation }, { preserveState: true, only: ['potentialSearchResultLength'], replace: true });
 })
 
 

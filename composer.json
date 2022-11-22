@@ -1,13 +1,14 @@
 {
-    "name": "laravel/laravel",
+    "name": "Jahankeshde",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Tourism Company",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.5.4",
+        "intervention/image": "^2.7",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.8",
         "laravel/tinker": "^2.7",

@@ -7,7 +7,7 @@
     <div v-if="show">
         <transition-group class="row justify-content-center my-3" tag="div" :appear="true"
             @before-enter="beforeEnter" @enter="enter">
-                <PostForBlogVue v-for="(post, i) in posts.data" :key="post.id" :data-i="i" :post="post" />
+                <PostForBlogVue @click="this.$inertia.get(route('blog.show', post.id))" v-for="(post, i) in posts.data" :key="post.id" :data-i="i" :post="post" />
         </transition-group>
 
         <div class="my-3">
@@ -33,6 +33,8 @@ import { TextClearFormatting16Regular } from '@vicons/fluent';
 import SearchForBlogVue from '@/Shared/SearchForBlog.vue';
 import gsap from 'gsap/all';
 import PostForBlogVue from '@/Shared/PostForBlog.vue';
+gsap.globalTimeline.play()
+
 
 
 const props = defineProps(['posts', 'subject', 'subjects', 'search', 'show']);

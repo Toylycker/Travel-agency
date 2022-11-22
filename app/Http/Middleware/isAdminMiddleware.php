@@ -17,8 +17,8 @@ class isAdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::user()->isAdmin === 1) {
-            return abort('No Way');
+        if (Auth::user()->isAdmin != 1) {
+           return abort(403, 'No Way');
         }
         return $next($request);
     }

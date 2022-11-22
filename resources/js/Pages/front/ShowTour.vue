@@ -15,10 +15,9 @@
                       shadowOffset: 20,
                       shadowScale: 0.94,
                     }" :pagination="true" :modules="modules" class="mySwiper">
-                        <swiper-slide><img src="https://swiperjs.com/demos/images/nature-1.jpg" /></swiper-slide>
-                        <swiper-slide><img src="https://swiperjs.com/demos/images/nature-2.jpg" /></swiper-slide>
-                        <swiper-slide><img src="https://swiperjs.com/demos/images/nature-3.jpg" /></swiper-slide>
-                        <swiper-slide><img src="https://swiperjs.com/demos/images/nature-4.jpg" /></swiper-slide>
+                        <swiper-slide v-for="image in tour.images" :key="image.id">
+                            <img :src="'/storage/tours/'+image.name" />
+                        </swiper-slide>
                     </swiper>
                 </div>
             </div>

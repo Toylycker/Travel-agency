@@ -4,36 +4,20 @@
     </div>
     <div class="row">
         <div class="col-6">
-            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                        class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
-                </div>
+            <div id="placeCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
+                    <div v-for="image in place.images" :key="image.id" class="carousel-item active">
                         <!-- <img src="..." class="d-block w-100" alt="..."> -->
-                        <img :src="'/img/1.jpeg'"
-                            class="img-fluid d-block rounded-start w-100">
-                    </div>
-                    <div class="carousel-item">
-                        <img :src="'/img/noMatch.png'"
-                            class="img-fluid d-block rounded-start w-100">
-                    </div>
-                    <div class="carousel-item">
-                        <img :src="'/img/2.jpeg'"
-                            class="img-fluid d-block rounded-start w-100">
+                        <img :src="'/storage/places/'+image.name"
+                            class="img-fluid d-block rounded w-100">
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                <button v-if="place.images.length>1" class="carousel-control-prev" type="button" data-bs-target="#placeCarousel"
                     data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                <button v-if="place.images.length>1" class="carousel-control-next" type="button" data-bs-target="#placeCarousel"
                     data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
@@ -49,22 +33,49 @@
         </div>
     </div>
     <div>
-        <div class="clearfix m-3" v-for="(text, i) in place.texts" :key="text.id" :data-i="i" >
-            <img :src="'/img/1.jpeg'" alt="..."
-                class="col-md-4 mb-3 m-md-2 img-fluid img h-25" :class="(i % 2===0)?'float-md-start':'float-md-end'">
-            <p>
-                {{text.body}}
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam doloribus fuga nobis quis molestiae temporibus vel labore possimus quo, ad magni ratione ipsam saepe nemo ea voluptatum, dolorem aspernatur atque!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam doloribus fuga nobis quis molestiae temporibus vel labore possimus quo, ad magni ratione ipsam saepe nemo ea voluptatum, dolorem aspernatur atque!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam doloribus fuga nobis quis molestiae temporibus vel labore possimus quo, ad magni ratione ipsam saepe nemo ea voluptatum, dolorem aspernatur atque!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam doloribus fuga nobis quis molestiae temporibus vel labore possimus quo, ad magni ratione ipsam saepe nemo ea voluptatum, dolorem aspernatur atque!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam doloribus fuga nobis quis molestiae temporibus vel labore possimus quo, ad magni ratione ipsam saepe nemo ea voluptatum, dolorem aspernatur atque!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam doloribus fuga nobis quis molestiae temporibus vel labore possimus quo, ad magni ratione ipsam saepe nemo ea voluptatum, dolorem aspernatur atque!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam doloribus fuga nobis quis molestiae temporibus vel labore possimus quo, ad magni ratione ipsam saepe nemo ea voluptatum, dolorem aspernatur atque!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam doloribus fuga nobis quis molestiae temporibus vel labore possimus quo, ad magni ratione ipsam saepe nemo ea voluptatum, dolorem aspernatur atque!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam doloribus fuga nobis quis molestiae temporibus vel labore possimus quo, ad magni ratione ipsam saepe nemo ea voluptatum, dolorem aspernatur atque!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam doloribus fuga nobis quis molestiae temporibus vel labore possimus quo, ad magni ratione ipsam saepe nemo ea voluptatum, dolorem aspernatur atque!
-            </p>
+        <div class="container g-0" v-for="(text, i) in place.texts" :key="text.id" :data-i="i">
+            <h4 v-if="text.title" class="text-center">{{text.title}}</h4>
+            <div class="clearfix m-3">
+                <!-- <img :src="'/img/1.jpeg'" alt="..."
+                    class="col-md-4 mb-3 m-md-2 img-fluid img h-25" :class="(i % 2===0)?'float-md-start':'float-md-end'"> -->
+                    <div v-if="text.images.length >0" class="col-md-4 mb-3 m-md-2 img-fluid img h-25" :class="(i % 2===0)?'float-md-start':'float-md-end'">
+                        <div :id="'text_image'+text.id" class="carousel slide"  data-bs-ride="carousel" >
+                        <div class="carousel-inner">
+                            <div v-for="imag in text.images" :key="imag.id" class="carousel-item active">
+                                <!-- <img src="..." class="d-block w-100" alt="..."> -->
+                                <img :src="'/storage/texts/'+imag.name"
+                                    class="img-fluid d-block rounded w-100">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" :data-bs-target="'#text_image'+text.id"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" :data-bs-target="'#text_image'+text.id"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+    
+                </div>
+                <div>
+                    <p>
+                        {{text.body}}
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi iure aperiam?
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi iure aperiam?
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi iure aperiam?
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi iure aperiam?
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi iure aperiam?
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi iure aperiam?
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi iure aperiam?
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi iure aperiam?
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi iure aperiam?
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi iure aperiam?
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </template>
