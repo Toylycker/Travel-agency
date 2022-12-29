@@ -1,12 +1,12 @@
 <template>
 
     <Head title="Tours" />
-    <div>
-        <Tour @click="showTour(tour.id)" v-for="(tour, index) in tours.data" :key="tour.id" :tour="tour" :index="index" :data-index="index"/>
+    <div >
+        <Tour @click="showTour(tour.id)" v-for="(tour, index) in tours" :key="tour.id" :tour="tour" :index="index" :data-index="index"/>
+        <!-- <div class="container position-absolute bottom-0 start-25 my-3">
+        </div> -->
+        <!-- <Pagination :links='tours.links'></Pagination> -->
     </div>
-<div class="container position-absolute bottom-0 start-25 my-3">
-    <Pagination :links='tours.links'></Pagination>
-</div>
 
 </template>
 

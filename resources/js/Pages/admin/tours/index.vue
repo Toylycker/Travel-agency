@@ -40,6 +40,9 @@
                 <label for="exampleInputEmail1" class="form-label">body</label>
                 <input class="form-control" type="text" v-model="form.body">
                 <div class="bg-danger rounded mt-2" v-if="form.errors.body">{{ form.errors.body }}</div>
+                <label for="exampleInputEmail1" class="form-label">map</label>
+                <input class="form-control" type="text" v-model="form.map">
+                <div class="bg-danger rounded mt-2" v-if="form.errors.map">{{ form.errors.map }}</div>
                 <label for="exampleInputEmail1" class="form-label">total days</label>
                 <input class="form-control" type="number" v-model="form.total_days">
                 <div class="bg-danger rounded mt-2" v-if="form.errors.total_days">{{ form.errors.total_days }}</div>
@@ -201,6 +204,7 @@ const form = useForm({
   name: null,
   main_image: null,
   body: null,
+  map: null,
   total_days: null,
   prices: null,
   discount_percent: null,

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Application;
 use App\Models\Category;
+use App\Models\Country;
 use App\Models\Day;
 use App\Models\Hotel;
 use App\Models\Location;
@@ -12,8 +14,11 @@ use App\Models\Post;
 use App\Models\ReceivedMessage;
 use App\Models\Subject;
 use App\Models\Tour;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Cache;
 
 class MainFrontController extends Controller
 {
@@ -61,28 +66,33 @@ class MainFrontController extends Controller
 
     public function tours()
     {
-        $tours = Tour::with(['days'=> function($query){
+        $tours = Cache::remember('tours', 3600, function () {
+        return Tour::with(['days'=> function($query){
             $query->withCount('places');
-        }, 'days.places'])->paginate(4);
+        }, 'days.places'])->get();
+        // ->paginate(4); 
+    });
         return Inertia::render('front/Tours', compact('tours'));
     }
 
     public function showtour($id){
         $tour = Tour::findOrFail($id);
-        $tour = Tour::where('id', $id)->with('notes', 'prices', 'images')->first();
+        $tour = Tour::where('id', $id)->with(['notes', 'prices', 'images', 'videos'])->first();
         $days = Day::where('tour_id', $tour->id)->with(['places', 'hotels'])->orderBy('day_number')->get();
-        return Inertia::render('front/ShowTour', ['tour'=>$tour, 'days'=>$days]);
+        $countries = Country::get();
+        $tours = Tour::get(['name', 'id']);
+        return Inertia::render('front/ShowTour', ['tour'=>$tour,'tours'=>$tours, 'days'=>$days, 'countries'=>$countries]);
     }
 
     public function showPost($id)
     {
-        $post = Post::where('id', $id)->with(['texts', 'images'])->first();
+        $post = Post::where('id', $id)->with(['texts', 'images', 'videos'])->first();
         return Inertia::render('front/ShowPost', ['post'=>$post]);
     }
 
     public function showplace($id){
         $place = PLace::findOrFail($id);
-        $place = Place::where('id', $id)->with('texts.images', 'images', 'links')->first();
+        $place = Place::where('id', $id)->with('texts.images', 'images', 'links', 'videos')->first();
         return Inertia::render('front/ShowPlace', ['place'=>$place]);
     }
 
@@ -186,5 +196,37 @@ class MainFrontController extends Controller
 
         return Redirect()->back();
 
+    }
+
+    public function storeApplication(Request $request){
+        $request->validate([
+            'name'=>['required'],
+            'surname'=>['required'],
+            'country_id'=>['required', 'numeric'],
+            'email'=>['required', 'email'],
+            'phone'=>['required', 'numeric'],
+            'tour_id'=>['required', 'numeric'],
+            'quantity'=>['nullable', 'numeric'],
+            'arrival'=>['nullable'],
+            'departure'=>['nullable'],
+            'note'=>['nullable', 'max:300'],
+        ]);
+        $application = Application::create(
+            [
+                'name'=>$request->name,
+                'surname'=>$request->surname,
+                'country_id'=>$request->country_id,
+                'email'=>$request->email,
+                'phone'=>$request->phone,
+                'tour_id'=>$request->tour_id,
+                'quantity'=>$request->quantity,
+                'arrival'=>$request->arrival,
+                'departure'=>$request->departure,
+                'note'=>$request->note,
+                'ip'=>$request->ip()
+
+            ]
+        );
+        return redirect()->back();
     }
 }

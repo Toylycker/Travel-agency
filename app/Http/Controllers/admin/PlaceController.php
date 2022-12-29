@@ -53,6 +53,7 @@ class PlaceController extends Controller
             'name'=>'string|required',
             'location'=>'numeric|required',
             'body'=>'string|required',
+            'map'=>'string|required',
             'viewed'=>'nullable',
             'recommended'=>'nullable',
             'images'=>'array|required',
@@ -64,7 +65,7 @@ class PlaceController extends Controller
 
         $location = Location::findOrFail($request->location);
         $texts = $request->has('texts')?$request->texts:null;
-        $place = Place::create(['name'=>$request->name, 'location_id'=>$location->id, 'body'=>$request->body, 'viewed'=>$request->viewed, 'recommended'=>$request->recommended]);
+        $place = Place::create(['name'=>$request->name, 'location_id'=>$location->id, 'body'=>$request->body, 'map'=>$request->map, 'viewed'=>$request->viewed, 'recommended'=>$request->recommended]);
 
         if ($request->has('images')) {
             foreach ($request->images as $image) {

@@ -70,8 +70,8 @@ class TourFactory extends Factory
             'name'=>$this->faker->sentence(1),
             'body' => $this->faker->paragraph(6),
             'total_days' => $rand,
-            'price' => rand(1000, 2000),
-            'main_image'=>'https://source.unsplash.com/random'
+            'tour_prices' => rand(1000, 2000).'-'.rand(1000, 2000),
+            'main_image'=>''
         ];
     }
 }

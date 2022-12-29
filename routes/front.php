@@ -21,7 +21,7 @@ Route::get('/tours/show/{id}', [MainFrontController::class, 'showtour'])->name('
 Route::get('/places/show/{id}', [MainFrontController::class, 'showplace'])->name('place.show');
 Route::get('/blog/show/{id}', [MainFrontController::class, 'showpost'])->name('blog.show');
 
-
+Route::post('/application/store', [MainFrontController::class, 'storeApplication'])->name('application.store');
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');

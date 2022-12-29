@@ -7,50 +7,53 @@
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <div class="row mt-3" style="">
-            <div class="col-3">
+            <div class="col-lg-3 col-md-4 col-sm-12 order-1">
                 <div class="container">
                     <swiper :effect="'cube'" :grabCursor="true" :cubeEffect="{
-                      shadow: true,
-                      slideShadows: true,
-                      shadowOffset: 20,
-                      shadowScale: 0.94,
+                        shadow: true,
+                        slideShadows: true,
+                        shadowOffset: 20,
+                        shadowScale: 0.94,
                     }" :pagination="true" :modules="modules" class="mySwiper">
                         <swiper-slide v-for="image in tour.images" :key="image.id">
-                            <img :src="'/storage/tours/'+image.name" />
+                            <img :src="'/storage/tours/' + image.name" />
                         </swiper-slide>
                     </swiper>
                 </div>
             </div>
-            <div class="col-9">
-                <n-tabs type="line" trigger="hover">
+            <div class="col-lg-9 col-md-8 col-sm-12 order-2">
+                <n-tabs type="line" trigger="hover" class="container">
                     <n-tab-pane name="oasis" tab="Description">
                         <div class="container h-50 overflow-auto border rounded">
-                            {{tour.body}}
+                            {{ tour.body }}
                         </div>
                         <div class="container h-50 overflow-auto border rounded">
                             <div class="row">
                                 <div class="col-10 border">
                                     <div class="row">
-                                        <div class="col-6 border-bottom rounded-3" v-for="price in tour.prices" :key="price.id">
-                                            <p>{{price.name}}:{{price.price}}$</p>
+                                        <div class="col-6 border-bottom rounded-3" v-for="price in tour.prices"
+                                            :key="price.id">
+                                            <p>{{ price.name }}:{{ price.price }}$</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-2 border">
-                                    <div class="col-12 container-fluid border-bottom h-50 w-100">places:{{total_places}}</div>
-                                    <div class="col-12 container-fluid h-50 w-100">days:{{days.length}}</div>
+                                    <div class="col-12 container-fluid border-bottom h-50 w-100">places:{{ total_places
+                                    }}
+                                    </div>
+                                    <div class="col-12 container-fluid h-50 w-100">days:{{ days.length }}</div>
                                 </div>
                             </div>
                         </div>
                     </n-tab-pane>
                     <n-tab-pane name="includes" tab="includes">
-                        <div v-for="(include, a) in tour.notes" :key=include.id data:a="a">
-                            <h5 v-if="include.pivot.status ==='included'"> {{a+1}}){{include.name}}</h5>
+                        <div v-for="(include) in tour.notes" :key=include.id data:a="a">
+                            <h5 v-if="include.pivot.status === 'included'"> {{ '-' }}{{ include.name }}</h5>
                         </div>
                     </n-tab-pane>
                     <n-tab-pane name="non included" tab="Non included">
-                        <div v-for="(include, i) in tour.notes" :key=include.name data:i="i">
-                            <h5 v-if="include.pivot.status ==='non included'">{{i+1}}) {{include.name}}</h5>
+                        <div v-for="(include) in tour.notes" :key=include.name data:i="i">
+                            <h5 v-if="include.pivot.status === 'non included'">{{ '-' }} {{ include.name }}</h5>
                         </div>
                     </n-tab-pane>
                 </n-tabs>
@@ -65,22 +68,22 @@
                     <n-step v-for="day in days" :key='day.id' title="-day">
                         <div class="row">
                             <div class=" col-6 container border rounded">
-                                {{day.body}}
+                                {{ day.body }}
                             </div>
                             <div class="col-6">
                                 <div class="row">
                                     <div class="col-6 border-top rounded h-100">
                                         <h5 class="border-bottom">Places</h5>
                                         <p v-for="place in day.places" :key="place.id">
-                                            {{place.name}}
+                                            {{ place.name }}
                                         </p>
                                     </div>
-                                    <div class="col-6 border-top rounded h-100">
+                                    <!-- <div class="col-6 border-top rounded h-100">
                                         <h5 class="border-bottom">Hotels</h5>
                                         <p v-for="hotel in day.hotels" :key="hotel.id">
                                             {{hotel.name}}
                                         </p>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -89,32 +92,147 @@
             </div>
         </div>
     </section>
+    <section class="apply container">
+        <n-alert v-if="form.wasSuccessful" title="Successfully applied" type="success" closable>
+            Thanks for choosing us. Our assistant will contact you via email.
+        </n-alert>
+        <n-button type="primary" class="w-100 my-3" @click="showModal = true" dashed>
+            Apply for this Tour
+        </n-button>
+    </section>
+    <n-modal v-model:show="showModal" preset="dialog" title="Please submit your information" negative-text="Cancel">
+        <div class="container">
+            <n-form :label-width="80" :model="form" :rules="rules">
+                <n-form-item label="Name" path="name">
+                    <n-input v-model:value="form.name" placeholder="Input Name" />
+                </n-form-item>
+                <n-form-item label="Surname" path="surname">
+                    <n-input v-model:value="form.surname" placeholder="Input Surname" />
+                </n-form-item>
+                <n-form-item label="Where are you from?" path="country_id">
+                    <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.country_id"
+                        filterable placeholder="Please Select Your Country" :options="countries" />
+                </n-form-item>
+                <n-form-item label="Email" path="email">
+                    <n-auto-complete v-model:value="form.email" :options="CompleteOptions" placeholder="Email" />
+                </n-form-item>
+                <n-form-item label="Phone" path="phone">
+                    <n-input v-model:value="form.phone" placeholder="Phone Number" />
+                </n-form-item>
+                <n-form-item label="Please choose desired tour" path="tour_id">
+                    <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.tour_id" filterable
+                        placeholder="Please choose desired tour" :options="tours" />
+                </n-form-item>
+                <n-form-item label="How many people are in group? Please choose 1 if it is only you." path="quantity">
+                    <n-input-number v-model:value="form.quantity" :min="0" placeholder="How many people?" />
+                </n-form-item>
+                <n-form-item label="Planned time of arrival" path="arrival">
+                    <!-- <n-date-picker value-format="yyyy-MM-dd" v-model:value="form.arrival" type="date" /> -->
+                    <input type="date" class="form-control" v-model="form.arrival">
+                </n-form-item>
+                <n-form-item label="Planned time of departure from Turkmenistan" path="departure">
+                    <!-- <n-date-picker v-model:value="form.departure" type="date" /> -->
+                    <input type="date" class="form-control" v-model="form.departure">
+                </n-form-item>
+                <n-form-item label="Any notes or any questions are highly appreciated" path="note">
+                    <n-input type="textarea" maxlength="300" show-count clearable v-model:value="form.note" />
+                </n-form-item>
+            </n-form>
+            <n-button @click="form.post(route('application.store'), {onSuccess: () => {form.reset();showModal=false;}})"
+                class="w-100" ghost type="success" :disabled="form.processing">
+                Submit
+            </n-button>
+        </div>
+    </n-modal>
 </template>
 <script setup>
-import { NProgress, NSteps, NStep, NTabs, NTabPane } from 'naive-ui';
+import { NProgress, NSteps, NStep, NTabs, NTabPane, NButton, NModal, NForm, NFormItem, NInput, NSelect, NAutoComplete, NInputNumber, NDatePicker, NAlert } from 'naive-ui';
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
-import { ref,computed } from '@vue/runtime-core';
+import { ref, computed } from '@vue/runtime-core';
 import "swiper/css/effect-cube";
 import "swiper/css/pagination";
 import { EffectCube, Pagination } from "swiper";
-const props = defineProps(['tour', 'days']);
-const percentage = ref(20);
+const props = defineProps(['tour', 'days', 'countries', 'tours']);
+const form = useForm({
+    'name': null,
+    'surname': null,
+    'country_id': null,
+    'email': '',
+    'phone': null,
+    'tour_id': props.tour.id,
+    'quantity': null,
+    'arrival': null,
+    'departure': null,
+    'note': null,
+});
+const rules = {
+    'name': {
+        required: true,
+        message: 'Please input your name',
+        trigger: 'blur'
+    },
+    'surname': {
+        required: true,
+        message: 'Please input your name',
+        trigger: 'blur'
+    },
+    'country_id': {
+        type: 'number',
+        required: true,
+        message: 'Please select your country',
+        trigger: ['blur', 'change']
+    },
+    'email': {
+        required: true,
+        message: 'Please input your email',
+        trigger: 'blur'
+    },
+    'phone': {
+        required: true,
+        message: 'Please input your phone number',
+        trigger: ['input']
+    },
+    'tour_id': {
+        type: 'number',
+        required: true,
+        message: 'Please choose your desired tour',
+        trigger: 'blur'
+    },
+};
+
+const showModal = ref(false);
 let modules = [EffectCube, Pagination];
 const currentStatus = ref("process");
 const current = ref(1);
 
 let total = ref(0);
 
-const total_places = computed(()=>{
+const total_places = computed(() => {
     props.days.forEach(day => {
         total.value += day.places.length;
     });
     return total.value;
 });
 
+const CompleteOptions = computed(() => {
+    return ['@gmail.com', '@yandex.ru', '@163.com', '@qq.com'].map((suffix) => {
+        const prefix = form.email.split('@')[0]
+        return {
+            label: prefix + suffix,
+            value: prefix + suffix
+        };
+    });
+});
+
+
 </script>
 <script>
 import FrontLayout from '@/Layouts/frontLayout.vue';
+import { useForm } from '@inertiajs/inertia-vue3';
 export default { layout: FrontLayout }
 </script>
+
+
+<!-- @positive-click="form.post(route('admin.places.store'), {onSuccess: () => form.reset()})"
+@negative-click="cancelCallback" -->

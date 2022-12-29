@@ -23,6 +23,11 @@ class Tour extends Model
         return $this->hasMany(Day::class);
     }
 
+    public function applications()
+    {
+        return $this->hasMany(Applicationay::class);
+    }
+
     public function notes(): BelongsToMany
     {
         return $this->belongsToMany(Note::class, 'note_tours')->withPivot(['status']) ;
@@ -65,6 +70,6 @@ class Tour extends Model
     }
 
     public function non_included() {
-        return $this->notes()->wherePivot('status', 'non_included');
+        return $this->notes()->wherePivot('status', 'non included');
     }
 }

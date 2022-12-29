@@ -10,6 +10,7 @@ class Note extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    // protected $hidden = ['pivot'];
 
     public function tours(): BelongsToMany
     {

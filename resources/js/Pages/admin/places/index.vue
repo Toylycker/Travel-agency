@@ -43,6 +43,12 @@
                                     </div>
                                 </div>
                                 <div class="container border rounded my-1">
+                                    <label for="" class="form-label">map</label>
+                                    <input type="text" class="form-control my-1" v-model="form.map">
+                                    <div class="bg-danger rounded mt-2" v-if="form.errors.map">{{ form.errors.map }}
+                                    </div>
+                                </div>
+                                <div class="container border rounded my-1">
                                     <label for="" class="form-label">viewed</label>
                                     <input type="number" class="form-control my-1" v-model="form.viewed">
                                     <div class="bg-danger rounded mt-2" v-if="form.errors.viewed">{{ form.errors.viewed
@@ -174,6 +180,7 @@ const form = useForm(
         'name': null,
         'location': null,
         'body': null,
+        'map': null,
         'viewed': null,
         'recommended': null,
         'images': [],

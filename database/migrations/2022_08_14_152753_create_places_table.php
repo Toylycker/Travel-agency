@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('places', function (Blueprint $table) {
             $table->id();
+            $table->boolean('active')->default(1);
             $table->unsignedBigInteger('location_id')->index()->nullable();
             $table->foreign('location_id')->references('id')->on('locations')->cascadeOnDelete();
             $table->string('name');

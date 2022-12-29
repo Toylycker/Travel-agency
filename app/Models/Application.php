@@ -10,11 +10,27 @@ class Application extends Model
     use HasFactory;
     protected $guarded = ['id'];
     protected $hidden = ['pivot'];
+    protected $fillable = [
+        'name',
+        'surname',
+        'country_id',
+        'email',
+        'phone',
+        'tour_id',
+        'quantity',
+        'arrival',
+        'departure',
+    ];
+    protected $casts = [
+        'arrival' => 'datetime:Y-m-d',
+        'departure' => 'datetime:Y-m-d',
+    ];
 
-    public function processes(){
+    public function processes()
+    {
         return $this->belongsToMany(Process::class, 'application_processes')
-        ->withTimeStamps()
-        ->withPivot(['status', 'comment']);
+            ->withTimeStamps()
+            ->withPivot(['status', 'comment']);
     }
 
     public function childrens()
@@ -41,8 +57,13 @@ class Application extends Model
         return $this->belongsTo(Country::class);
     }
 
-    public function places()
+    // public function places()
+    // {
+    //     return $this->hasMany(Place::class);
+    // }
+
+    public function tour()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Tour::class);
     }
 }

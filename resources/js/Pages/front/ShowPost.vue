@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid text-center border my-3">
+    <div v-if="post.videos.length>0" class="container-fluid text-center border my-3">
         <h1>Place For Video</h1>
     </div>
     <div class="container h-50 ">

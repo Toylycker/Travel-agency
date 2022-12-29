@@ -15,14 +15,16 @@ return new class extends Migration
     {
         Schema::create('tours', function (Blueprint $table) {
             $table->id();
+            $table->boolean('active')->default(1);
+            $table->integer('sort_order')->nullable();
             $table->string('name');
             $table->string('map')->nullable();
             $table->string('main_image')->nullable();
             $table->text('body');
             $table->integer('total_days');
             // $table->integer('total_nights');
-            $table->string('prices')->default(0);
-            $table->unsignedInteger('discount_percent')->default(0);
+            $table->string('tour_prices')->default(0);
+            $table->unsignedInteger('discount_percent')->default(0)->nullable();
             $table->dateTime('discount_datetime_start')->useCurrent()->nullable();
             $table->dateTime('discount_datetime_end')->useCurrent()->nullable();
             $table->unsignedInteger('viewed')->default(0)->nullable();
