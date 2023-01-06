@@ -23,10 +23,10 @@
           <li class="nav-item">
             <Link class="nav-link" :class="{ 'active': $page.component == 'front/Blog' }" :href="route('blog')">Blog</Link>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <Link class="nav-link" :class="{ 'active': $page.component == 'front/ContactUs' }" :href="route('contact')">
             Contact Us</Link>
-          </li>
+          </li> -->
           <li class="nav-item" v-if="$page.props.auth!=null">
             <Link class="nav-link" :class="{ 'active': $page.component == 'Auth/Logout' }" :href="route('logout')" method="post" as="button">
             logout</Link>

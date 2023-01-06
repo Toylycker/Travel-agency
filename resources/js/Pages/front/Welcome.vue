@@ -21,7 +21,7 @@
                     yet
                     over-run by tourists, Turkmenistan is renowned for its hospitality and rich oriental culture.
                     Experience sleepy desert cities along the Silk Road or relax on the wonderful beaches along the
-                    Caspian Sea. Turkmenistan has it all.
+                    Caspian Sea. Turkmenistan has it all. We emcourage you to go to Tours section and choose desired trip.
                     Let your travel start with us. Along the way, we are at your service.
                   </p>
 
@@ -69,21 +69,12 @@
             <div class="container text-center">
               <div class="row g-0 bg-white rounded">
                 <div class="col-12">
-                  <p class="m-3">The total area of Ahal district is 97.2 km², it is the 19.8% of the full territory
+                  <p class="m-3">The total area of Ahal province is 97.2 km², it is the 19.8% of the full territory
                     of
-                    Turkmenistan. District consists of 9 regions, 5 cities, 12 towns, 104 settlement and villages. There
-                    are live 14.5 percentage of country’s population. From ancient times Ahal district considers as the
-                    land of farming. That is why the district is playing a great role in economy of the country. The
-                    economy of the district has industrial-agrarian characteristics. The biggest part of full production
-                    relates to industry, which has
-                    such branches as gas, electricity, chemicals, construction materials, textile and foodstuﬀs. Ahal
-                    district considers as the rich ground of historical monuments. New Nisa, which is located in Ahal
-                    district, is ancient city located near modern-day Bagir village, 18 km southwest of Ashgabat.
-                    Shahrislam – Takyazyr, located at the 20-22 km northwest of Baharly region. Babagat- Anau, located
-                    in
-                    the west of Anau, at the southeast of Ashgabat. Kufen – Chugundor, located at 25 km north of Artyk
-                    station. Abywerd, located at west of the center of Kaka region. Mehine, located between Sarahs,
-                    ancient and medieval. Durun, medieval, is attains a great attention of travelers. Nowadays an
+                    Turkmenistan. province consists of 9 regions, 5 cities, 12 towns, 104 settlement and villages. There
+                    are live 14.5 percentage of country’s population. From ancient times Ahal province considers as the
+                    land of farming. That is why the province is playing a great role in economy of the country. The
+                    economy of the province has industrial-agrarian characteristics. Nowadays an
                     ancient
                     Ahal is going to the new heights with its Ahalteke horses and ahlateke carpets in Prosperous Epoch
                     of
@@ -106,24 +97,12 @@
             <div class="container text-center">
               <div class="row g-0 bg-white rounded">
                 <div class="col-12">
-                  <p class="m-3">Balkan plays a special role among the districts of the Independent and permanent
+                  <p class="m-3">Balkan plays a special role among the provinces of the Independent and permanent
                     Neutral Turkmenistan. Its geographical position is one of the its main peculiarities. Form ancient
                     times the east part of Caspian sea, named “The sea gate of the Central Asia”, Garabogaz backwater,
                     which has all chemical elements of Mendeleyev periodic table , the most beautiful angles of west
-                    Koytendag, woodbine steppes of Garagum are the district`s special features. The total area of the
-                    district is 139.3 km². It’s the 28.4% of the full territory of Turkmenistan. Thus, Balkan district
-                    is
-                    in the ﬁrst place among the districts of Turkmenistan with its territory. There live 8 parentage
-                    population of the Turkmenistan. It consists of 6 regions, 7 cities, 16 towns, 40 settlements, 136
-                    villages. The administrative centre of Balkan district is city Balkanabat. The nature of Balkan
-                    district is diﬀerent and beautiful. Sumbar oasis plays a special role in its nature. Aydere oasis is
-                    the oasis, which is located at the way to the Sumbar, and has splendid places. It considers as the
-                    most beautiful places if Turkmenistan. The unusual nature of the sea surprises. The length of the
-                    oasis is 30 km. The very low place in the sea level is Aydere small river. In the place of ﬂowing
-                    into
-                    Sumbar river is 600 m, and the very high place in 1360 m. Nowadays Balkan district is seducing not
-                    only with historical places, but with health centers, vocational centers, sea, healthy lakes, which
-                    created in the Prosperous epoch.</p>
+                    Koytendag, woodbine steppes of Garagum are the province`s special features. The total area of the
+                    province is 139.3 km².</p>
                 </div>
 
               </div>
@@ -142,22 +121,8 @@
             <div class="container text-center">
               <div class="row g-0 bg-white rounded">
                 <div class="col-12">
-                  <p class="m-3">Staring to the history of 22 independent years, we can distinguish the issues,
-                    eﬀorts and activities have been done during these years.
-                    During the Independent years, as it was in the other districts, there was joyful eﬀorts and
-                    historical
-                    events in the history of Lebap district. This district is the Motherland of great Turkmen lyric poet
-                    Rehmet Seyidiv. He wrote: “Lip is the bank, and aqua is water, and it is the shore of Amyderya”
-                    (“Leb
-                    ýakadyr, ab-da suw, Amyderýaň boýy bu.”). As we see
-                    in the poem Lebap district located at the bank of Amyderya River. It is the one of the most
-                    developed
-                    industrial and economic areas of our country. Lebap district, which is located at southeast of our
-                    country, in the northeast borders with Republic of Uzbekistan, in the southeast with Islamic
-                    Republic
-                    of Afghanistan, in the southwest with Mary district, and in the northwest borders with Dashoguz
-                    district. The total area of the district is 93.7 km². There live 20% population of our country, and
-                    56.6 % of them live in villages.</p>
+                  <p class="m-3"> Lebap. Cotton cultivation and sericulture (raw-silk production) are practiced along the Amu Darya, and Karakul sheep are bred in the surrounding desert. The large Achak natural gas field in the north is linked to the Central Asia Centre gas pipeline; sulfur is mined at Gaurdak. This province is the Motherland of great Turkmen lyric poet
+                    Rehmet Seyidiv. He wrote: “Lip is the bank, and aqua is water, and it is the shore of Amyderya”.</p>
                 </div>
               </div>
             </div>
@@ -175,16 +140,12 @@
             <div class="container text-center">
               <div class="row g-0 bg-white rounded">
                 <div class="col-12">
-                  <p class="m-3">Dashoguz district is located in the lower left coast of Amyderya river. In the
-                    northwest, north and northeast it borders with Republic of Uzbekistan, in the south with Ahal
-                    district, in the southeast with Lebap and southwest borders with Balkan district. The total area of
-                    district is 73.43 km² and it is the 15.2% of full territory of Turkmenistan. There lives 22% of full
-                    population of Turkmenistan. During the Independent years the district developed with high progress.
-                    They say, there live representatives of 40 nations. In population census of 1995 the 60 percent of
-                    population is Turkmens. In the villages this indicators is above than 68%. Today, the district has
-                    two
-                    cities (Dashoguz, Koneurgench), 9 regions, 8 towns, 140 settlements, 653 villages. The progresses of
-                    the district make happy not only the population of the Dashoguz, but all country, too.</p>
+                  <p class="m-3">Dashoguz province is located in the lower left coast of Amyderya river. In the
+                    northwest, north and northeast it borders with Republic of Uzbekistan, in the south with Akhal
+                    province, in the southeast with Lebap and southwest borders with Balkan province. The total area of
+                    province is 73.43 km² and it is the 15.2% of full territory of Turkmenistan. There lives 22% of full
+                    population of Turkmenistan. During the Independent years the province developed with high progress.
+                    They say, there live representatives of 40 nations.</p>
                 </div>
 
               </div>
@@ -205,20 +166,10 @@
                 <div class="col-12">
                   <p class="m-3">Today Turkmenistan is recognizing as the highly developing country among other
                     countries. These progresses of our shining Motherland tell about endless opportunities of economic
-                    poverty of Turkmenistan. The successes during the 31 years of our Independence are proving it.
-                    During
-                    Independent years Mary district have a great progresses, too. The economy of the district achieved
-                    joyful results. The new production powers started working and provided the people with working
-                    places.
-                    Total area of Mary district is 87.8 m². The population of the Mary district is over 1259.4 people.
-                    District is situated in the south of the country. There are Bathyz hill, west side of Garabil hill,
-                    central part of Garagum desert, and west side of south-east Garagum in the Mary district. District
-                    borders in the northeast with Lebap district, in the west with Ahal district, in the south with
-                    Afghanistan. There are 12 regions: Bayramaly, Wekilbazar, Serhetabat, Yoloten, Mary, Murgap,
-                    Sakarchage, Tagtabazar, Turkmengala, Uguzkhan, Garagum, and Altyn sahra. There are 5 cities in the
-                    district. They are Bayramaly, Yoloten, Mary, Serhetabat ans Shatlyk. Besides these, there are 14
-                    towns
-                    in the Mary district.</p>
+                    poverty of Turkmenistan.
+                    Total area of Mary province is 87.8 m². The population of the Mary province is over 1259.4 people.
+                    province is situated in the south of the country. There are Bathyz hill, west side of Garabil hill,
+                    central part of Garagum desert, and west side of south-east Garagum in the Mary province. </p>
                 </div>
 
               </div>
@@ -455,7 +406,7 @@ section {
 .fifth {
   .bg {
     background-image: $bg-gradient,
-      url('/img/Balkan.png');
+      url('/img/Lebap.jpg');
     // background-position: 50% 45%;
   }
 }
@@ -463,7 +414,7 @@ section {
 .sixth {
   .bg {
     background-image: $bg-gradient,
-      url('/img/Balkan.png');
+      url('/img/Dashoguz.png');
     // background-position: 50% 45%;
   }
 }
@@ -471,7 +422,7 @@ section {
 .seventh {
   .bg {
     background-image: $bg-gradient,
-      url('/img/Balkan.png');
+      url('/img/Mary.png');
     // background-position: 50% 45%;
   }
 }

@@ -10,11 +10,11 @@
             <div class="col-lg-3 col-md-4 col-sm-12 order-1">
                 <div class="container">
                     <swiper :effect="'cube'" :grabCursor="true" :cubeEffect="{
-                        shadow: true,
-                        slideShadows: true,
-                        shadowOffset: 20,
-                        shadowScale: 0.94,
-                    }" :pagination="true" :modules="modules" class="mySwiper">
+    shadow: true,
+    slideShadows: true,
+    shadowOffset: 20,
+    shadowScale: 0.94,
+}" :pagination="true" :modules="modules" class="mySwiper">
                         <swiper-slide v-for="image in tour.images" :key="image.id">
                             <img :src="'/storage/tours/' + image.name" />
                         </swiper-slide>
@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="col-2 border">
                                     <div class="col-12 container-fluid border-bottom h-50 w-100">places:{{ total_places
-                                    }}
+}}
                                     </div>
                                     <div class="col-12 container-fluid h-50 w-100">days:{{ days.length }}</div>
                                 </div>
@@ -75,7 +75,7 @@
                                     <div class="col-6 border-top rounded h-100">
                                         <h5 class="border-bottom">Places</h5>
                                         <p v-for="place in day.places" :key="place.id">
-                                            {{ place.name }}
+                                            <Link :href="route('place.show', place.id)" method="get" as="button">{{ place.name }}</Link>
                                         </p>
                                     </div>
                                     <!-- <div class="col-6 border-top rounded h-100">
@@ -138,10 +138,17 @@
                     <n-input type="textarea" maxlength="300" show-count clearable v-model:value="form.note" />
                 </n-form-item>
             </n-form>
-            <n-button @click="form.post(route('application.store'), {onSuccess: () => {form.reset();showModal=false;}})"
-                class="w-100" ghost type="success" :disabled="form.processing">
+            <n-button
+                @click="form.post(route('application.store'), { onSuccess: () => { form.reset(); showModal = false; } })"
+                class="w-100" ghost type="success" :disabled="form.processing || form.name == null || form.surname == null || form.country_id == null || form.email == null || form.phone == null || form.tour_id == null">
                 Submit
             </n-button>
+            <n-alert class="my-2" v-if="Object.keys($page.props.errors).length != 0" title="Errors" type="error"
+                closable>
+                    <ul>
+                        <li v-for="error in $page.props.errors" :key="error.name">{{ error }}</li>
+                    </ul>
+            </n-alert>
         </div>
     </n-modal>
 </template>
@@ -209,6 +216,7 @@ const current = ref(1);
 let total = ref(0);
 
 const total_places = computed(() => {
+    total.value = 0;
     props.days.forEach(day => {
         total.value += day.places.length;
     });
@@ -228,6 +236,7 @@ const CompleteOptions = computed(() => {
 
 </script>
 <script>
+import { Link } from '@inertiajs/inertia-vue3';
 import FrontLayout from '@/Layouts/frontLayout.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 export default { layout: FrontLayout }
