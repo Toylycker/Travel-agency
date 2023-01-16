@@ -1,13 +1,14 @@
 <template >
+    <h1>{{ tour.name }}</h1>
     <section class="tour">
-        <div class="container rounded mt-3">
+        <div v-if="tour.map !=undefined" class="container rounded mt-3">
             <iframe
-                src="https://www.google.com/maps/embed?pb=!1m52!1m12!1m3!1d3141354.3834198224!2d55.95944150248437!3d39.74574036457553!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m37!3e0!4m5!1s0x3f7002275d506347%3A0xa3a1ece9c2b2f0ff!2sW8GR%2BMHR%20Wedding%20Palace%2C%20Ashgabat%2C%20Turkmenistan!3m2!1d37.926732!2d58.3413888!4m5!1s0x3f700281a6707c9d%3A0x98296aa2668c013c!2sBerkarar%2C%20Ataturk%20Street%2C%20Ashgabat%2C%20Turkmenistan!3m2!1d37.894030699999995!2d58.369871499999995!4m5!1s0x3f62b4f7b4d79731%3A0x1b7a8833c89ceca!2sDarvaza%2C%20Turkmenistan!3m2!1d40.173957099999996!2d58.4169385!4m5!1s0x402c1a2f5c774367%3A0x6a6b0727af24b1e0!2sAwaza%2C%20Turkmenistan!3m2!1d39.9730086!2d52.8511956!4m5!1s0x3f4176d3debc7375%3A0x3e87e3fcbafd3c8a!2sBa%C3%BDramaly%2C%20Turkmenistan!3m2!1d37.6156855!2d62.157134899999996!4m5!1s0x41ddad1280665aad%3A0xbc519b36baa4f375!2zS8O2bmXDvHJnZW5jaCwgVHVya21lbmlzdGFu!3m2!1d42.324218699999996!2d59.1818543!5e0!3m2!1sen!2shk!4v1663967113379!5m2!1sen!2shk"
+                :src='tour.map'
                 width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <div class="row mt-3" style="">
-            <div class="col-lg-3 col-md-4 col-sm-12 order-1">
+            <div v-if="tour.images.length>=1" class="col-lg-3 col-md-4 col-sm-12 order-1">
                 <div class="container">
                     <swiper :effect="'cube'" :grabCursor="true" :cubeEffect="{
     shadow: true,
@@ -29,7 +30,7 @@
                         </div>
                         <div class="container h-50 overflow-auto border rounded">
                             <div class="row">
-                                <div class="col-10 border">
+                                <div class="col-lg-10 col-md-8 col-sm-12 border">
                                     <div class="row">
                                         <div class="col-6 border-bottom rounded-3" v-for="price in tour.prices"
                                             :key="price.id">
@@ -37,9 +38,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-2 border">
-                                    <div class="col-12 container-fluid border-bottom h-50 w-100">places:{{ total_places
-}}
+                                <div class="col-lg-2 col-md-4 col-sm-12 my-3 border">
+                                    <div class="col-12 container-fluid border-bottom h-50 w-100">places:{{ total_places}}
                                     </div>
                                     <div class="col-12 container-fluid h-50 w-100">days:{{ days.length }}</div>
                                 </div>
@@ -104,10 +104,10 @@
         <div class="container">
             <n-form :label-width="80" :model="form" :rules="rules">
                 <n-form-item label="Name" path="name">
-                    <n-input v-model:value="form.name" placeholder="Input Name" />
+                    <n-input v-model:value="form.name" placeholder="Input Name" type="text" :allow-input="onlyLetter" />
                 </n-form-item>
                 <n-form-item label="Surname" path="surname">
-                    <n-input v-model:value="form.surname" placeholder="Input Surname" />
+                    <n-input v-model:value="form.surname" placeholder="Input Surname" type="text" :allow-input="onlyLetter" />
                 </n-form-item>
                 <n-form-item label="Where are you from?" path="country_id">
                     <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.country_id"
@@ -117,7 +117,7 @@
                     <n-auto-complete v-model:value="form.email" :options="CompleteOptions" placeholder="Email" />
                 </n-form-item>
                 <n-form-item label="Phone" path="phone">
-                    <n-input v-model:value="form.phone" placeholder="Phone Number" />
+                    <n-input v-model:value="form.phone" placeholder="Phone Number" :allow-input="onlyAllowNumber" :minlength=7 />
                 </n-form-item>
                 <n-form-item label="Please choose desired tour" path="tour_id">
                     <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.tour_id" filterable
@@ -135,12 +135,12 @@
                     <input type="date" class="form-control" v-model="form.departure">
                 </n-form-item>
                 <n-form-item label="Any notes or any questions are highly appreciated" path="note">
-                    <n-input type="textarea" maxlength="300" show-count clearable v-model:value="form.note" />
+                    <n-input type="textarea" maxlength="300" show-count clearable v-model:value="form.note" placeholder=""/>
                 </n-form-item>
             </n-form>
             <n-button
                 @click="form.post(route('application.store'), { onSuccess: () => { form.reset(); showModal = false; } })"
-                class="w-100" ghost type="success" :disabled="form.processing || form.name == null || form.surname == null || form.country_id == null || form.email == null || form.phone == null || form.tour_id == null">
+                class="w-100" ghost type="success" :disabled="form.processing || form.name == null || form.name == '' || form.surname == null || form.surname == '' || form.country_id == null || form.country_id == '' || form.email == null || form.email == '' || form.phone == null || form.phone == '' || form.tour_id == null">
                 Submit
             </n-button>
             <n-alert class="my-2" v-if="Object.keys($page.props.errors).length != 0" title="Errors" type="error"
@@ -173,6 +173,9 @@ const form = useForm({
     'departure': null,
     'note': null,
 });
+
+let onlyAllowNumber = (value) => !value || /^\d+$/.test(value);
+let onlyLetter = (value) => !value || /^[a-zA-Z]+$/.test(value);
 const rules = {
     'name': {
         required: true,
@@ -198,7 +201,7 @@ const rules = {
     'phone': {
         required: true,
         message: 'Please input your phone number',
-        trigger: ['input']
+        trigger: 'input'
     },
     'tour_id': {
         type: 'number',

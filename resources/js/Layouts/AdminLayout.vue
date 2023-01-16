@@ -74,7 +74,7 @@
           </Link>
         </li>
         <li>
-          <Link href="#" class="nav-link py-3 border-bottom rounded-0" title="Messages" data-bs-toggle="tooltip"
+          <Link :href="route('admin.messages.index')" class="nav-link py-3 border-bottom rounded-0" title="Messages" data-bs-toggle="tooltip"
             data-bs-placement="right">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-envelope"
             viewBox="0 0 16 16">

@@ -4,7 +4,7 @@
         <div class="mb-3">
             <div class="row g-0">
                 <div class="col-lg-3 col-md-4 col-sm-12 order-1 order-md-2">
-                    <n-carousel v-if="place.images.length>=1" keyboard :direction="direction" :dot-placement="direction === 'vertical' ? 'right' : 'bottom'" style="height: 230px" draggable>
+                    <n-carousel v-if="place.images.length>=1" keyboard :direction="direction" :dot-placement="direction === 'vertical' ? 'right' : 'bottom'" class="container h-100 w-100" draggable>
                         <img v-for="image in place.images" :src="'/storage/places/'+image.name" :key="image.id" class="img-fluid rounded-start" alt="...">
                     </n-carousel>
                     <n-carousel v-else keyboard :direction="direction" :dot-placement="direction === 'vertical' ? 'right' : 'bottom'" style="height: 230px" draggable>
@@ -17,7 +17,7 @@
                         <div class="container-fluid" style="height:230px">
                             <h5 class="title text-center">{{ place.name }}</h5>
                             <p class="text">{{ place.body }}</p>
-                            <p class="text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            <!-- <p class="text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
                         </div>
                     </div>
                 </div>

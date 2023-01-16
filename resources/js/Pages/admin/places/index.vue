@@ -37,6 +37,14 @@
                                     form.errors.location }}</div>
                                 </div>
                                 <div class="container border rounded my-1">
+                                    <label for="exampleInputEmail1" class="form-label">categories</label>
+                                    <n-select multiple class="mb-2" label-field="name" value-field="id"
+                                        v-model:value="form.categories" filterable postholder="Please Select categories"
+                                        :options="categories" />
+                                    <div class="bg-danger rounded mt-2" v-if="form.errors.categories">{{
+                                    form.errors.categories }}</div>
+                                </div>
+                                <div class="container border rounded my-1">
                                     <label for="" class="form-label">body</label>
                                     <input type="text" class="form-control my-1" v-model="form.body">
                                     <div class="bg-danger rounded mt-2" v-if="form.errors.body">{{ form.errors.body }}
@@ -131,6 +139,7 @@
                 <th>viewed</th>
                 <th>recommended</th>
                 <th>location</th>
+                <th>categories</th>
                 <th>texts</th>
                 <th>actions</th>
             </tr>
@@ -143,6 +152,13 @@
                 <td>{{place.viewed}}</td>
                 <td>{{place.recommended}}</td>
                 <td>{{place.location.name}}</td>
+                <td>
+                    <div class="overflow-auto container" style="height:200px;">
+                        <div class="container border border-warning my-1" v-for="category in place.categories" :key="category.id">
+                            <h6>{{category.name}}</h6>
+                        </div>
+                    </div>
+                </td>
                 <td>
                     <div class="overflow-auto container" style="height:200px;">
                         <div class="container border border-warning my-1" v-for="text in place.texts" :key="text.id">
@@ -173,12 +189,13 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 import { NTag, NButton, NTable, NDropdown, NSelect } from 'naive-ui'
 import Pagination from '@/Shared/Pagination.vue';
 import { useForm } from '@inertiajs/inertia-vue3'
-const props = defineProps(['places', 'locations']);
+const props = defineProps(['places', 'locations', 'categories']);
 
 const form = useForm(
     {
         'name': null,
         'location': null,
+        'categories': null,
         'body': null,
         'map': null,
         'viewed': null,

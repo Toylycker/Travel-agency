@@ -33,14 +33,6 @@ class TourFactory extends Factory
                 'priceable_type'=>'App\Models\Tour']);
             }
 
-            $randForImage = rand(2, 3);
-            for ($i=0; $i <= $randForImage; $i++) { 
-                Image::create([
-                 'name'=>'https://source.unsplash.com/random', 
-                 'imageable_id'=>$tour->id,
-                 'imageable_type'=>'App\Models\Tour']);
-            }
-
 
             $days = rand(3, 9);
             for ($i=1; $i < $days; $i++) { 

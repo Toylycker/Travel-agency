@@ -28,7 +28,7 @@
                                     </div>
                                 </div>
                                 <div class="container border rounded my-1">
-                                    <label for="" class="form-label">nstarsame</label>
+                                    <label for="" class="form-label">stars</label>
                                     <input type="number" class="form-control my-1" v-model="form.stars">
                                     <div class="bg-danger rounded mt-2" v-if="form.errors.stars">{{ form.errors.stars }}
                                     </div>
@@ -193,6 +193,7 @@ const props = defineProps(['hotels', 'locations']);
 const form = useForm(
     {
         'name': null,
+        'stars': null,
         'main_image': null,
         'body': null,
         'viewed': null,

@@ -51,7 +51,7 @@ class HotelController extends Controller
             'stars'=>'numeric|required',
             'location'=>'numeric|required',
             'body'=>'string|required',
-            'viewed'=>'nullable',
+            'viewed'=>'required|numeric',
             'recommended'=>'nullable',
             'main_image'=>'image|required',
             'images'=>'array|required',

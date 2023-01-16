@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Note;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,5 +19,11 @@ class NoteSeeder extends Seeder
         'Camping tents with sleeping bags', 'Guide', 'Comfortable transport',
         'Meal (FB) during the all route', 'Entrance fee', 'All transfer', 'Daily 1.5lt water',
         'Fee for using cameras in monuments', 'Insurance', 'Visa fee', 'Migration tax' ];
+
+        foreach ($notes as $note) {
+            Note::create([
+                'name' => $note,
+            ]);
+        }
     }
 }

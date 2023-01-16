@@ -1,5 +1,5 @@
 <template>
-  <Nav />
+  <Nav class='sticky-top' />
   <div class="container-fluid min-vh-100">
     <div :class="{ 'container-xxl g-0':$page.component != 'front/Welcome'?true:false}">
       <slot></slot>

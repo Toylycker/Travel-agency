@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
             SubjectSeeder::class,
             CurrencySeeder::class,
             ProcessSeeder::class,
+            NoteSeeder::class,
         ]);
-        \App\Models\Note::factory(15)->create();
         \App\Models\Hotel::factory(10)->create();
         \App\Models\Place::factory(50)->create();
         \App\Models\Post::factory(20)->create();

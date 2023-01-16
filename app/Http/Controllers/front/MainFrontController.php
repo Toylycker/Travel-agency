@@ -86,7 +86,7 @@ class MainFrontController extends Controller
 
     public function showPost($id)
     {
-        $post = Post::where('id', $id)->with(['texts', 'images', 'videos'])->first();
+        $post = Post::where('id', $id)->with(['texts.images', 'images', 'videos'])->first();
         return Inertia::render('front/ShowPost', ['post'=>$post]);
     }
 
@@ -200,11 +200,11 @@ class MainFrontController extends Controller
 
     public function storeApplication(Request $request){
         $request->validate([
-            'name'=>['required'],
-            'surname'=>['required'],
+            'name'=>['required', 'String'],
+            'surname'=>['required', 'String'],
             'country_id'=>['required', 'numeric'],
             'email'=>['required', 'email'],
-            'phone'=>['required', 'numeric'],
+            'phone'=>['required', 'numeric', 'min:8'],
             'tour_id'=>['required', 'numeric'],
             'quantity'=>['nullable', 'numeric'],
             'arrival'=>['nullable'],

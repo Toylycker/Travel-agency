@@ -14,17 +14,21 @@ use App\Models\Price;
 use App\Models\Tour;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class TourController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
+
+    public function __construct()
+    {
+        Cache::forget('tours');
+    }
+
+
     public function index()
     {
         $tours = Tour::with(['days' => function ($query) {
@@ -59,7 +63,7 @@ class TourController extends Controller
                 'name' => 'string|required',
                 'main_image' => 'image|required',
                 'body' => 'string|required',
-                'map' => 'string|required',
+                'map' => 'string|nullable',
                 'total_days' => 'numeric|required',
                 'prices' => 'string|required',
                 'discount_percent' => 'numeric|nullable',
@@ -124,8 +128,13 @@ class TourController extends Controller
             $newDay->body = $day['body'];
             $newDay->tour_id = $tour->id;
             $newDay->save();
-            $newDay->places()->attach($day['places']);
-            $newDay->hotels()->attach($day['hotels']);
+            if (collect($day['places'])->count()>=1) {
+                $newDay->places()->attach($day['places']);
+            }
+            if (collect($day['hotels'])->count()>=1) {
+
+                $newDay->hotels()->attach($day['hotels']);
+            }
         }
 
         if ($request->has('images')) {
@@ -340,8 +349,13 @@ class TourController extends Controller
             $newDay->body = $day['body'];
             $newDay->tour_id = $tour->id;
             $newDay->save();
-            $newDay->places()->attach($day['places']);
-            $newDay->hotels()->attach($day['hotels']);
+            if (collect($day['places'])->count()>=1) {
+                $newDay->places()->attach($day['places']);
+            }
+            if (collect($day['hotels'])->count()>=1) {
+
+                $newDay->hotels()->attach($day['hotels']);
+            }
         }
 
         return redirect()->back();

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('active')->default(1);
             $table->integer('sort_order')->nullable();
             $table->string('name');
-            $table->string('map')->nullable();
+            $table->text('map')->nullable();
             $table->string('main_image')->nullable();
             $table->text('body');
             $table->integer('total_days');

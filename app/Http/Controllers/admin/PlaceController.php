@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Support\Str;
 use App\Models\Location;
@@ -25,9 +26,10 @@ class PlaceController extends Controller
     {
         $places = Place::with(['texts'=>function($query){
             $query->orderBy('id');
-        } , 'images', 'location'])->orderBy('id')->paginate(15)->withQueryString();
+        } , 'images', 'location', 'categories'])->orderBy('id')->paginate(15)->withQueryString();
         $locations = Location::all('name', 'id');
-        return Inertia::render('admin/Places/index', ['places'=>$places, 'locations'=>$locations]);
+        $categories = Category::all('name', 'id');
+        return Inertia::render('admin/Places/index', ['places'=>$places, 'locations'=>$locations, 'categories'=>$categories]);
 
     }
 
@@ -52,8 +54,10 @@ class PlaceController extends Controller
         $request->validate([
             'name'=>'string|required',
             'location'=>'numeric|required',
+            'categories'=>'array|required',
+            'categories.*'=>'numeric|required',
             'body'=>'string|required',
-            'map'=>'string|required',
+            'map'=>'string|nullable',
             'viewed'=>'nullable',
             'recommended'=>'nullable',
             'images'=>'array|required',
@@ -61,11 +65,16 @@ class PlaceController extends Controller
             'texts'=>'array',
         ]);
 
+
+
         // dd($request->texts[0]['images'][0]);
 
         $location = Location::findOrFail($request->location);
+        $categories = Category::wherein('id', $request->categories);
         $texts = $request->has('texts')?$request->texts:null;
         $place = Place::create(['name'=>$request->name, 'location_id'=>$location->id, 'body'=>$request->body, 'map'=>$request->map, 'viewed'=>$request->viewed, 'recommended'=>$request->recommended]);
+
+        $place->categories()->attach($categories->pluck('id'));
 
         if ($request->has('images')) {
             foreach ($request->images as $image) {
@@ -80,19 +89,22 @@ class PlaceController extends Controller
             }
         }
 
-        foreach ($texts as  $text) {
-            $newText = Text::create(['title'=>$text['title'], 'text_number'=>$text['text_number'],'body'=>$text['body'], 'textable_id'=>$place->id, 'textable_type'=>'App\Models\Place' ]);
-            foreach ($text['images'] as $image) {
-                $newImage = $image;
-                $resized = Gallery::make($newImage)
-                // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
-                ->fit(1280, 1024)
-                ->encode('jpg',100);
-                $newImageName = Str::random(10) . '-' . $newText->id . '.' . $newImage->getClientOriginalExtension();
-                Storage::put('public/texts/'. $newImageName, (string) $resized);
-                Image::create(['name'=>$newImageName, 'imageable_id'=>$newText->id, 'imageable_type'=>'App\Models\Text' ]);
+        if ($texts) {
+            foreach ($texts as  $text) {
+                $newText = Text::create(['title'=>$text['title'], 'text_number'=>$text['text_number'],'body'=>$text['body'], 'textable_id'=>$place->id, 'textable_type'=>'App\Models\Place' ]);
+                foreach ($text['images'] as $image) {
+                    $newImage = $image;
+                    $resized = Gallery::make($newImage)
+                    // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
+                    ->fit(1280, 1024)
+                    ->encode('jpg',100);
+                    $newImageName = Str::random(10) . '-' . $newText->id . '.' . $newImage->getClientOriginalExtension();
+                    Storage::put('public/texts/'. $newImageName, (string) $resized);
+                    Image::create(['name'=>$newImageName, 'imageable_id'=>$newText->id, 'imageable_type'=>'App\Models\Text' ]);
+                }
             }
         }
+
 
         return Redirect()->back();
     }

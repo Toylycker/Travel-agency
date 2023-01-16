@@ -3,7 +3,7 @@
         <h1>PLace For Video</h1>
     </div>
     <div class="row">
-        <div class="col-6">
+        <div :class="place.map!=undefined?'col-6':'col-12'">
             <div id="placeCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div v-for="image in place.images" :key="image.id" class="carousel-item active">
@@ -23,9 +23,9 @@
                 </button>
             </div>
         </div>
-        <div class="col-6">
+        <div v-if="place.map !=undefined" class="col-6">
             <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d198.3203106185617!2d58.403554929153735!3d37.92136351864352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f6ffd96267b8f65%3A0x42c6912c159dd4b8!2sMini%20market!5e0!3m2!1sen!2s!4v1664365622460!5m2!1sen!2s"
+                :src='place.map'
                 width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
 
@@ -62,36 +62,6 @@
                 <div>
                     <p>
                         {{ text.body }}
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate
-                        iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi
-                        iure aperiam?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate
-                        iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi
-                        iure aperiam?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate
-                        iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi
-                        iure aperiam?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate
-                        iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi
-                        iure aperiam?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate
-                        iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi
-                        iure aperiam?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate
-                        iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi
-                        iure aperiam?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate
-                        iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi
-                        iure aperiam?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate
-                        iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi
-                        iure aperiam?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate
-                        iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi
-                        iure aperiam?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo enim quibusdam quo ad, voluptate
-                        iste quam totam ipsum repellendus maiores molestiae sit deserunt corporis accusamus in et animi
-                        iure aperiam?
                     </p>
                 </div>
             </div>
