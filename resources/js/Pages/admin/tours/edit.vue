@@ -259,23 +259,8 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 import { NTag, NButton, NTable, NDropdown, NSelect, NCheckbox } from 'naive-ui'
 import Pagination from '@/Shared/Pagination.vue';
 import { useForm } from '@inertiajs/inertia-vue3'
-computed
-const props = defineProps(['tour', 'places', 'hotels', 'notes', 'days', 'included', 'non_included']);
-let includedNotes = computed(() => {
-  let collector = [];
-  props.tour.included.forEach(element => {
-    collector.push(element.id);
-  });
-  return collector;
-})
 
-let nonincludedNotes = computed(() => {
-  let collector = [];
-  props.tour.non_included.forEach(element => {
-    collector.push(element.id);
-  });
-  return collector;
-})
+const props = defineProps(['tour', 'places', 'hotels', 'notes', 'days', 'included', 'non_included']);
 
 const formname = useForm({ name: props.tour.name });
 const formmain_image = useForm({ main_image: null });
