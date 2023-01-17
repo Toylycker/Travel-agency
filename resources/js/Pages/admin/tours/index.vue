@@ -180,9 +180,9 @@
         <td>{{tour.viewed}}</td>
         <td>{{tour.recommended}}</td>
         <td>
-          <Link @click="this.$inertia.delete(route('admin.tours.destroy', tour.id))" as="button"
+          <Link @click="$inertia.delete(route('admin.tours.destroy', tour.id))" as="button"
             class="btn btn-danger btn-sm w-100 my-2">Delete</Link>
-            <Link @click="this.$inertia.get(route('admin.tours.edit', tour.id))" as="button"
+            <Link @click="$inertia.get(route('admin.tours.edit', tour.id))" as="button"
             class="btn btn-warning btn-sm w-100 my-2">Edit</Link>
         </td>
       </tr>

@@ -173,7 +173,7 @@
                 {{hotel.total_days}}</n-dropdown>
             </td> -->
                 <td>
-                    <Link @click="this.$inertia.delete(route('admin.hotels.destroy', hotel.id))" as="button"
+                    <Link @click="$inertia.delete(route('admin.hotels.destroy', hotel.id))" as="button"
                         class="btn btn-danger btn-sm w-100 my-2">Delete</Link>
                 </td>
             </tr>

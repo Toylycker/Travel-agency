@@ -7,7 +7,7 @@
     <div v-if="show">
         <transition-group class="row justify-content-center my-3" tag="div" :appear="true"
             @before-enter="beforeEnter" @enter="enter">
-                <PostForBlogVue @click="this.$inertia.get(route('blog.show', post.id))" v-for="(post, i) in posts.data" :key="post.id" :data-i="i" :post="post" />
+                <PostForBlogVue @click="$inertia.get(route('blog.show', post.id))" v-for="(post, i) in posts.data" :key="post.id" :data-i="i" :post="post" />
         </transition-group>
 
         <div class="my-3">

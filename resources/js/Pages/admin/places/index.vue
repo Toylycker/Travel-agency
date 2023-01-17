@@ -172,9 +172,9 @@
             {{place.total_days}}</n-dropdown>
         </td> -->
                 <td>
-                    <Link @click="this.$inertia.delete(route('admin.places.destroy', place.id))" as="button"
+                    <Link @click="$inertia.delete(route('admin.places.destroy', place.id))" as="button"
                         class="btn btn-danger btn-sm w-100 my-2">Delete</Link>
-                    <Link @click="this.$inertia.delete(route('admin.places.destroy', place.id))" as="button"
+                    <Link @click="$inertia.delete(route('admin.places.destroy', place.id))" as="button"
                         class="btn btn-success w-100 btn-sm">Edit</Link>
                 </td>
             </tr>

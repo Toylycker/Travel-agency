@@ -35,7 +35,7 @@
                 <td>{{application.note}}</td>
                 <td>{{application.ip}}</td>
                 <td>
-                    <!-- <Link @click="this.$inertia.delete(route('admin.applications.destroy', application.id))" as="button"
+                    <!-- <Link @click="$inertia.delete(route('admin.applications.destroy', application.id))" as="button"
                         class="btn btn-danger btn-sm w-100 my-2">Delete</Link> -->
                 </td>
             </tr>
