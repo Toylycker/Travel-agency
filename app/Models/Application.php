@@ -26,7 +26,7 @@ class Application extends Model
         'arrival' => 'datetime:Y-m-d',
         'departure' => 'datetime:Y-m-d',
     ];
-
+//Comment
     public function processes()
     {
         return $this->belongsToMany(Process::class, 'application_processes')
