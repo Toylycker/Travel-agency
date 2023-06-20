@@ -33,7 +33,7 @@
     </div>
     <div>
         <div class="container g-0" v-for="(text, i) in place.texts" :key="text.id" :data-i="i">
-            <h4 v-if="text.title" class="text-center">{{ text.title }}</h4>
+            <h3 v-if="text.title" class="text-center bold">{{ text.title }}</h3>
             <div class="clearfix m-3">
                 <!-- <img :src="'/img/1.jpeg'" alt="..."
                     class="col-md-4 mb-3 m-md-2 img-fluid img h-25" :class="(i % 2===0)?'float-md-start':'float-md-end'"> -->
@@ -60,9 +60,9 @@
 
                 </div>
                 <div>
-                    <p>
+                    <h5>
                         {{ text.body }}
-                    </p>
+                    </h5>
                 </div>
             </div>
         </div>

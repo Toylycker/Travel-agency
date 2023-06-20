@@ -132,7 +132,7 @@
                 </n-form-item>
                 <n-form-item label="Planned time of departure from Turkmenistan" path="departure">
                     <!-- <n-date-picker v-model:value="form.departure" type="date" /> -->
-                    <input type="date" class="form-control" v-model="form.departure">
+                    <input type="date" class="form-control" v-model="form.departure" >
                 </n-form-item>
                 <n-form-item label="Any notes or any questions are highly appreciated" path="note">
                     <n-input type="textarea" maxlength="300" show-count clearable v-model:value="form.note" placeholder=""/>

@@ -4,9 +4,9 @@
         :style="{backgroundImage:`url(${'img/tour_background.png'})`}"
         style="background-size: contain;background-position: center;  background-repeat: no-repeat;" id="tour">
         <div class="d-md-flex  mb-3">
-            <transition :appear="true" name="left">
+            <transition class="order-md-0 order-sm-2" :appear="true" name="left">
                 <div @mouseover="getleft($event)" @mouseleave="leaveCursor($event)" id="left"
-                    class="col-md-6 col-lg-4 mr-3 bg-white shadow rounded-3 overflow-auto" :class="'float'"
+                    class="col-md-6 col-lg-4 mr-3  shadow rounded-3 overflow-hidden" :class="'float'"
                     style="border-bottom-left-radius: 20px; height: 170px;text-align: left;">
                     <div class="mx-1">
                         <n-button class="my-2 w-100" style="text-align: center;" type="primary" dashed ghost>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </transition>
-            <transition :appear="true" name="center">
+            <transition class="order-md-1 order-sm-0" :appear="true" name="center">
                 <div @mouseover="getcenter()" @mouseleave="leaveCursor($event)"
                     class="col-md-6 col-lg-4 mx-3 bg-white shadow rounded-3" id="center" style="height: 170px; ">
                     <!-- <iframe
@@ -50,9 +50,9 @@
                     </n-image>
                 </div>
             </transition>
-            <transition :appear="true" name="right">
+            <transition class="order-md-2 order-sm-3" :appear="true" name="right">
                 <div @mouseover="getright($event)" @mouseleave="leaveCursor($event)" id="right"
-                    class="col-4 ml-3 bg-white shadow overflow-auto rounded-3 d-none d-md-block" :class="'float'"
+                    class="col-4 ml-3 bg-white shadow overflow-hidden rounded-3 d-none d-md-block" :class="'float'"
                     style="border-top-right-radius: 20px;height: 170px;">
                     <p class="m-3">{{ tour.body }}</p>
                 </div>

@@ -33,17 +33,17 @@ onMounted(() => {
             // floating containers
             // const can = Inertia.page.component=='front/Tours'?'.float'+props.index:null;
             const can = '.float';
-            const randomX = random(10, 20);//props.index % 2 === 0 ? random(10, 20) : random(15, 25);
-            const randomY = random(5, 10);//props.index % 2 === 0 ? random(5, 10) : random(2, 6);
+            const randomX = random(3, 6);//props.index % 2 === 0 ? random(10, 20) : random(15, 25);
+            // const randomY = random(0);//props.index % 2 === 0 ? random(5, 10) : random(2, 6);
             const randomDelay = random(0, 1);
             const randomTime = 1;
             const randomTime2 = 1;
-            const randomAngle = random(5, 2);
+            const randomAngle = random(1, 5);
     
                 // call functions 
                 moveX(can, 1);
-                moveY(can, -1);
-                rotate(can, 1);
+                // moveY(can, -1);
+                // rotate(can, 1);
                 // end call function 
     
             gsap.set(can, {
@@ -58,7 +58,7 @@ onMounted(() => {
                         duration: randomTime2,
                         rotation: randomAngle(direction),
                         // delay: randomDelay(),
-                        ease: "slow(0.7, 0.7, false)",
+                        ease: "slow(0.1, 0.1, false)",
                         onComplete: rotate,
                         onCompleteParams: [target, direction * -1]
                     });
@@ -70,7 +70,7 @@ onMounted(() => {
                     gsap.to(target, {
                         duration: randomTime,
                         x: randomX(direction),
-                        ease: "slow(0.7, 0.7, false)",
+                        ease: "slow(0.1, 0.1, false)",
                         onComplete: moveX,
                         onCompleteParams: [target, direction * -1]
                     });
@@ -81,8 +81,8 @@ onMounted(() => {
                 if (target) {
                     gsap.to(target, {
                         duration: randomTime,
-                        y: randomY(direction),
-                        ease: "slow(0.7, 0.7, false)",
+                        // y: randomY(direction),
+                        ease: "slow(0.1, 0.1, false)",
                         onComplete: moveY,
                         onCompleteParams: [target, direction * -1]
                     });

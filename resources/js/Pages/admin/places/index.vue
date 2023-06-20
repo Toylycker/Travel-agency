@@ -174,7 +174,7 @@
                 <td>
                     <Link @click="$inertia.delete(route('admin.places.destroy', place.id))" as="button"
                         class="btn btn-danger btn-sm w-100 my-2">Delete</Link>
-                    <Link @click="$inertia.delete(route('admin.places.destroy', place.id))" as="button"
+                    <Link @click="$inertia.get(route('admin.places.edit', place.id))" as="button"
                         class="btn btn-success w-100 btn-sm">Edit</Link>
                 </td>
             </tr>
@@ -188,7 +188,7 @@
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import { NTag, NButton, NTable, NDropdown, NSelect } from 'naive-ui'
 import Pagination from '@/Shared/Pagination.vue';
-import { useForm } from '@inertiajs/inertia-vue3'
+import { useForm } from '@inertiajs/inertia-vue3';
 const props = defineProps(['places', 'locations', 'categories']);
 
 const form = useForm(

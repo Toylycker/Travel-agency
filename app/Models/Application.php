@@ -20,6 +20,7 @@ class Application extends Model
         'quantity',
         'arrival',
         'departure',
+        'note'
     ];
     protected $casts = [
         'arrival' => 'datetime:Y-m-d',

@@ -128,7 +128,14 @@ class PlaceController extends Controller
      */
     public function edit(Place $place)
     {
-        //
+        $locations = Location::all('name', 'id');
+        $categories = Category::all('name', 'id');
+        return Inertia::render('admin/Places/edit',
+        ['place'=>$place->load('images', 'texts.images', 'categories'), 
+        'placeCategories'=>$place->categories->pluck('id'),
+        'locations'=>$locations,
+        'categories'=>$categories
+    ]);
     }
 
     /**
@@ -140,7 +147,40 @@ class PlaceController extends Controller
      */
     public function update(Request $request, Place $place)
     {
-        //
+        
+        $request->validate([
+            'name'=>'string|required',
+            'location_id'=>'numeric|required',
+            'categories'=>'array|required',
+            'categories.*'=>'numeric|required',
+            'body'=>'string|required',
+            'map'=>'string|nullable',
+            'viewed'=>'nullable',
+            'recommended'=>'nullable',
+            'images'=>'array|nullable',
+            'images.*'=>'Image|nullable',
+        ]);
+
+        $location = Location::findOrFail($request->location_id);
+        $categories = Category::wherein('id', $request->categories);
+        $place->update(['name'=>$request->name, 'location_id'=>$location->id, 'body'=>$request->body, 'map'=>$request->map, 'viewed'=>$request->viewed, 'recommended'=>$request->recommended=='true'?1:0]);
+
+        $place->categories()->sync($categories->pluck('id'));
+
+        if ($request->hasFile('images')) {
+            foreach ($request->images as $image) {
+                $newImage = $image;
+                $resized = Gallery::make($newImage)
+                // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
+                ->fit(1280, 1024)
+                ->encode('jpg',100);
+                $newImageName = Str::random(10) . '-' . $place->id . '.' . $newImage->getClientOriginalExtension();
+                Storage::put('public/places/'. $newImageName, (string) $resized);
+                Image::create(['name'=>$newImageName, 'imageable_id'=>$place->id, 'imageable_type'=>'App\Models\Place' ]);
+            }
+        }
+
+        return redirect()->back();
     }
 
     /**

@@ -211,6 +211,7 @@ class MainFrontController extends Controller
             'departure'=>['nullable'],
             'note'=>['nullable', 'max:300'],
         ]);
+
         $application = Application::create(
             [
                 'name'=>$request->name,
@@ -224,7 +225,6 @@ class MainFrontController extends Controller
                 'departure'=>$request->departure,
                 'note'=>$request->note,
                 'ip'=>$request->ip()
-
             ]
         );
         return redirect()->back();
