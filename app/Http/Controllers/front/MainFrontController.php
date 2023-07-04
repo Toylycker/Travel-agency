@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Country;
 use App\Models\Day;
 use App\Models\Hotel;
+use App\Models\Image;
 use App\Models\Location;
 use App\Models\Place;
 use App\Models\Post;
@@ -15,6 +16,7 @@ use App\Models\ReceivedMessage;
 use App\Models\Subject;
 use App\Models\Tour;
 use Carbon\Carbon;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redis;
@@ -50,7 +52,7 @@ class MainFrontController extends Controller
         })
         ->when($search, function ($query, $search){
             $query->where('name', 'like', '%' . $search . '%');
-        })->with('images', 'texts')->paginate( 10, ['id', 'name', 'body'])->withQueryString();
+        })->with(['images'])->paginate( 10, ['id', 'name', 'body'])->withQueryString();
         return Inertia::render('front/Places', [
             'places'=> $places,
             'title' => 'The Best PLace In The World',
@@ -81,7 +83,7 @@ class MainFrontController extends Controller
         $days = Day::where('tour_id', $tour->id)->with(['places', 'hotels'])->orderBy('day_number')->get();
         $countries = Country::get();
         $tours = Tour::get(['name', 'id']);
-        return Inertia::render('front/ShowTour', ['tour'=>$tour,'tours'=>$tours, 'days'=>$days, 'countries'=>$countries]);
+        return Inertia::render('front/ShowTour', ['tour'=>$tour,'tours'=>$tours, 'days'=>$days, 'countries'=>$countries, 'images'=>Image::get()]);
     }
 
     public function showPost($id)
@@ -92,9 +94,12 @@ class MainFrontController extends Controller
 
     public function showplace($id){
         $place = PLace::findOrFail($id);
-        $place = Place::where('id', $id)->with('texts.images', 'images', 'links', 'videos')->first();
+        $place = Place::where('id', $id)->with(['texts'=>function(Builder $query){
+            $query->orderBy('text_number', 'asc')->with('images');
+        }, 'images', 'links', 'videos'])->first();
         return Inertia::render('front/ShowPlace', ['place'=>$place]);
     }
+
 
     public function blog(Request $request)
     {

@@ -22,10 +22,10 @@
             <Link class="nav-link" :class="{ 'active': $page.component == 'front/Tours' }" :href="route('tours')"
               tabindex="-1" aria-disabled="true">Tours</Link>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <Link class="nav-link" :class="{ 'active': $page.component == 'front/Blog' }" :href="route('blog')">Blog
             </Link>
-          </li>
+          </li> -->
           <li class="nav-item">
             <Link class="nav-link" :class="{ 'active': $page.component == 'front/ContactUs' }" :href="route('contact')">
             Contact Us</Link>
@@ -36,7 +36,7 @@
             logout</Link>
           </li>
         </ul>
-        Listen some TKM songs to feel the vibe
+        Feel TKM vibe with songs
         <div class="d-flex ml-1">
           <button @click="changeSong">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" fill="currentColor" class="bi bi-skip-forward 1"
@@ -57,12 +57,14 @@ import { Link } from '@inertiajs/inertia-vue3';
 import { ref } from '@vue/runtime-core';
 
 
-const song = ref('/songs/elyanna.mp3');
+const song = ref('/songs/Hajy Yazmammedow - Watanym | 2023.mp3');
 const changeSong = ()=>{
-  if (song.value == '/songs/elyanna.mp3') {
-    song.value = '/songs/frozen.mp3';
-  }else if(song.value == '/songs/frozen.mp3'){
-    song.value = '/songs/elyanna.mp3';
+  if (song.value == '/songs/Hajy Yazmammedow - Watanym | 2023.mp3') {
+    song.value = '/songs/Mähri Pirgulyýewa - Watan ( Türkmenistan ) | Gopuz FM.mp3';
+  }else if(song.value == '/songs/Mähri Pirgulyýewa - Watan ( Türkmenistan ) | Gopuz FM.mp3'){
+    song.value = '/songs/Türkmenistan,Mahri Allakowa.mp3';
+  }else if(song.value == '/songs/Türkmenistan,Mahri Allakowa.mp3'){
+    song.value = '/songs/Hajy Yazmammedow - Watanym | 2023.mp3'
   }
   }
 </script>

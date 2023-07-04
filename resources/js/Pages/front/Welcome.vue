@@ -318,7 +318,7 @@ h2 {
   text-align: center;
   letter-spacing: 0.5em;
   margin-right: -0.5em;
-  color: hsl(0, 0, 80%);
+  color: white;
   width: 90vw;
   max-width: 1200px;
 }

@@ -16,16 +16,17 @@ return new class extends Migration
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
             $table->string('name', 30);
+            $table->string('name_cn', 30)->nullable();
             $table->string('surname', 30);
             $table->string('email', 30);
             $table->string('phone');
             $table->integer('quantity')->nullable();
             $table->date('arrival')->nullable();
             $table->date('departure')->nullable();
-            $table->unsignedBigInteger('tour_id');
-            $table->foreign('tour_id')->references('id')->on('tours');
-            $table->unsignedBigInteger('country_id');
-            $table->foreign('country_id')->references('id')->on('countries');
+            $table->unsignedBigInteger('tour_id')->nullable();
+            $table->foreign('tour_id')->references('id')->on('tours')->nullOnDelete();
+            $table->unsignedBigInteger('country_id')->nullable();
+            $table->foreign('country_id')->references('id')->on('countries')->nullOnDelete();
             $table->string('ip')->nullable();
             $table->text('note')->nullable();
             $table->timestamps();

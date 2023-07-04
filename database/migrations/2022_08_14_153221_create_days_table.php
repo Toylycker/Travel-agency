@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('day_number');
             $table->string('title', 100);
             $table->text('body');
+            $table->text('body_cn')->nullable();
             $table->unsignedBigInteger('tour_id');
             $table->foreign('tour_id')->references('id')->on('tours')->cascadeOnDelete();
 

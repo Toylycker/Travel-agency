@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->text('text')->nullable();
+            $table->text('text_cn')->nullable();
             $table->unsignedBigInteger('commentable_id');
             $table->string('commentable_type');
             $table->index(['commentable_id', 'commentable_type']);

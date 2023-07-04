@@ -1,6 +1,7 @@
 <template >
-    <form action="" method="post"
-        @submit.prevent="form.put(route('admin.places.update', place.id), { })">
+    <h5>{{ form }}</h5>
+    <form action=""
+        @submit.prevent="form.post(route('admin.places.update.this', place.id), {_method:'put'})">
         <div class="container border rounded my-1">
             <label for="" class="form-label">name</label>
             <input type="text" class="form-control my-1" v-model="form.name">

@@ -20,6 +20,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                            <span>{{ form.errors }}</span>
                             <form action="" method="post"
                                 @submit.prevent="form.post(route('admin.places.store'), {onSuccess: () => form.reset()})">
                                 <div class="container border rounded my-1">
@@ -46,7 +47,7 @@
                                 </div>
                                 <div class="container border rounded my-1">
                                     <label for="" class="form-label">body</label>
-                                    <input type="text" class="form-control my-1" v-model="form.body">
+                                    <textarea type="text" class="form-control my-1" v-model="form.body"></textarea>
                                     <div class="bg-danger rounded mt-2" v-if="form.errors.body">{{ form.errors.body }}
                                     </div>
                                 </div>
@@ -96,7 +97,7 @@
                                         <input type="text" class="form-control my-2" v-model="form.texts[index].title">
 
                                         <label for="" class="form-label">body</label>
-                                        <input type="text" class="form-control my-2" v-model="form.texts[index].body">
+                                        <textarea type="text" class="form-control my-2" v-model="form.texts[index].body"></textarea>
 
                                         <div class="container border border-success my-1 rounded mt-2">
                                             <label for="exampleInputEmail1" class="form-label">images for text</label>
@@ -174,8 +175,8 @@
                 <td>
                     <Link @click="$inertia.delete(route('admin.places.destroy', place.id))" as="button"
                         class="btn btn-danger btn-sm w-100 my-2">Delete</Link>
-                    <Link @click="$inertia.get(route('admin.places.edit', place.id))" as="button"
-                        class="btn btn-success w-100 btn-sm">Edit</Link>
+                    <button @click="$inertia.get(route('admin.places.edit', place.id))" as="button"
+                        class="btn btn-success w-100 btn-sm">Edit</button>
                 </td>
             </tr>
         </tbody>

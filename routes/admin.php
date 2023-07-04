@@ -31,6 +31,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/texts/destroy/{text:textable_id}', [TextController::class, 'destroy'])->name('texts.destroy');
     Route::post('/texts/create', [TextController::class, 'store'])->name('texts.store');
 
+    Route::post('/places/update/{place}', [PlaceController::class, 'update'])->name('places.update.this');
     Route::resources([
     'places'=> PlaceController::class,
     'tours'=> TourController::class,

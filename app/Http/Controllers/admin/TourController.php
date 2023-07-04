@@ -80,7 +80,6 @@ class TourController extends Controller
             ]
         );
 
-
         $tour = Tour::create([
             'name' => $request->name,
             'main_image' => 'null',
@@ -131,10 +130,10 @@ class TourController extends Controller
             if (collect($day['places'])->count()>=1) {
                 $newDay->places()->attach($day['places']);
             }
-            if (collect($day['hotels'])->count()>=1) {
+            // if (collect($day['hotels'])->count()>=1) {
 
-                $newDay->hotels()->attach($day['hotels']);
-            }
+            //     $newDay->hotels()->attach($day['hotels']);
+            // }
         }
 
         if ($request->has('images')) {

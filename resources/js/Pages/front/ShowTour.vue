@@ -1,36 +1,33 @@
 <template >
-    <h1>{{ tour.name }}</h1>
     <section class="tour">
-        <div v-if="tour.map !=undefined" class="container rounded mt-3">
-            <iframe
-                :src='tour.map'
-                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+        <div v-if="tour.map != undefined" class="container rounded mt-3">
+            <iframe :src='tour.map' width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <div class="row mt-3" style="">
-            <div v-if="tour.images.length>=1" class="col-lg-3 col-md-4 col-sm-12 order-1">
+            <div v-if="tour.images.length >= 1" class="col-lg-3 col-md-4 col-sm-12 order-1">
                 <div class="container">
                     <swiper :effect="'cube'" :grabCursor="true" :cubeEffect="{
-    shadow: true,
-    slideShadows: true,
-    shadowOffset: 20,
-    shadowScale: 0.94,
-}" :pagination="true" :modules="modules" class="mySwiper">
+                        shadow: true,
+                        slideShadows: true,
+                        shadowOffset: 20,
+                        shadowScale: 0.94,
+                    }" :pagination="true" :modules="modules" class="mySwiper">
                         <swiper-slide v-for="image in tour.images" :key="image.id">
                             <img :src="'/storage/tours/' + image.name" />
                         </swiper-slide>
                     </swiper>
                 </div>
             </div>
-            <div class="col-lg-9 col-md-8 col-sm-12 order-2">
+            <div :class="tour.images.length >= 1?'col-lg-9 col-md-8':'col-lg-12 col-md-12'" class="col-sm-12 order-2">
                 <n-tabs type="line" trigger="hover" class="container">
                     <n-tab-pane name="oasis" tab="Description">
-                        <div class="container h-50 overflow-auto border rounded">
+                        <div class="container h-50 overflow-auto border rounded mb-1">
                             {{ tour.body }}
                         </div>
                         <div class="container h-50 overflow-auto border rounded">
-                            <div class="row">
-                                <div class="col-lg-10 col-md-8 col-sm-12 border">
+                            <div class="row m-1">
+                                <div class="col-lg-10 col-md-8 col-sm-12 ">
                                     <div class="row">
                                         <div class="col-6 border-bottom rounded-3" v-for="price in tour.prices"
                                             :key="price.id">
@@ -38,8 +35,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-2 col-md-4 col-sm-12 my-3 border">
-                                    <div class="col-12 container-fluid border-bottom h-50 w-100">places:{{ total_places}}
+                                <div class="col-lg-2 col-md-4 col-sm-12 my-3 border-start">
+                                    <div class="col-12 container-fluid border-bottom h-50 w-100">places:{{ total_places }}
                                     </div>
                                     <div class="col-12 container-fluid h-50 w-100">days:{{ days.length }}</div>
                                 </div>
@@ -56,6 +53,13 @@
                             <h5 v-if="include.pivot.status === 'non included'">{{ '-' }} {{ include.name }}</h5>
                         </div>
                     </n-tab-pane>
+                    <n-tab-pane name="What should i know" tab="What should i know">
+                        <span>All travelers to Turkmenistan should hold transit or tourist visa. For getting that, traveler should have invitaion letter from the authorized travel agency and we would love to be honored to provide you with it. Preparation of invitation letter takes no longer than 2 weeks. With invitation letter you can apply for visa in Turkmenistan embassy in your country or get it upon irrival in borders or in airport in Turkmenistan. Along the way, we are on your service.</span>
+                        <br>
+                        <span>Most stable and relieble currency for travelers would be USD in cash.</span>
+                        <br>
+                        <span>In case you want to visit Turkmenistan in summer, traveler should take a necessery precautions before going out in afternoon since summer in Turkmenistan is very hot sometimes reaching 45°C. Travelers are encouraged to have a doctor's prescription with them in case of any emergency.</span>
+                    </n-tab-pane>
                 </n-tabs>
             </div>
         </div>
@@ -67,15 +71,16 @@
                 <n-steps vertical v-model:current="current" :status="currentStatus" class="overflow m-3">
                     <n-step v-for="day in days" :key='day.id' title="-day">
                         <div class="row">
-                            <div class=" col-6 container border rounded">
+                            <div class=" container border rounded" :class="day.places.length > 0 ? 'col-6' : 'col-10'">
                                 {{ day.body }}
                             </div>
-                            <div class="col-6">
+                            <div v-if="day.places.length > 0" class="col-6">
                                 <div class="row">
                                     <div class="col-6 border-top rounded h-100">
                                         <h5 class="border-bottom">Places</h5>
                                         <p v-for="place in day.places" :key="place.id">
-                                            <Link :href="route('place.show', place.id)" method="get" as="button">{{ place.name }}</Link>
+                                            <Link :href="route('place.show', place.id)" method="get" as="button">{{
+                                                place.name }}</Link>
                                         </p>
                                     </div>
                                     <!-- <div class="col-6 border-top rounded h-100">
@@ -107,17 +112,19 @@
                     <n-input v-model:value="form.name" placeholder="Input Name" type="text" :allow-input="onlyLetter" />
                 </n-form-item>
                 <n-form-item label="Surname" path="surname">
-                    <n-input v-model:value="form.surname" placeholder="Input Surname" type="text" :allow-input="onlyLetter" />
+                    <n-input v-model:value="form.surname" placeholder="Input Surname" type="text"
+                        :allow-input="onlyLetter" />
                 </n-form-item>
                 <n-form-item label="Where are you from?" path="country_id">
-                    <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.country_id"
-                        filterable placeholder="Please Select Your Country" :options="countries" />
+                    <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.country_id" filterable
+                        placeholder="Please Select Your Country" :options="countries" />
                 </n-form-item>
                 <n-form-item label="Email" path="email">
                     <n-auto-complete v-model:value="form.email" :options="CompleteOptions" placeholder="Email" />
                 </n-form-item>
                 <n-form-item label="Phone" path="phone">
-                    <n-input v-model:value="form.phone" placeholder="Phone Number" :allow-input="onlyAllowNumber" :minlength=7 />
+                    <n-input v-model:value="form.phone" placeholder="Phone Number" :allow-input="onlyAllowNumber"
+                        :minlength=7 />
                 </n-form-item>
                 <n-form-item label="Please choose desired tour" path="tour_id">
                     <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.tour_id" filterable
@@ -132,22 +139,23 @@
                 </n-form-item>
                 <n-form-item label="Planned time of departure from Turkmenistan" path="departure">
                     <!-- <n-date-picker v-model:value="form.departure" type="date" /> -->
-                    <input type="date" class="form-control" v-model="form.departure" >
+                    <input type="date" class="form-control" v-model="form.departure">
                 </n-form-item>
                 <n-form-item label="Any notes or any questions are highly appreciated" path="note">
-                    <n-input type="textarea" maxlength="300" show-count clearable v-model:value="form.note" placeholder=""/>
+                    <n-input type="textarea" maxlength="300" show-count clearable v-model:value="form.note"
+                        placeholder="" />
                 </n-form-item>
             </n-form>
             <n-button
                 @click="form.post(route('application.store'), { onSuccess: () => { form.reset(); showModal = false; } })"
-                class="w-100" ghost type="success" :disabled="form.processing || form.name == null || form.name == '' || form.surname == null || form.surname == '' || form.country_id == null || form.country_id == '' || form.email == null || form.email == '' || form.phone == null || form.phone == '' || form.tour_id == null">
+                class="w-100" ghost type="success"
+                :disabled="form.processing || form.name == null || form.name == '' || form.surname == null || form.surname == '' || form.country_id == null || form.country_id == '' || form.email == null || form.email == '' || form.phone == null || form.phone == '' || form.tour_id == null">
                 Submit
             </n-button>
-            <n-alert class="my-2" v-if="Object.keys($page.props.errors).length != 0" title="Errors" type="error"
-                closable>
-                    <ul>
-                        <li v-for="error in $page.props.errors" :key="error.name">{{ error }}</li>
-                    </ul>
+            <n-alert class="my-2" v-if="Object.keys($page.props.errors).length != 0" title="Errors" type="error" closable>
+                <ul>
+                    <li v-for="error in $page.props.errors" :key="error.name">{{ error }}</li>
+                </ul>
             </n-alert>
         </div>
     </n-modal>
@@ -160,7 +168,7 @@ import { ref, computed } from '@vue/runtime-core';
 import "swiper/css/effect-cube";
 import "swiper/css/pagination";
 import { EffectCube, Pagination } from "swiper";
-const props = defineProps(['tour', 'days', 'countries', 'tours']);
+const props = defineProps(['tour', 'days', 'countries', 'tours', 'images']);
 const form = useForm({
     'name': null,
     'surname': null,

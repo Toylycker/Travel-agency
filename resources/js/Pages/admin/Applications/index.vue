@@ -13,7 +13,7 @@
                 <th>email</th>
                 <th>phone</th>
                 <th>country</th>
-                <th>tour</th>
+                <!-- <th>tour</th> -->
                 <th>arrival</th>
                 <th>departure</th>
                 <th>note</th>
@@ -29,14 +29,12 @@
                 <td>{{application.email}}</td>
                 <td>{{application.phone}}</td>
                 <td>{{application.country.name}}</td>
-                <td>{{application.tour.name}}</td>
+                <td>{{application.tour?application.tour.name:'no tour'}}</td>
                 <td>{{application.arrival}}</td>
                 <td>{{application.departure}}</td>
                 <td>{{application.note}}</td>
                 <td>{{application.ip}}</td>
                 <td>
-                    <!-- <Link @click="$inertia.delete(route('admin.applications.destroy', application.id))" as="button"
-                        class="btn btn-danger btn-sm w-100 my-2">Delete</Link> -->
                 </td>
             </tr>
         </tbody>

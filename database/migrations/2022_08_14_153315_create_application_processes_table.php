@@ -20,7 +20,9 @@ return new class extends Migration
             $table->unsignedBigInteger('process_id')->index();
             $table->foreign('process_id')->references('id')->on('processes')->cascadeOnDelete();
             $table->string('status', 100);
+            $table->string('status_cn', 100)->nullable();
             $table->text('comment')->nullable();
+            $table->text('comment_cn')->nullable();
             $table->timestamps();
         });
     }

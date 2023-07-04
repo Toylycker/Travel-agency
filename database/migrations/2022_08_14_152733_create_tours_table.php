@@ -18,9 +18,11 @@ return new class extends Migration
             $table->boolean('active')->default(1);
             $table->integer('sort_order')->nullable();
             $table->string('name');
+            $table->String('name_cn')->nullable();
             $table->text('map')->nullable();
             $table->string('main_image')->nullable();
             $table->text('body');
+            $table->text('body_cn')->nullable();
             $table->integer('total_days');
             // $table->integer('total_nights');
             $table->string('tour_prices')->default(0);

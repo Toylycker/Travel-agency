@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('name_cn')->nullable();
             $table->text('body')->nullable();
+            $table->text('body_cn')->nullable();
             $table->integer('room_quan')->default(1);
             $table->unsignedBigInteger('hotel_id')->index();
             $table->foreign('hotel_id')->references('id')->on('hotels')->cascadeOnDelete();

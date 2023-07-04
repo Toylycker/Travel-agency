@@ -66,14 +66,12 @@ class PlaceController extends Controller
         ]);
 
 
-
         // dd($request->texts[0]['images'][0]);
 
         $location = Location::findOrFail($request->location);
         $categories = Category::wherein('id', $request->categories);
         $texts = $request->has('texts')?$request->texts:null;
         $place = Place::create(['name'=>$request->name, 'location_id'=>$location->id, 'body'=>$request->body, 'map'=>$request->map, 'viewed'=>$request->viewed, 'recommended'=>$request->recommended]);
-
         $place->categories()->attach($categories->pluck('id'));
 
         if ($request->has('images')) {
@@ -92,18 +90,22 @@ class PlaceController extends Controller
         if ($texts) {
             foreach ($texts as  $text) {
                 $newText = Text::create(['title'=>$text['title'], 'text_number'=>$text['text_number'],'body'=>$text['body'], 'textable_id'=>$place->id, 'textable_type'=>'App\Models\Place' ]);
-                foreach ($text['images'] as $image) {
-                    $newImage = $image;
-                    $resized = Gallery::make($newImage)
-                    // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
-                    ->fit(1280, 1024)
-                    ->encode('jpg',100);
-                    $newImageName = Str::random(10) . '-' . $newText->id . '.' . $newImage->getClientOriginalExtension();
-                    Storage::put('public/texts/'. $newImageName, (string) $resized);
-                    Image::create(['name'=>$newImageName, 'imageable_id'=>$newText->id, 'imageable_type'=>'App\Models\Text' ]);
+                if (array_key_exists('images', $text)) {
+                    foreach ($text['images'] as $image) {
+                        $newImage = $image;
+                        $resized = Gallery::make($newImage)
+                        // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
+                        ->fit(1280, 1024)
+                        ->encode('jpg',100);
+                        $newImageName = Str::random(10) . '-' . $newText->id . '.' . $newImage->getClientOriginalExtension();
+                        Storage::put('public/texts/'. $newImageName, (string) $resized);
+                        Image::create(['name'=>$newImageName, 'imageable_id'=>$newText->id, 'imageable_type'=>'App\Models\Text' ]);
+                    }
                 }
             }
         }
+
+        return $place;
 
 
         return Redirect()->back();
@@ -147,7 +149,6 @@ class PlaceController extends Controller
      */
     public function update(Request $request, Place $place)
     {
-        
         $request->validate([
             'name'=>'string|required',
             'location_id'=>'numeric|required',
@@ -191,7 +192,10 @@ class PlaceController extends Controller
      */
     public function destroy(Place $place)
     {
+        $place->texts()->delete();
+        $place->images()->delete();
         $place->delete();
+
 
         return Redirect()->back();
     }

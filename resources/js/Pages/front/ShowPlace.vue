@@ -59,7 +59,7 @@
                     </div>
 
                 </div>
-                <div>
+                <div >
                     <h5>
                         {{ text.body }}
                     </h5>

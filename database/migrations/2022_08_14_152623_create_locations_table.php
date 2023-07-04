@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
             $table->String('name');
+            $table->String('name_cn')->nullable();
             $table->unsignedBigInteger('location_id')->index()->nullable();
-            $table->foreign('location_id')->references('id')->on('locations')->cascadeOnDelete();
+            $table->foreign('location_id')->references('id')->on('locations')->nullOnDelete();
         });
     }
 
