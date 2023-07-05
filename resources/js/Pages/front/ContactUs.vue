@@ -1,8 +1,8 @@
 <template>
     <Head title="Contact Us" />
-    <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="container-fluid d-flex justify-content-center align-items-center h-100 w-100" >
         <div class="row w-100">
-            <n-page-header class="col-lg-6 col-sm-12 col-md-12 d-flex justify-content-center align-items-center order-2 order-md-1">
+            <n-page-header class="col-lg-6 col-sm-12 col-md-12 d-flex justify-content-center align-items-center">
                 <n-grid :cols="2">
                     <n-gi class="m-3">
                         <n-statistic label="Instagram" />
@@ -102,7 +102,7 @@
                     </n-gi>
                 </n-grid>
             </n-page-header>
-            <div class="col-lg-6 col-sm-12 col-md-12 order-1 order-md-2">
+            <div class="col-lg-6 col-sm-12 col-md-12">
                 <div class="card border border-0" style="margin-top: 25px;">
                     <div class="tk-blob w-85" style="--time: 20s; --amount: 5; --fill: #56cbb9;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 747.2 726.7">

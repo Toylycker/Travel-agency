@@ -397,7 +397,7 @@ section {
 .fourth {
   .bg {
     background-image: $bg-gradient,
-      url('/img/Balkan.png');
+      url('/img/Balkan.jpg');
   }
 }
 
@@ -412,7 +412,7 @@ section {
 .sixth {
   .bg {
     background-image: $bg-gradient,
-      url('/img/Dashoguz.png');
+      url('/img/Dashoguz.jpg');
     // background-position: 50% 45%;
   }
 }

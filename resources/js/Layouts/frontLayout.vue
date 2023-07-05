@@ -1,7 +1,7 @@
 <template>
   <Nav class='sticky-top' />
   <div class="container-fluid min-vh-100">
-    <div :class="{ 'container-xxl g-0':$page.component != 'front/Welcome'?true:false}">
+    <div :class="{ 'container-xxl g-0':$page.component != 'front/Welcome'&&$page.component != 'front/ContactUs'?true:false}">
       <slot></slot>
     </div>
   </div>

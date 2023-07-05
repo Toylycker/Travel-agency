@@ -105,8 +105,6 @@ class PlaceController extends Controller
             }
         }
 
-        return $place;
-
 
         return Redirect()->back();
     }

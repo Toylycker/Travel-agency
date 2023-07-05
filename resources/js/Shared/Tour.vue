@@ -103,6 +103,10 @@ const total_places_count = computed(() => {
     return total_places;
 })
 
+onBeforeUnmount(() => {
+    gsap.globalTimeline.resume();
+});
+
 </script>
 <style>
 /* enter start */
