@@ -36,18 +36,27 @@
             logout</Link>
           </li>
         </ul>
-        Feel TKM vibe with songs
+        Feel TKM vibe with songs {{ counter }}/3
         <div class="d-flex ml-1">
           <button @click="changeSong">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" fill="currentColor" class="bi bi-skip-forward 1"
-              viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" fill="currentColor"
+              class="bi bi-skip-forward 1" viewBox="0 0 16 16">
               <path
                 d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5zM1 4.633v6.734L6.804 8 1 4.633zm7.5 0v6.734L14.304 8 8.5 4.633z" />
             </svg>
           </button>
-          <audio v-if="song==song1" class="rounded-3 bg-white" controls :src="song1"></audio>
-          <audio v-if="song==song2" class="rounded-3 bg-white" controls :src="song2"></audio>
-          <audio v-if="song==song3" class="rounded-3 bg-white" controls :src="song3"></audio>
+          <div v-show="song === song1">
+
+            <audio id="player1" class="rounded-3 bg-white" controls :src="song1"></audio>
+          </div>
+          <div v-show="song === song2">
+
+            <audio id="player2" class="rounded-3 bg-white" controls :src="song2"></audio>
+          </div>
+          <div v-show="song === song3">
+
+            <audio id="player3" class="rounded-3 bg-white" controls :src="song3"></audio>
+          </div>
         </div>
       </div>
     </div>
@@ -62,13 +71,27 @@ const song = ref('/songs/Hajy Yazmammedow - Watanym | 2023.mp3');
 const song1 = ref('/songs/Hajy Yazmammedow - Watanym | 2023.mp3');
 const song2 = ref('/songs/Mähri Pirgulyýewa - Watan ( Türkmenistan ) | Gopuz FM.mp3');
 const song3 = ref('/songs/Türkmenistan,Mahri Allakowa.mp3');
-const changeSong = ()=>{
+let counter = ref(1);
+const changeSong = () => {
+  // it should be exactly inside of function because so that ui first built then button clicked and then document actually can find id otherwise need to do it thoruh  ref and initialize players with 0(boring)
+  const player1 = document.getElementById('player1');
+  const player2 = document.getElementById('player2');
+  const player3 = document.getElementById('player3');
   if (song.value == '/songs/Hajy Yazmammedow - Watanym | 2023.mp3') {
+    player1.pause();
     song.value = '/songs/Mähri Pirgulyýewa - Watan ( Türkmenistan ) | Gopuz FM.mp3';
-  }else if(song.value == '/songs/Mähri Pirgulyýewa - Watan ( Türkmenistan ) | Gopuz FM.mp3'){
+    player2.play()
+    counter.value = 2
+  } else if (song.value == '/songs/Mähri Pirgulyýewa - Watan ( Türkmenistan ) | Gopuz FM.mp3') {
+    player2.pause();
     song.value = '/songs/Türkmenistan,Mahri Allakowa.mp3';
-  }else if(song.value == '/songs/Türkmenistan,Mahri Allakowa.mp3'){
+    player3.play();
+    counter.value = 3
+  } else if (song.value == '/songs/Türkmenistan,Mahri Allakowa.mp3') {
+    player3.pause();
     song.value = '/songs/Hajy Yazmammedow - Watanym | 2023.mp3'
+    player1.play();
+    counter.value = 1
   }
-  }
+}
 </script>
