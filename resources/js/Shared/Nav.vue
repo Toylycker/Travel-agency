@@ -67,29 +67,29 @@
 import { Link } from '@inertiajs/inertia-vue3';
 import { ref } from '@vue/runtime-core';
 
-const song = ref('/songs/Hajy Yazmammedow - Watanym | 2023.mp3');
-const song1 = ref('/songs/Hajy Yazmammedow - Watanym | 2023.mp3');
-const song2 = ref('/songs/Mähri Pirgulyýewa - Watan ( Türkmenistan ) | Gopuz FM.mp3');
-const song3 = ref('/songs/Türkmenistan,Mahri Allakowa.mp3');
+const song = ref('/songs/1.mp3');
+const song1 = ref('/songs/1.mp3');
+const song2 = ref('/songs/2.mp3');
+const song3 = ref('/songs/3.mp3');
 let counter = ref(1);
 const changeSong = () => {
   // it should be exactly inside of function because so that ui first built then button clicked and then document actually can find id otherwise need to do it thoruh  ref and initialize players with 0(boring)
   const player1 = document.getElementById('player1');
   const player2 = document.getElementById('player2');
   const player3 = document.getElementById('player3');
-  if (song.value == '/songs/Hajy Yazmammedow - Watanym | 2023.mp3') {
+  if (song.value == '/songs/1.mp3') {
     player1.pause();
-    song.value = '/songs/Mähri Pirgulyýewa - Watan ( Türkmenistan ) | Gopuz FM.mp3';
+    song.value = '/songs/2.mp3';
     player2.play()
     counter.value = 2
-  } else if (song.value == '/songs/Mähri Pirgulyýewa - Watan ( Türkmenistan ) | Gopuz FM.mp3') {
+  } else if (song.value == '/songs/2.mp3') {
     player2.pause();
-    song.value = '/songs/Türkmenistan,Mahri Allakowa.mp3';
+    song.value = '/songs/3.mp3';
     player3.play();
     counter.value = 3
-  } else if (song.value == '/songs/Türkmenistan,Mahri Allakowa.mp3') {
+  } else if (song.value == '/songs/3.mp3') {
     player3.pause();
-    song.value = '/songs/Hajy Yazmammedow - Watanym | 2023.mp3'
+    song.value = '/songs/1.mp3'
     player1.play();
     counter.value = 1
   }

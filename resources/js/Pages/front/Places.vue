@@ -37,7 +37,7 @@
         </transition-group>
 
         <!-- Paginator  -->
-        <Pagination :links='places.links' />
+                <Pagination :links='places.links' />
     </div>
 
     <div v-else class="text-center">
