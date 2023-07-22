@@ -166,7 +166,7 @@
                     <p class="m-3">Today Turkmenistan is recognizing as the highly developing country among other
                       countries. These progresses of our shining Motherland tell about endless opportunities of economic
                       poverty of Turkmenistan.
-                      Total area of Mary province is 87.8 m². The population of the Mary province is over 1259.4 people.
+                      Total area of Mary province is 87.8 m².
                       province is situated in the south of the country. There are Bathyz hill, west side of Garabil hill,
                       central part of Garagum desert, and west side of south-east Garagum in the Mary province. </p>
                   </div>

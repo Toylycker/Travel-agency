@@ -39,25 +39,9 @@
                     class="col-md-4 mb-3 m-md-2 img-fluid img h-25" :class="(i % 2===0)?'float-md-start':'float-md-end'"> -->
                 <div v-if="text.images.length > 0" class="col-md-4 mb-3 m-md-2 img-fluid img h-25"
                     :class="(i % 2 === 0) ? 'float-md-start' : 'float-md-end'">
-                    <div :id="'text_image' + text.id" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <div v-for="imag in text.images" :key="imag.id" class="carousel-item active">
-                                <!-- <img src="..." class="d-block w-100" alt="..."> -->
-                                <img :src="'/storage/texts/' + imag.name" class="img-fluid d-block rounded w-100">
-                            </div>
-                        </div>
-                        <button class="carousel-control-prev" type="button" :data-bs-target="'#text_image' + text.id"
-                            data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" :data-bs-target="'#text_image' + text.id"
-                            data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
-
+                    <n-carousel v-if="place.images.length>=1" :direction="direction" :dot-placement="direction === 'vertical' ? 'right' : 'bottom'"  :draggable="place.images.length>=2?true:false" show-arrow>
+                        <img v-for="imag in text.images" :key="imag.id" :src="'/storage/texts/'+imag.name" class="img-fluid rounded-start" >
+                    </n-carousel>
                 </div>
                 <div >
                     <h5>
@@ -78,5 +62,6 @@ const props = defineProps(['place']);
 </script>
 <script>
 import FrontLayout from '@/Layouts/frontLayout.vue';
+import { NCarousel } from 'naive-ui';
 export default { layout: FrontLayout }
 </script>

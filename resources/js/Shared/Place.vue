@@ -4,7 +4,7 @@
         <div class="mb-3">
             <div class="row g-0">
                 <div class="col-lg-3 col-md-4 col-sm-12 order-1 order-md-2">
-                    <n-carousel v-if="place.images.length>=1" :direction="direction" :dot-placement="direction === 'vertical' ? 'right' : 'bottom'" style="height:230px"  draggable>
+                    <n-carousel v-if="place.images.length>=1" :direction="direction" :dot-placement="direction === 'vertical' ? 'right' : 'bottom'" style="height:230px"  :draggable="place.images.length>=2?true:false">
                         <img v-for="image in place.images" :src="'/storage/places/'+image.name" :key="image.id" class="img-fluid rounded-start" >
                     </n-carousel>
                     <n-carousel v-else keyboard :direction="direction" :dot-placement="direction === 'vertical' ? 'right' : 'bottom'" style="height: 230px" draggable>
