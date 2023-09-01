@@ -67,28 +67,22 @@
     <br>
     <section class="days">
         <div class="container mt-3">
-            <div class="overflow-auto">
+            <div class="overflow-auto p-3">
                 <n-steps vertical v-model:current="current" :status="currentStatus" class="overflow m-3">
                     <n-step v-for="day in days" :key='day.id' title="-day">
-                        <div class="row">
-                            <div class=" container border rounded" :class="day.places.length > 0 ? 'col-6' : 'col-10'">
+                        <div class="">
+                            <div class=" container border border-success rounded">
                                 {{ day.body }}
                             </div>
-                            <div v-if="day.places.length > 0" class="col-6">
-                                <div class="row">
-                                    <div class="col-6 border-top rounded h-100">
+                            <div v-if="day.places.length > 0">
+                                <div>
+                                    <div class=" border-start border-success rounded">
                                         <h5 class="border-bottom">Places</h5>
-                                        <p v-for="place in day.places" :key="place.id">
+                                        <p v-for="(place, index) in day.places" :key="place.id">
                                             <Link :href="route('place.show', place.id)" method="get" as="button">{{
-                                                place.name }}</Link>
+                                               index+1 + ')'+' '+ place.name }}</Link>
                                         </p>
                                     </div>
-                                    <!-- <div class="col-6 border-top rounded h-100">
-                                        <h5 class="border-bottom">Hotels</h5>
-                                        <p v-for="hotel in day.hotels" :key="hotel.id">
-                                            {{hotel.name}}
-                                        </p>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
