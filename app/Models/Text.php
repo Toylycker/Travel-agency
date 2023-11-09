@@ -10,12 +10,6 @@ class Text extends Model
     use HasFactory;
     protected $guarded = ['id'];
     public $timestamps = false;
-    protected $fillable = [
-        'title', 'body',
-        'text_number',
-        'textable_id',
-        'textable_type',
-    ];
 
 
     public function textable()

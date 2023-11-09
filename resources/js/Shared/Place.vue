@@ -15,8 +15,8 @@
                 <div class="col-lg-9 col-md-8 col-sm-12 order-2 order-md-1">
                     <div class="body overflow-hidden rounded-3">
                         <div class="container-fluid" style="height:230px">
-                            <h3 class="title text-center">{{ place.name }}</h3>
-                            <h5 class="text">{{ place.body }}</h5>
+                            <h3 class="title text-center">{{ $langName(place)}}</h3>
+                            <h5 class="text">{{ $langBody(place) }}</h5>
                             <!-- <p class="text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
                         </div>
                     </div>
@@ -31,8 +31,8 @@
                 <div class="col-lg-9 col-md-8 col-sm-12 order-2">
                     <div class="body overflow-hidden rounded-3">
                         <div class="container-fluid" style="height:230px">
-                            <h3 class="title text-center">{{ place.name }}</h3>
-                            <h5 class="text overflow-hidden">{{ place.body }}
+                            <h3 class="title text-center">{{ $langName(place)}}</h3>
+                            <h5 class="text overflow-hidden">{{ $langBody(place) }}
                             </h5>
                             <!-- <p class="text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
                         </div>

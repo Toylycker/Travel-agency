@@ -1,27 +1,20 @@
 <template>
-    <Head title="Welcome" />
+    <Head :title="$t('Welcome')" />
     <header>
-      <div class="text-white">Welcome to sunny Turkmenistan</div>
-      <div><a class="text-wt" href="https://jahankeshde.ru" >Enjoy travelling with us</a></div>
+      <div class="text-white">{{$t('WelcomeToSunnyTurkmenistan')}}</div>
+      <div><a class="text-wt" href="https://jahankeshde.ru" >{{$t('EnjoyTravellingWithUs')}}</a></div>
     </header>
     <section class="first">
       <div class="outer">
         <div class="inner">
           <div class="bg">
             <div class="container g-0mt-3 h-50">
-              <h2 class="section-heading">Turkmenistan</h2>
+              <h2 class="section-heading">{{$t('Turkmenistan')}}</h2>
               <div class="container-fluid text-center">
   
                   <div class="col-12 bg-white rounded">
                     <p class="m-3 overflow-auto">
-                      Jahankeshde travel agency welcomes you to enjoy more options than ever for
-                      experiencing amazing places throughout Turkmenistan.
-                      Turkmenistan is the second largest country in Central Asia and is primarily covered by desert. Not
-                      yet
-                      over-run by tourists, Turkmenistan is renowned for its hospitality and rich oriental culture.
-                      Experience sleepy desert cities along the Silk Road or relax on the wonderful beaches along the
-                      Caspian Sea. Turkmenistan has it all. We emcourage you to go to Tours section and choose desired trip.
-                      Let your travel start with us. Along the way, we are at your service.
+                      {{$t('TurkmenistanText')}}
                     </p>
   
                 </div>
@@ -37,18 +30,12 @@
         <div class="inner">
           <div class="bg">
             <div class="container g-0 mt-3">
-              <h2 class="section-heading">Ashgabat</h2>
+              <h2 class="section-heading">{{$t('Ashgabat')}}</h2>
               <div class="container text-center" >
                 <div class="row g-0 bg-white rounded">
                   <div class="col-12">
                     <p class="m-3">
-                      “Ashgabat − The city of Love” rises be- tween the Karakum Desert and the foothills of
-                      the Kopet-dag. The combination of orien- tal cultural traditions and modern urban de- sign makes
-                      this
-                      city one of the most exciting in Central Asia.
-                      Let yourself be fascinated by the golden domes, mosques, and madrassas or rub el- bows with natives
-                      at
-                      the bustling so called “Tolkuchka” Sunday market. Ashgabat is one of a kind.
+                      {{$t('AshgabatText')}}
                     </p>
                   </div>
   
@@ -64,20 +51,11 @@
         <div class="inner">
           <div class="bg">
             <div class="container g-0mt-3 h-50 ">
-              <h2 class="section-heading">Akhal</h2>
+              <h2 class="section-heading">{{$t('Akhal')}}</h2>
               <div class="container text-center">
                 <div class="row g-0 bg-white rounded">
                   <div class="col-12">
-                    <p class="m-3">The total area of Akhal province is 97.2 km², it is the 19.8% of the full territory
-                      of
-                      Turkmenistan. province consists of 9 regions, 5 cities, 12 towns, 104 settlement and villages. There
-                      are live 14.5 percentage of country’s population. From ancient times Akhal province considers as the
-                      land of farming. That is why the province is playing a great role in economy of the country. The
-                      economy of the province has industrial-agrarian characteristics. Nowadays an
-                      ancient
-                      Akhal is going to the new heights with its Akhalteke horses and ahlateke carpets in Prosperous Epoch
-                      of
-                      Powerful State.</p>
+                    <p class="m-3">T{{$t('AkhalText')}}</p>
                   </div>
   
                 </div>
@@ -92,16 +70,11 @@
         <div class="inner">
           <div class="bg">
             <div class="container g-0mt-3 h-50">
-              <h2 class="section-heading">Balkan</h2>
+              <h2 class="section-heading">{{$t('Balkan')}}</h2>
               <div class="container text-center">
                 <div class="row g-0 bg-white rounded">
                   <div class="col-12">
-                    <p class="m-3">Balkan plays a special role among the provinces of the Independent and permanent
-                      Neutral Turkmenistan. Its geographical position is one of the its main peculiarities. Form ancient
-                      times the east part of Caspian sea, named “The sea gate of the Central Asia”, Garabogaz backwater,
-                      which has all chemical elements of Mendeleyev periodic table , the most beautiful angles of west
-                      Koytendag, woodbine steppes of Garagum are the province`s special features. The total area of the
-                      province is 139.3 km².</p>
+                    <p class="m-3">{{$t('BalkanText')}}</p>
                   </div>
   
                 </div>
@@ -116,12 +89,11 @@
         <div class="inner">
           <div class="bg">
             <div class="container g-0mt-3 h-50">
-              <h2 class="section-heading">Lebap</h2>
+              <h2 class="section-heading">{{$t('Lebap')}}</h2>
               <div class="container text-center">
                 <div class="row g-0 bg-white rounded">
                   <div class="col-12">
-                    <p class="m-3"> Lebap. Cotton cultivation and sericulture (raw-silk production) are practiced along the Amu Darya, and Karakul sheep are bred in the surrounding desert. The large Achak natural gas field in the north is linked to the Central Asia Centre gas pipeline; sulfur is mined at Gaurdak. This province is the Motherland of great Turkmen lyric poet
-                      Rehmet Seyidiv. He wrote: “Lip is the bank, and aqua is water, and it is the shore of Amyderya”.</p>
+                    <p class="m-3"> {{$t('LebapText')}}</p>
                   </div>
                 </div>
               </div>
@@ -135,16 +107,11 @@
         <div class="inner">
           <div class="bg">
             <div class="container g-0mt-3 h-50">
-              <h2 class="section-heading">Dashoguz</h2>
+              <h2 class="section-heading">{{$t('Dashoguz')}}</h2>
               <div class="container text-center">
                 <div class="row g-0 bg-white rounded">
                   <div class="col-12">
-                    <p class="m-3">Dashoguz province is located in the lower left coast of Amyderya river. In the
-                      northwest, north and northeast it borders with Republic of Uzbekistan, in the south with Akhal
-                      province, in the southeast with Lebap and southwest borders with Balkan province. The total area of
-                      province is 73.43 km² and it is the 15.2% of full territory of Turkmenistan. There lives 22% of full
-                      population of Turkmenistan. During the Independent years the province developed with high progress.
-                      They say, there live representatives of 40 nations.</p>
+                    <p class="m-3">{{$t('DashoguzText')}}</p>
                   </div>
   
                 </div>
@@ -159,16 +126,11 @@
         <div class="inner">
           <div class="bg">
             <div class="container g-0mt-3 h-50">
-              <h2 class="section-heading">Mary</h2>
+              <h2 class="section-heading">{{$t('Mary')}}</h2>
               <div class="container text-center">
                 <div class="row g-0 bg-white rounded">
                   <div class="col-12">
-                    <p class="m-3">Today Turkmenistan is recognizing as the highly developing country among other
-                      countries. These progresses of our shining Motherland tell about endless opportunities of economic
-                      poverty of Turkmenistan.
-                      Total area of Mary province is 87.8 m².
-                      province is situated in the south of the country. There are Bathyz hill, west side of Garabil hill,
-                      central part of Garagum desert, and west side of south-east Garagum in the Mary province. </p>
+                    <p class="m-3">{{$t('MaryText')}}</p>
                   </div>
   
                 </div>

@@ -1,11 +1,18 @@
 <template >
     <h5>{{ form }}</h5>
+    <div v-if="successfully_done"  @click="successfully_done = false;" class="btn btn-success w-100 sticky-top">Ustunlikli</div>
     <form action=""
         @submit.prevent="form.post(route('admin.places.update.this', place.id), {_method:'put'})">
         <div class="container border rounded my-1">
             <label for="" class="form-label">name</label>
             <input type="text" class="form-control my-1" v-model="form.name">
             <div class="bg-danger rounded mt-2" v-if="form.errors.name">{{ form.errors.name }}
+            </div>
+        </div>
+        <div class="container border rounded my-1">
+            <label for="" class="form-label">name_cn</label>
+            <input type="text" class="form-control my-1" v-model="form.name_cn">
+            <div class="bg-danger rounded mt-2" v-if="form.errors.name_cn">{{ form.errors.name_cn }}
             </div>
         </div>
         <div class="container border rounded my-1">
@@ -26,6 +33,12 @@
             <label for="" class="form-label">body</label>
             <textarea type="text" class="form-control my-1" v-model="form.body"></textarea>
             <div class="bg-danger rounded mt-2" v-if="form.errors.body">{{ form.errors.body }}
+            </div>
+        </div>
+        <div class="container border rounded my-1">
+            <label for="" class="form-label">body_cn</label>
+            <textarea type="text" class="form-control my-1" v-model="form.body_cn"></textarea>
+            <div class="bg-danger rounded mt-2" v-if="form.errors.body_cn">{{ form.errors.body_cn }}
             </div>
         </div>
         <div class="container border rounded my-1">
@@ -84,8 +97,14 @@
                                     <label for="" class="form-label">title</label>
                                     <input type="text" class="form-control my-2" v-model="textForm.title">
 
+                                    <label for="" class="form-label">title_cn</label>
+                                    <input type="text" class="form-control my-2" v-model="textForm.title_cn">
+
                                     <label for="" class="form-label">body</label>
                                     <textarea type="text" class="form-control my-2" v-model="textForm.body"></textarea>
+
+                                    <label for="" class="form-label">body_cn</label>
+                                    <textarea type="text" class="form-control my-2" v-model="textForm.body_cn"></textarea>
 
                                     <div class="container border border-success my-1 rounded mt-2">
                                         <label for="exampleInputEmail1" class="form-label">images for text</label>
@@ -114,16 +133,23 @@
             </div>
             <div class="container border rounded border-warning my-2" v-for="(text, index) in form.texts" data:index="index"
                 :key="index">
-                <span>{{ text }}</span>
+                <span>{{ text.images }}</span>
                 <div class="btn btn-danger col-12 my-1" @click="remove_text(text.textable_id)">-</div>
+                <div class="btn btn-success col-12 my-1" @click="saveChanges(text.textable_id, index)">O</div>
                 <label for="" class="form-label">text_number</label>
                 <input type="number" class="form-control my-2" v-model="form.texts[index].text_number">
 
                 <label for="" class="form-label">title</label>
                 <input type="text" class="form-control my-2" v-model="form.texts[index].title">
 
+                <label for="" class="form-label">title_cn</label>
+                <input type="text" class="form-control my-2" v-model="form.texts[index].title_cn">
+
                 <label for="" class="form-label">body</label>
                 <input type="text" class="form-control my-2" v-model="form.texts[index].body">
+
+                <label for="" class="form-label">body_cn</label>
+                <input type="text" class="form-control my-2" v-model="form.texts[index].body_cn">
 
                 <div class="container border border-success my-1 rounded mt-2">
                     <label for="exampleInputEmail1" class="form-label">images for text</label>
@@ -150,16 +176,20 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { NTag, NButton, NTable, NDropdown, NSelect } from 'naive-ui'
+import { ref } from 'vue';
 
 const props = defineProps(['place', 'placeCategories', 'categories', 'locations']);
+const successfully_done = ref(false);
 
 
 const form = useForm(
     {
         'name': props.place.name,
+        'name_cn': props.place.name_cn,
         'location_id': props.place.location_id,
         'categories': props.placeCategories,
         'body': props.place.body,
+        'body_cn': props.place.body_cn,
         'map': props.place.map,
         'viewed': props.place.viewed,
         'recommended': props.place.recommended?'true':false,
@@ -172,8 +202,10 @@ const form = useForm(
 const textForm = useForm(
     {
         'title':null,
+        'title_cn':null,
         'text_number':null,
         'body': '',
+        'body_cn': '',
         'images': [],
         'textable_id':props.place.id
 
@@ -182,6 +214,10 @@ const textForm = useForm(
 // let add_text = () => { form.texts.push({ 'text_number': null, 'title': null, 'body': null, 'images': [] }); }
 let remove_text = (textable_id) => {
     Inertia.delete(route('admin.texts.destroy', textable_id), { preserveState: false });
+}
+
+let saveChanges = (textable_id, index) => {
+    Inertia.post(route('admin.texts.update', [textable_id]), {text:form.texts[index]},{ onSuccess:()=>{successfully_done.value = true;} });
 }
 </script>
 

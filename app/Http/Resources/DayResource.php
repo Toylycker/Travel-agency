@@ -23,6 +23,7 @@ class DayResource extends JsonResource
             'day_number'=>$this->day_number,
             'title'=>$this->title,
             'body'=>$this->body,
+            'body_cn'=>$this->body_cn,
             'places'=>$this->places->makeHidden('pivot')->map(function($element){return $element->id;}),
             'hotels'=>$this->hotels->makeHidden('pivot')->map(function($element){return $element->id;}),
         ];

@@ -5,21 +5,21 @@
             <n-page-header class="col-lg-6 col-sm-12 col-md-12 d-flex justify-content-center align-items-center">
                 <n-grid :cols="2">
                     <n-gi class="m-3">
-                        <n-statistic label="Instagram" />
+                        <n-statistic :label='$t("Instagram")' />
                         <a class="mx-2 i-hover" href="https://www.instagram.com/jahankeshde_travell">
                             <div class="instagram ic"><i class="bi bi-instagram ic h5 instagram"
                                     style="font-size:44px;color:red;"></i></div>
                         </a>
                     </n-gi>
                     <n-gi class="m-3">
-                        <n-statistic label="Telegram" />
+                        <n-statistic :label="$t('Telegram')" />
                         <a class="mx-2 i-hover" href="https://t.me/Jahankeshde">
                             <div class="facebook ic"><i class="bi bi-telegram ic h5 telegram" style="font-size:44px;"></i>
                             </div>
                         </a>
                     </n-gi>
                     <n-gi class="m-3">
-                        <n-statistic label="WhatsApp" />
+                        <n-statistic :label="$t('WhatsApp')" />
                         <a class="mx-2 i-hover " href="https://wa.me/qr/YPV6235UAJKEF1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" style="color:white"
                                 fill="currentColor" class="bi bi-whatsapp p-1 bg-success rounded-3" viewBox="0 0 16 16">
@@ -29,7 +29,7 @@
                         </a>
                     </n-gi>
                     <n-gi class="m-3">
-                        <n-statistic label="Wechat" />
+                        <n-statistic :label="$t('Wechat')" />
                         <a class="mx-2 s-hover" href="https://u.wechat.com/MFK5iHvu4p0xKPGqF3HrXcQ">
                             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="currentColor"
                                 class="bi bi-wechat bg-success rounded-3 p-1" style="color:white;" viewBox="0 0 16 16">
@@ -41,7 +41,7 @@
                         </a>
                     </n-gi>
                     <n-gi class="m-3">
-                        <n-statistic label="TKM phone number" />
+                        <n-statistic :label="$t('TkmPhoneNumber')" />
                         <a class="mx-2  s-hover" href="tel:+99365013013">
                             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="currentColor"
                                 class="bi bi-telephone-forward" viewBox="0 0 16 16">
@@ -51,7 +51,7 @@
                         </a>
                     </n-gi>
                     <n-gi class="m-3">
-                        <n-statistic label="China phone number" />
+                        <n-statistic :label="$t('ChinesePhoneNumber')" />
                         <a class="mx-2  s-hover" href="tel:+8618818717410">
                             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="currentColor"
                                 class="bi bi-telephone-forward" viewBox="0 0 16 16">
@@ -61,7 +61,7 @@
                         </a>
                     </n-gi>
                     <n-gi class="m-3">
-                        <n-statistic label="USA phone number" />
+                        <n-statistic :label="$t('UsaPhoneNumber')" />
                         <a class="mx-2  s-hover" href="tel:+18722221543">
                             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="currentColor"
                                 class="bi bi-telephone-forward" viewBox="0 0 16 16">
@@ -71,7 +71,7 @@
                         </a>
                     </n-gi>
                     <n-gi class="m-3">
-                        <n-statistic label="Email(1)" />
+                        <n-statistic :label="$t('Email') + '(1)'" />
                         <a class="mx-2 s-hover" href="mailto:jahankeshde@gmail.com">
                             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="currentColor"
                                 class="bi bi-envelope" viewBox="0 0 16 16">
@@ -81,7 +81,7 @@
                         </a>
                     </n-gi>
                     <n-gi class="m-3">
-                        <n-statistic label="Email(2)" />
+                        <n-statistic :label="$t('Email') +(2)" />
                         <a class="mx-2 s-hover" href="mailto:tourismcomtm@gmail.com">
                             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="currentColor"
                                 class="bi bi-envelope" viewBox="0 0 16 16">
@@ -91,7 +91,7 @@
                         </a>
                     </n-gi>
                     <n-gi class="m-3">
-                        <n-statistic label="Location" />
+                        <n-statistic :label="$t('Location')" />
                         <a class="mx-2 s-hover" href="https://goo.gl/maps/kugUViNptPXrhMpX9">
                             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="currentColor"
                                 class="bi bi-geo" viewBox="0 0 16 16">
@@ -114,11 +114,11 @@
                     <div class="card-img-overlay d-flex justify-content-center align-items-center">
                         <div class=" col-lg-6 col-sm-6 col-md-7">
                             <n-form :label-width="80" :model="form" :rules="rules">
-                                <n-form-item label="Email" path="email">
+                                <n-form-item :label="$t('Email')" path="email">
                                     <n-auto-complete v-model:value="form.email" :options="CompleteOptions">
                                     </n-auto-complete>
                                 </n-form-item>
-                                <n-form-item label="Message" path="message">
+                                <n-form-item :label="$t('Message')" path="message">
                                     <n-input class="shadow border rounded-3" round type="textarea" maxlength="300"
                                         show-count clearable v-model:value="form.message" placeholder="" />
                                 </n-form-item>
@@ -126,7 +126,7 @@
                             <n-button @click="form.post(route('storeContact'), { onSuccess: () => { form.reset(); } })"
                                 class="w-50" ghost type="info"
                                 :disabled="form.processing || form.email == null || form.email == '' || form.message == null || form.message == ''">
-                                Submit
+                                {{$t('Submit')}}
                             </n-button>
                             <n-alert class="my-2" v-if="Object.keys($page.props.errors).length != 0" title="Errors"
                                 type="error" closable>
@@ -140,8 +140,8 @@
             </div>
         </div>
     </div>
-    <n-alert v-if="form.wasSuccessful" title="Successfully applied" type="success" closable>
-        Thanks for your message. Our assistant will contact you via email.
+    <n-alert v-if="form.wasSuccessful" :title="$t('SuccessfullyApplied')" type="success" closable>
+        {{ $t('AssistantWillContact') }}
     </n-alert>
 </template>
 

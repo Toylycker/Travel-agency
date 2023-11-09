@@ -7,7 +7,7 @@
             <img v-for="image in post.images" :key="image.id" class="carousel-img" :src="'/storage/blog/'+image.name">
         </n-carousel>
     </div>
-    <p class="container">{{post.body}} lorem</p>
+    <p class="container">{{$langBody(post)}} lorem</p>
 
 
     <div class="container g-0" v-for="(text, i) in post.texts" :key="text.id" :data-i="i">
@@ -39,7 +39,7 @@
                 </div>
                 <div>
                     <p>
-                        {{ text.body }}
+                        {{ $langBody(text)}}
                     </p>
                 </div>
             </div>

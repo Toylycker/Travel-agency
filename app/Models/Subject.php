@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Subject extends Model
 {
     use HasFactory;
-    protected $guarded = ['id'];
+    protected $guarded = [''];
     public $timestamps = false;
 
     public function posts(): BelongsToMany

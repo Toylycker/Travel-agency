@@ -15,6 +15,7 @@ use App\Models\Tour;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -50,19 +51,16 @@ class TourController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         $request->validate(
             [
                 'name' => 'string|required',
+                'name_cn' => 'string|nullable',
                 'main_image' => 'image|required',
                 'body' => 'string|required',
+                'body_cn' => 'string|nullable',
                 'map' => 'string|nullable',
                 'total_days' => 'numeric|required',
                 'prices' => 'string|required',
@@ -80,80 +78,86 @@ class TourController extends Controller
             ]
         );
 
-        $tour = Tour::create([
-            'name' => $request->name,
-            'main_image' => 'null',
-            'body' => $request->body,
-            'map' => $request->map,
-            'total_days' => $request->total_days,
-            'tour_prices' => $request->prices,
-            'discount_percent' => $request->discount_percent ?: 0,
-            'discount_datetime_start' => $request->discount_datetime_start,
-            'discount_datetime_end' => $request->discount_datetime_end,
-            'viewed' => $request->viewed ?: 0,
-            'recommended' => $request->recommended,
-        ]);
-
-        if ($request->has('main_image')) {
-            $newImage = $request->file('main_image');
-            $resized = Gallery::make($newImage)
-                // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
-                ->fit(1400, 800)
-                ->encode('jpg', 100);
-            $newImageName = Str::random(10) . '-' . $tour->id . '.' . $newImage->getClientOriginalExtension();
-            Storage::put('public/tours/' . $newImageName, (string) $resized);
-            // $resized->storeAs('public/tours/', $newImageName);
-
-            $tour->main_image = $newImageName;
-            $tour->update();
-        }
-
-        if ($request->has('included')) {
-            foreach ($request->included as $note) {
-                $tour->notes()->attach($note, ['status' => 'included']);
-            }
-        }
-
-        if ($request->has('non_included')) {
-            foreach ($request->non_included as $note) {
-                $tour->notes()->attach($note, ['status' => 'non included']);
-            }
-        }
-
-        foreach ($request->days as $day) {
-            $newDay = new Day();
-            $newDay->day_number = $day['day_number'];
-            $newDay->title = $day['title'];
-            $newDay->body = $day['body'];
-            $newDay->tour_id = $tour->id;
-            $newDay->save();
-            if (collect($day['places'])->count()>=1) {
-                $newDay->places()->attach($day['places']);
-            }
-            // if (collect($day['hotels'])->count()>=1) {
-
-            //     $newDay->hotels()->attach($day['hotels']);
-            // }
-        }
-
-        if ($request->has('images')) {
-            foreach ($request->images as $image) {
-                $newImage = $image;
+        DB::transaction(function () use ($request) {
+            $tour = Tour::create([
+                'name' => $request->name,
+                'name_cn' => $request->name_cn,
+                'main_image' => 'null',
+                'body' => $request->body,
+                'body_cn' => $request->body_cn,
+                'map' => $request->map,
+                'total_days' => $request->total_days,
+                'tour_prices' => $request->prices,
+                'discount_percent' => $request->discount_percent ?: 0,
+                'discount_datetime_start' => $request->discount_datetime_start,
+                'discount_datetime_end' => $request->discount_datetime_end,
+                'viewed' => $request->viewed ?: 0,
+                'recommended' => $request->recommended,
+            ]);
+    
+            if ($request->has('main_image')) {
+                $newImage = $request->file('main_image');
                 $resized = Gallery::make($newImage)
                     // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
-                    ->fit(1280, 1024)
+                    ->fit(1400, 800)
                     ->encode('jpg', 100);
                 $newImageName = Str::random(10) . '-' . $tour->id . '.' . $newImage->getClientOriginalExtension();
                 Storage::put('public/tours/' . $newImageName, (string) $resized);
-                Image::create(['name' => $newImageName, 'imageable_id' => $tour->id, 'imageable_type' => 'App\Models\Tour']);
+                // $resized->storeAs('public/tours/', $newImageName);
+    
+                $tour->main_image = $newImageName;
+                $tour->update();
             }
-        }
-
-        if ($request->has('detailedPrices')) {
-            foreach ($request->detailedPrices as $price) {
-                Price::create(['name' => $price['name'], 'price' => $price['price'], 'priceable_id' => $tour->id, 'priceable_type' => 'App\Models\Tour']);
+    
+    
+            if ($request->has('included')) {
+                foreach ($request->included as $note) {
+                    $tour->notes()->attach($note, ['status' => 'included']);
+                }
             }
-        }
+    
+            if ($request->has('non_included')) {
+                foreach ($request->non_included as $note) {
+                    $tour->notes()->attach($note, ['status' => 'non included']);
+                }
+            }
+    
+            foreach ($request->days as $day) {
+                $newDay = new Day();
+                $newDay->day_number = $day['day_number'];
+                $newDay->title = $day['title'];
+                $newDay->body = $day['body'];
+                $newDay->body_cn = $day['body_cn'];
+                $newDay->tour_id = $tour->id;
+                $newDay->save();
+                if (collect($day['places'])->count()>=1) {
+                    $newDay->places()->attach($day['places']);
+                }
+                // if (collect($day['hotels'])->count()>=1) {
+    
+                //     $newDay->hotels()->attach($day['hotels']);
+                // }
+            }
+    
+            if ($request->has('images')) {
+                foreach ($request->images as $image) {
+                    $newImage = $image;
+                    $resized = Gallery::make($newImage)
+                        // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
+                        ->fit(1280, 1024)
+                        ->encode('jpg', 100);
+                    $newImageName = Str::random(10) . '-' . $tour->id . '.' . $newImage->getClientOriginalExtension();
+                    Storage::put('public/tours/' . $newImageName, (string) $resized);
+                    Image::create(['name' => $newImageName, 'imageable_id' => $tour->id, 'imageable_type' => 'App\Models\Tour']);
+                }
+            }
+    
+            if ($request->has('detailedPrices')) {
+                foreach ($request->detailedPrices as $price) {
+                    Price::create(['name' => $price['name'], 'price' => $price['price'], 'name_cn' => $price['name_cn'], 'price_cn' => $price['price_cn'],'priceable_id' => $tour->id, 'priceable_type' => 'App\Models\Tour']);
+                }
+            }
+        });
 
         return Redirect()->back();
     }
@@ -220,6 +224,14 @@ class TourController extends Controller
         return redirect()->back();
     }
 
+    public function putName_cn($tour_id, Request $request)
+    {
+        $tour = Tour::findOrFail($tour_id);
+        $tour->name_cn = $request->name_cn;
+        $tour->update();
+        return redirect()->back();
+    }
+
     public function putMainImage($tour_id, Request $request)
     {
         $tour = Tour::findOrFail($tour_id);
@@ -251,6 +263,15 @@ class TourController extends Controller
 
         $tour = Tour::findOrFail($tour_id);
         $tour->body = $request->body;
+        $tour->update();
+        return redirect()->back();
+    }
+
+    public function putbody_cn(Request $request, $tour_id)
+    {
+
+        $tour = Tour::findOrFail($tour_id);
+        $tour->body_cn = $request->body_cn;
         $tour->update();
         return redirect()->back();
     }
@@ -330,7 +351,7 @@ class TourController extends Controller
         if ($request->has('detailedPrices')) {
             $tour->prices()->delete();
             foreach ($request->detailedPrices as $price) {
-                Price::create(['name' => $price['name'], 'price' => $price['price'], 'priceable_id' => $tour->id, 'priceable_type' => 'App\Models\Tour']);
+                Price::create(['name' => $price['name'],'name_cn' => $price['name_cn'], 'price' => $price['price'],'price_cn' => $price['price_cn'], 'priceable_id' => $tour->id, 'priceable_type' => 'App\Models\Tour']);
             }
         }else{return 'false';}
 
@@ -340,22 +361,25 @@ class TourController extends Controller
     public function putDays(Request $request, $tour_id)
     {
         $tour = Tour::findOrFail($tour_id);
-        $tour->days()->delete();
-        foreach ($request->days as $day) {
-            $newDay = new Day();
-            $newDay->day_number = $day['day_number'];
-            $newDay->title = $day['title'];
-            $newDay->body = $day['body'];
-            $newDay->tour_id = $tour->id;
-            $newDay->save();
-            if (collect($day['places'])->count()>=1) {
-                $newDay->places()->attach($day['places']);
+        DB::transaction(function () use ($tour, $request) {
+            $tour->days()->delete();
+            foreach ($request->days as $day) {
+                $newDay = new Day();
+                $newDay->day_number = $day['day_number'];
+                $newDay->title = $day['title'];
+                $newDay->body = $day['body'];
+                $newDay->body_cn = array_key_exists( 'body_cn', $day)?$day['body_cn']:null;
+                $newDay->tour_id = $tour->id;
+                $newDay->save();
+                if (collect($day['places'])->count()>=1) {
+                    $newDay->places()->attach($day['places']?:[]);
+                }
+                if (collect($day['hotels'])->count()>=1) {
+    
+                    $newDay->hotels()->attach($day['hotels']);
+                }
             }
-            if (collect($day['hotels'])->count()>=1) {
-
-                $newDay->hotels()->attach($day['hotels']);
-            }
-        }
+        });
 
         return redirect()->back();
     }

@@ -11,6 +11,7 @@ class Note extends Model
     use HasFactory;
     public $timestamps = false;
     // protected $hidden = ['pivot'];
+    protected $guarded = [''];
 
     public function tours(): BelongsToMany
     {

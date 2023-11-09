@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-success">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-toggle="collapse"
         data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false"
@@ -11,16 +11,16 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <Link class="nav-link" :class="{ 'active': $page.component == 'front/Welcome' }" aria-current="page"
-              :href="route('home')">Home</Link>
+              :href="route('home')">{{ $t('Home') }}</Link>
           </li>
           <li class="nav-item">
             <Link class="nav-link" :class="{ 'active': $page.component == 'front/Places' }" :href="route('places')">
-            Places
+              {{ $t('Places') }}
             </Link>
           </li>
           <li class="nav-item">
             <Link class="nav-link" :class="{ 'active': $page.component == 'front/Tours' }" :href="route('tours')"
-              tabindex="-1" aria-disabled="true">Tours</Link>
+              tabindex="-1" aria-disabled="true">{{ $t('Tours') }}</Link>
           </li>
           <!-- <li class="nav-item">
             <Link class="nav-link" :class="{ 'active': $page.component == 'front/Blog' }" :href="route('blog')">Blog
@@ -28,7 +28,11 @@
           </li> -->
           <li class="nav-item">
             <Link class="nav-link" :class="{ 'active': $page.component == 'front/ContactUs' }" :href="route('contact')">
-            Contact Us</Link>
+              {{ $t('ContactUs') }}</Link>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn" @click="mainStore.changeLang">
+              {{ mainStore.lang=='ENG'?'中文':'ENG' }}</button>
           </li>
           <li class="nav-item" v-if="$page.props.auth != null">
             <Link class="nav-link" :class="{ 'active': $page.component == 'Auth/Logout' }" :href="route('logout')"
@@ -36,7 +40,7 @@
             logout</Link>
           </li>
         </ul>
-        Feel TKM vibe with songs {{ counter }}/3
+        {{$t('Music')}} {{ counter }}/3
         <div class="d-flex ml-1">
           <button @click="changeSong">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" fill="currentColor"
@@ -64,14 +68,19 @@
 </template>
 
 <script setup>
+import { useMainStore } from '@/Stores/mainStore';
 import { Link } from '@inertiajs/inertia-vue3';
 import { ref } from '@vue/runtime-core';
+import { useI18n } from 'vue-i18n'
+
+const mainStore = useMainStore()
 
 const song = ref('/songs/1.mp3');
 const song1 = ref('/songs/1.mp3');
 const song2 = ref('/songs/2.mp3');
 const song3 = ref('/songs/3.mp3');
 let counter = ref(1);
+
 const changeSong = () => {
   // it should be exactly inside of function because so that ui first built then button clicked and then document actually can find id otherwise need to do it thoruh  ref and initialize players with 0(boring)
   const player1 = document.getElementById('player1');

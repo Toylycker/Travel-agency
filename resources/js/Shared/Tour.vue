@@ -10,23 +10,23 @@
                     style="border-bottom-left-radius: 20px; height: 170px;text-align: left;">
                     <div class="mx-1">
                         <n-button class="my-2 w-100" style="text-align: center;" type="primary" dashed ghost>
-                            <h5>{{ tour.name }}</h5>
+                            <h5>{{ $langName(tour) }}</h5>
                         </n-button>
                         <!-- <h3 class="mt-2" style="text-align: center;">{{ tour.name }}</h3> -->
                         <div class="container">
                             <n-button-group class="w-100" vertical>
                                 <n-button class="w-100" type="primary" round dashed>
-                                    Total days:{{ tour.total_days }}
+                                    {{$t('TotalDays')}}:{{ tour.total_days }}
                                 </n-button>
 
 
                                 <n-button class="w-100" type="primary" ghost dashed>
-                                    Visiting places:{{ total_places_count }}
+                                    {{ $t('VisitingPlaces') }}:{{ total_places_count }}
                                 </n-button>
 
 
                                 <n-button class="w-100" type="primary" ghost round dashed>
-                                    Price:{{ tour.tour_prices }}$
+                                    {{ $t('Price') }}:{{ tour.tour_prices }}$
                                 </n-button>
                             </n-button-group>
 
@@ -54,7 +54,7 @@
                 <div @mouseover="getright($event)" @mouseleave="leaveCursor($event)" id="right"
                     class="col-4 ml-3 bg-white shadow overflow-hidden rounded-3 d-none d-md-block" :class="'float'"
                     style="border-top-right-radius: 20px;height: 170px;">
-                    <p class="m-3">{{ tour.body }}</p>
+                    <p class="m-3">{{ $langBody(tour)}}</p>
                 </div>
             </transition>
         </div>

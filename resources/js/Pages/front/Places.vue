@@ -4,14 +4,14 @@
 
     <div class="d-flex justify-content-between mb-3 g-0">
         <div class="">
-            <h1>Places</h1>
+            <h1>{{ $t('Places') }}</h1>
         </div>
         <div class="d-flex">
             <div class="mx-3">
                 <n-input-group class="mt-3 d-flex">
                     <n-select class="d-none d-sm-block" v-model:value="location" label-field="name" value-field="id" filterable
                         :options="showlocations" />
-                    <n-select class="d-none d-sm-block" v-model:value="category" label-field="name" value-field="name" filterable
+                    <n-select class="d-none d-sm-block" v-model:value="category" :label-field="$i18n.locale == 'eng'?'name':'name_cn'" value-field="name" filterable
                         :options="showcategories" />
                     <n-input v-model:value="vsearch" type="text" placeholder="search..." clearable>
                         <template #clear-icon>

@@ -138,21 +138,16 @@ class PlaceController extends Controller
     ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Place  $place
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Place $place)
     {
         $request->validate([
             'name'=>'string|required',
+            'name_cn'=>'string|nullable',
             'location_id'=>'numeric|required',
             'categories'=>'array|required',
             'categories.*'=>'numeric|required',
             'body'=>'string|required',
+            'body_cn'=>'string|nullable',
             'map'=>'string|nullable',
             'viewed'=>'nullable',
             'recommended'=>'nullable',
@@ -162,7 +157,7 @@ class PlaceController extends Controller
 
         $location = Location::findOrFail($request->location_id);
         $categories = Category::wherein('id', $request->categories);
-        $place->update(['name'=>$request->name, 'location_id'=>$location->id, 'body'=>$request->body, 'map'=>$request->map, 'viewed'=>$request->viewed, 'recommended'=>$request->recommended=='true'?1:0]);
+        $place->update(['name'=>$request->name, 'name_cn'=>$request->name_cn, 'location_id'=>$location->id, 'body'=>$request->body, 'body_cn'=>$request->body_cn, 'map'=>$request->map, 'viewed'=>$request->viewed, 'recommended'=>$request->recommended=='true'?1:0]);
 
         $place->categories()->sync($categories->pluck('id'));
 

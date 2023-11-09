@@ -21,7 +21,10 @@
               <form @submit.prevent="form.post(route('admin.tours.store'), {onSuccess: () => form.reset()})">
                 <label for="exampleInputEmail1" class="form-label">name</label>
                 <input class="form-control" type="text" v-model="form.name">
+                <label for="exampleInputEmail1" class="form-label">name_cn</label>
+                <input class="form-control" type="text" v-model="form.name_cn">
                 <div class="bg-danger rounded mt-2" v-if="form.errors.name">{{ form.errors.name }}</div>
+                <div class="bg-danger rounded mt-2" v-if="form.errors.name">{{ form.errors.name_cn }}</div>
                 <label for="exampleInputEmail1" class="form-label">main image</label>
                 <progress v-if="form.progress" :value="form.progress.percentage" max="100">
                   {{ form.progress.percentage }}%
@@ -40,6 +43,9 @@
                 <label for="exampleInputEmail1" class="form-label">body</label>
                 <input class="form-control" type="text" v-model="form.body">
                 <div class="bg-danger rounded mt-2" v-if="form.errors.body">{{ form.errors.body }}</div>
+                <label for="exampleInputEmail1" class="form-label">body_cn</label>
+                <input class="form-control" type="text" v-model="form.body_cn">
+                <div class="bg-danger rounded mt-2" v-if="form.errors.body">{{ form.errors.body_cn }}</div>
                 <label for="exampleInputEmail1" class="form-label">map</label>
                 <input class="form-control" type="text" v-model="form.map">
                 <div class="bg-danger rounded mt-2" v-if="form.errors.map">{{ form.errors.map }}</div>
@@ -102,6 +108,10 @@
                     <input class="form-control" type="text" v-model="form.days[index].body">
                     <!-- <div class="bg-danger rounded mt-2" v-if="form.errors.days[index].body">{{
                     form.errors.days[index].body }}</div> -->
+                    <label for="exampleInputEmail1" class="form-label">body_cn</label>
+                    <input class="form-control" type="text" v-model="form.days[index].body_cn">
+                    <!-- <div class="bg-danger rounded mt-2" v-if="form.errors.days[index].body">{{
+                    form.errors.days[index].body }}</div> -->
                     <label for="exampleInputEmail1" class="form-label">places</label>
                     <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.days[index].places"
                       multiple filterable placeholder="Please Select Places" :options="places" />
@@ -127,6 +137,10 @@
                     <input class="form-control" type="text" v-model="form.detailedPrices[index].name">
                     <label for="exampleInputEmail1" class="form-label">price</label>
                     <input class="form-control mb-2" type="number" v-model="form.detailedPrices[index].price">
+                    <label for="exampleInputEmail1" class="form-label">name_cn</label>
+                    <input class="form-control" type="text" v-model="form.detailedPrices[index].name_cn">
+                    <label for="exampleInputEmail1" class="form-label">price_cn</label>
+                    <input class="form-control mb-2" type="number" v-model="form.detailedPrices[index].price_cn">
                   </div>
                 </div>
                 <!-- Prices end  -->
@@ -202,8 +216,10 @@ const props = defineProps(['tours', 'places', 'hotels', 'notes']);
 
 const form = useForm({
   name: null,
+  name_cn: null,
   main_image: null,
   body: null,
+  body_cn: null,
   map: null,
   total_days: null,
   prices: null,
@@ -215,12 +231,12 @@ const form = useForm({
   images: [],
   included: [],
   non_included: [],
-  detailedPrices: [{ 'name': null, 'price': null }],
-  days: [{ 'day_number': null, 'title': null, 'body': null, 'places': [], 'hotels': [] }]
+  detailedPrices: [{ 'name': null, 'price': null,  'name_cn': null, 'price_cn': null }],
+  days: [{ 'day_number': null, 'title': null, 'body': null, 'body_cn': null,'places': [], 'hotels': [] }]
 })
 let handleSelect = (key) => { console.log(key); }
-let add_day = () => { form.days.push({ 'day_number': null, 'title': null, 'body': null, 'places': [] }) }
-let add_price = () => { form.detailedPrices.push({ 'name': null, 'price': null }) }
+let add_day = () => { form.days.push({ 'day_number': null, 'title': null, 'body': null,'body_cn': null, 'places': [] }) }
+let add_price = () => { form.detailedPrices.push({ 'name': null, 'price': null, 'name_cn': null, 'price_cn': null }) }
 let remove_day = (index) => { form.days.splice(index, 1) }
 let remove_price = (index) => { form.detailedPrices.splice(index, 1) }
 </script>
