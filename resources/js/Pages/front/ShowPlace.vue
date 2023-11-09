@@ -42,7 +42,6 @@
                     <n-carousel :dot-placement="direction === 'vertical' ? 'right' : 'bottom'"  :draggable="text.images.length>=2?true:false" :show-arrow="text.images.length>=2?true:false">
                         <img v-for="imag in text.images" :key="imag.id" :src="'/storage/texts/'+imag.name" class="img-fluid rounded-start" >
                     </n-carousel>
-                    <p v-for="imag in text.images" :key="imag.id">{{ '/storage/texts/'+imag.name}}</p>
                 </div>
                 <div >
                     <h5>
