@@ -39,9 +39,10 @@
                     class="col-md-4 mb-3 m-md-2 img-fluid img h-25" :class="(i % 2===0)?'float-md-start':'float-md-end'"> -->
                 <div v-if="text.images.length > 0" class="col-md-4 mb-3 m-md-2 img-fluid img h-25"
                     :class="(i % 2 === 0) ? 'float-md-start' : 'float-md-end'">
-                    <n-carousel v-if="text.images.length>=1" :direction="direction" :dot-placement="direction === 'vertical' ? 'right' : 'bottom'"  :draggable="text.images.length>=2?true:false" show-arrow>
+                    <n-carousel :dot-placement="direction === 'vertical' ? 'right' : 'bottom'"  :draggable="text.images.length>=2?true:false" :show-arrow="text.images.length>=2?true:false">
                         <img v-for="imag in text.images" :key="imag.id" :src="'/storage/texts/'+imag.name" class="img-fluid rounded-start" >
                     </n-carousel>
+                    <p v-for="imag in text.images" :key="imag.id">{{ '/storage/texts/'+imag.name}}</p>
                 </div>
                 <div >
                     <h5>
@@ -57,13 +58,13 @@
 
 <script setup>
 import { Head, Link } from '@inertiajs/inertia-vue3';
+import { NCarousel } from 'naive-ui';
+import { ref } from 'vue';
 const props = defineProps(['place']);
 let direction = ref('vertical');
 
 </script>
 <script>
 import FrontLayout from '@/Layouts/frontLayout.vue';
-import { NCarousel } from 'naive-ui';
-import { ref } from 'vue';
 export default { layout: FrontLayout }
 </script>
