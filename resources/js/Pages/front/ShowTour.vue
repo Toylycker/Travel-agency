@@ -4,6 +4,7 @@
             <iframe :src='tour.map' width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
+
         <div class="row mt-3" style="">
             <div v-if="tour.images.length >= 1" class="col-lg-3 col-md-4 col-sm-12 order-1">
                 <div class="container">
@@ -18,6 +19,7 @@
                         </swiper-slide>
                     </swiper>
                 </div>
+                
             </div>
             <div :class="tour.images.length >= 1?'col-lg-9 col-md-8':'col-lg-12 col-md-12'" class="col-sm-12 order-2">
                 <n-tabs type="line" trigger="hover" class="container">
