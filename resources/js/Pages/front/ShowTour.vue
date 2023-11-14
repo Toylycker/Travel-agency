@@ -1,6 +1,6 @@
 <template >
     <section class="tour">
-        <div v-if="tour.map != undefined" class="container rounded mt-3">
+        <div v-if="tour.map != undefined && $i18n.locale == 'eng'" class="container rounded mt-3">
             <iframe :src='tour.map' width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
