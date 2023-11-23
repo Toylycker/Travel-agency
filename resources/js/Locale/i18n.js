@@ -22,7 +22,7 @@ const i18n = createI18n({
             AshgabatText: "'Ashgabat − The city of Love' rises between the Karakum Desert and the foothills of the Kopet-dag. The combination of oriental cultural traditions and modern urban design makes this city one of the most exciting in Central Asia. Let yourself be fascinated by the golden domes, mosques, and madrassas or meet with natives at the bustling so called “Tolkuchka” Sunday market. Ashgabat is one of a kind.",
 
             Akhal: "Akhal",
-            AkhalText: "The total area of Akhal province is 97.2 km², it is the 19.8% of the full territory of Turkmenistan. Province consists 9 regions, 5 cities, 12 towns, 104 settlement and villages. There are live 14.5 percentage of country’s population. From ancient times Akhal province considers as the land of farming. That is why the province is playing a great role in economy of the country. The economy of the province has industrial-agrarian characteristics. Nowadays an ancient Akhal is going to the new heights with its Akhal-teke horses and Akhal-teke carpets in Prosperous Epoch of Powerful State.",
+            AkhalText: "The total area of Akhal province is 97.2 km², accounting for 19.8% of the total territory of Turkmenistan. The province is divided into 9 regions, 5 cities, 12 towns, and 104 settlements and villages, hosting approximately 14.5% of the country's population. Since ancient times, Akhal province has been renowned as a land of agriculture, playing a significant role in the country's economy. The economy of the province exhibits industrial-agrarian characteristics. In the present day, ancient Akhal is reaching new heights, particularly with its famed Akhal-teke horses and Akhal-teke carpets, contributing to the prosperity of the Powerful State era.",
 
             Balkan: "Balkan",
             BalkanText: "Balkan plays a special role among the provinces of the Independent and permanent Neutral Turkmenistan. Its geographical position is one of the its main peculiarities. Form ancient times the east part of Caspian sea, named “The sea gate of the Central Asia”, Garabogaz backwater, which has all chemical elements of Mendeleyev periodic table , the most beautiful angles of west Koytendag, woodbine steps of Garagum are the province`s special features. The total area of the province is 139.3km²",
@@ -86,25 +86,25 @@ const i18n = createI18n({
             EnjoyTravellingWithUs: '和我们一起旅行愉快',
 
             Turkmenistan: "土库曼斯坦",
-            TurkmenistanText: "Jahankeshde旅游公司欢迎您享受比以往更多的选择，体验土库曼斯坦各地令人惊叹的地方。土库曼斯坦是中亚第二大国，主要被沙漠覆盖。土库曼斯坦还没有被游客过度经营，它以热情好客和丰富的东方文化而闻名。沿着丝绸之路体验沉睡的沙漠城市，或者在里海沿岸美妙的海滩上放松身心。土库曼斯坦拥有一切。我们鼓励您前往旅游区并选择想要的旅行。让您的旅行从我们开始。一路上，我们随时为您服务。",
+            TurkmenistanText: "Jahankeshde旅行社欢迎您尽情畅游土库曼斯坦的丰富多彩之地，提供比以往更多的选择，让您体验令人惊叹的景点。土库曼斯坦是中亚第二大国家，主要由沙漠覆盖。尽管尚未被游客大规模涌入，但土库曼斯坦以其热情好客和丰富的东方文化而闻名。漫步丝绸之路上的沉睡沙漠城市，或者在里海沿岸的美丽沙滩上放松身心，土库曼斯坦应有尽有。我们鼓励您前往旅游部门，选择您想要的旅行。让我们成为您旅行的起点。在旅途中，我们随时为您提供服务。",
 
             Ashgabat: "阿什哈巴德",
-            AshgabatText: "“阿什哈巴德——爱之城”矗立在卡拉库姆沙漠和科佩特达格山麓之间。东方文化传统与现代城市设计的结合使这座城市成为中亚最令人兴奋的城市之一。让自己着迷于金色的圆顶、清真寺和宗教学校，或者在热闹的所谓“Tolkuchka”周日市场与当地人见面。阿什哈巴德是独一无二的。",
+            AshgabatText: "'阿什哈巴德' - 爱之城，在加拉库姆沙漠和科佩特达格山脉的山麓之间崛起。东方文化传统与现代城市设计的结合使这座城市成为中亚最令人兴奋的之一。让自己沉醉在金色圆顶、清真寺和学校的魅力中，或在熙熙攘攘的所谓“托尔库卡”周日市场与当地居民相遇。阿什哈巴德是独一无二的。",
 
             Akhal: "阿哈尔",
-            AkhalText: "阿哈尔省总面积为97.2平方公里，占土库曼斯坦全境的19.8%。该省由9个地区、5个市、12个镇、104个居民点和村庄组成。居住人口占全国人口的14.5%。自古以来，阿哈尔省就被视为农业之地。这就是为什么该省在国家经济中发挥着重要作用。该省的经济具有工业-农业的特点。如今，在强国的繁荣时期，一个古老的阿扎尔正以其阿扎尔特克马和阿扎尔特克地毯走向新的高度。",
+            AkhalText: "阿哈尔省的总面积为97.2平方千米，占到土库曼斯坦总领土的19.8%。该省划分为9个地区，5个城市，12个城镇，以及104个定居点和村庄，约占该国人口的14.5%。自古以来，阿哈尔省一直以其农业之地而闻名，在该国经济中扮演着重要的角色。该省的经济呈现出工业农业的特征。在当今时代，古老的阿哈尔正迎来新的高峰，尤其是以其著名的阿哈尔特克马和阿哈尔特克地毯而闻名，为强大国家时代的繁荣做出贡献。",
 
-            Balkan: "巴尔干半岛",
-            BalkanText: "巴尔干半岛在独立和永久中立的土库曼斯坦各省中发挥着特殊作用。它的地理位置是它的主要特点之一。自古以来，里海东部被称为“中亚的海门”，加拉博加兹回水区拥有门捷列夫元素周期表的所有化学元素，科伊滕达尔西部最美丽的角度，加拉古姆的木阶是该省的特色。全省总面积139.3km²",
+            Balkan: "巴尔干",
+            BalkanText: "在独立和永久中立的土库曼斯坦省份中，巴尔干省发挥着特殊的作用。其地理位置是其主要特点之一。自古以来，里海东部被称为“中亚的海门”的加拉博加兹战区，这里有门捷列夫周期表中的所有化学元素，以及最美丽的科伊坦达格西部和加拉汗的木槿梯田，都是该省的特色。该省的总面积为139.3平方千米。",
 
-            Lebap: '列巴普',
-            LebapText: '列巴普。阿姆河沿岸种植棉花和养蚕（生丝生产），卡拉库尔羊在周围的沙漠中繁殖。北部的大型Achak天然气田与中亚中心天然气管道相连；高达克开采硫磺。该省是伟大的土库曼抒情诗人热赫梅特·塞伊迪夫的祖国。他写道：“唇是岸，水是水，它是Amyderya的海岸”。',
+            Lebap: '莱巴普',
+            LebapText: "莱巴普省。在阿姆河沿岸进行棉花种植和蚕丝养殖（生产生丝），而在周围的沙漠地区养殖喀拉库尔羊。北部的大型阿恰克天然气田与中亚中心天然气管道相连；硫磺在高尔达克被开采。这个省份是伟大的土库曼抒情诗人雷赫梅特·赛义迪夫的故乡。他写道：'唇是岸，水是水，它是阿姆河的岸边'。",
 
             Dashoguz: "达沙古兹",
-            DashoguzText: "达绍古兹省位于Amyderya河的左下海岸。西北部、北部和东北部与乌兹别克斯坦共和国接壤，南部与阿卡尔省接壤，东南部与列巴普省接壤，西南部与巴尔干省接壤。该省总面积为73.43平方公里，占土库曼斯坦全境的15.2%。那里居住着土库曼斯坦总人口的22%。在独立年代，该省取得了长足的发展。",
+            DashoguzText: "达沙古兹省位于阿姆河的左下岸。在西北、北和东北与乌兹别克斯坦共和国接壤，南部与阿哈尔省接壤，东南与莱巴普省接壤，西南与巴尔干省接壤。该省的总面积为73.43平方千米，占土库曼斯坦全领土的15.2%。全土库曼斯坦总人口的22%居住在这里。在独立的岁月里，该省取得了高速发展。",
 
-            Mary: "玛丽",
-            MaryText: "今天，土库曼斯坦被公认为其他国家中高度发展的国家。我们光辉祖国的这些进步说明了土库曼斯坦经济贫困的无尽机会。玛丽省的总面积为87.8平方米。该省位于该国南部。玛丽省有Bathyz山、Garabil山西侧、Garagum沙漠中部和Garagum东南部西侧。",
+            Mary: "玛利",
+            MaryText: "今天，土库曼斯坦被认为是在其他国家中高度发展的国家。我们辉煌的祖国取得的这些进展表明了土库曼斯坦在经济方面的无限机遇。玛利省的总面积为87.8平方千米。该省位于该国的南部，包括Bathyz山丘、Garabil山丘西侧、Garagum沙漠的中心部分，以及Garagum东南部的西侧。",
 
             TotalDays: '总天数',
             VisitingPlaces: '参观场所',

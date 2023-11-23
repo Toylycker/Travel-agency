@@ -41,16 +41,6 @@ class TourController extends Controller
         return Inertia::render('admin/Tours/index', ['tours' => $tours, 'places' => $places, 'hotels' => $hotels, 'notes' => $notes]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     
     public function store(Request $request)
     {
@@ -162,23 +152,9 @@ class TourController extends Controller
         return Redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Tour  $tour
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Tour $tour)
-    {
-        //
-    }
+    
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Tour  $tour
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit(Tour $tour)
     {
         $places = Place::all('name', 'id');
@@ -347,12 +323,15 @@ class TourController extends Controller
 
     public function putPrices(Request $request, $tour_id)
     {
+        
         $tour = Tour::findOrFail($tour_id);
         if ($request->has('detailedPrices')) {
-            $tour->prices()->delete();
-            foreach ($request->detailedPrices as $price) {
-                Price::create(['name' => $price['name'],'name_cn' => $price['name_cn'], 'price' => $price['price'],'price_cn' => $price['price_cn'], 'priceable_id' => $tour->id, 'priceable_type' => 'App\Models\Tour']);
-            }
+            DB::transaction(function () use ($request, $tour) {
+                $tour->prices()->delete();
+                foreach ($request->detailedPrices as $price) {
+                    Price::create(['name' => $price['name'],'name_cn' => $price['name_cn'], 'price' => $price['price'], 'priceable_id' => $tour->id, 'priceable_type' => 'App\Models\Tour']);
+                }
+            });
         }else{return 'false';}
 
         return redirect()->back();

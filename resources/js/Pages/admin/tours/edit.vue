@@ -273,8 +273,6 @@
           <input class="form-control" type="text" v-model="formprices.detailedPrices[index].name_cn">
           <label for="exampleInputEmail1" class="form-label">price</label>
           <input class="form-control mb-2" type="number" v-model="formprices.detailedPrices[index].price">
-          <label for="exampleInputEmail1" class="form-label">price_cn</label>
-          <input class="form-control mb-2" type="number" v-model="formprices.detailedPrices[index].price_cn">
         </div>
       </div>
       <!-- Prices end  -->
@@ -308,7 +306,7 @@ const formprices = useForm({ detailedPrices: props.tour.prices });
 const formdays = useForm({ days: props.days.data });
 
 let add_day = () => { formdays.days.push({ 'day_number': null, 'title': null, 'body': null, 'body_cn': null, 'places': [] }) }
-let add_price = () => { formprices.detailedPrices.push({ 'name': null, 'name_cn': null, 'price': null, 'price_cn': null }) }
+let add_price = () => { formprices.detailedPrices.push({ 'name': null, 'name_cn': null, 'price': null,}) }
 let remove_day = (index) => { formdays.days.splice(index, 1) }
 let remove_price = (index) => { formprices.detailedPrices.splice(index, 1) }
 </script>
