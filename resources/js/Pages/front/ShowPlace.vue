@@ -2,7 +2,7 @@
     <div v-if="place.videos.length>0" class="container-fluid text-center border my-3">
         <h1>PLace For Video</h1>
     </div>
-    <div class="row">
+    <div class="row ">
         <div :class="place.map!=undefined?'col-6':'col-12'">
             <div id="placeCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
@@ -32,7 +32,7 @@
         </div>
     </div>
     <div>
-        <div class="container g-0" v-for="(text, i) in place.texts" :key="text.id" :data-i="i">
+        <div class="container g-0 bg-white rounded-3 mt-1" style="opacity: 0.90;" v-for="(text, i) in place.texts" :key="text.id" :data-i="i">
             <h3 v-if="text.title" class="text-center bold">{{ text.title }}</h3>
             <div class="clearfix m-3">
                 <!-- <img :src="'/img/1.jpeg'" alt="..."
@@ -44,9 +44,9 @@
                     </n-carousel>
                 </div>
                 <div >
-                    <h5>
+                    <h4>
                         {{ $langBody(text) }}
-                    </h5>
+                    </h4>
                 </div>
             </div>
         </div>

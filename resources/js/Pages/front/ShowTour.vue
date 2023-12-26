@@ -5,7 +5,7 @@
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
 
-        <div class="row mt-3" style="">
+        <div class="row pt-3 " style="">
             <div v-if="tour.images.length >= 1" class="col-lg-3 col-md-4 col-sm-12 order-1">
                 <div class="container">
                     <swiper :effect="'cube'" :grabCursor="true" :cubeEffect="{
@@ -21,7 +21,7 @@
                 </div>
                 
             </div>
-            <div :class="tour.images.length >= 1?'col-lg-9 col-md-8':'col-lg-12 col-md-12'" class="col-sm-12 order-2">
+            <div :class="tour.images.length >= 1?'col-lg-9 col-md-8':'col-lg-12 col-md-12'" class="col-sm-12 order-2 bg-white rounded-3 h5 pb-3" style="opacity:0.90">
                 <n-tabs type="line" trigger="hover" class="container">
                     <n-tab-pane name="oasis" :tab="$t('Description')">
                         <div class="container h-50 overflow-auto border rounded mb-1">
@@ -68,21 +68,21 @@
     </section>
     <br>
     <section class="days">
-        <div class="container mt-3">
+        <div class="container  bg-white  rounded-3 h4" style="opacity:0.90">
             <div class="overflow-auto p-3">
                 <n-steps vertical v-model:current="current" :status="currentStatus" class="overflow m-3">
                     <n-step v-for="day in days" :key='day.id' :title="'-'+$t('Day')">
-                        <div class="">
+                        <div>
                             <div class=" container border border-success rounded">
                                 {{ $langBody(day) }}
                             </div>
                             <div v-if="day.places.length > 0">
                                 <div>
-                                    <div class=" border-start border-success rounded">
-                                        <h5 class="border-bottom">{{$t('Places')}}</h5>
-                                        <p v-for="(place, index) in day.places" :key="place.id">
+                                    <div class=" border border-success rounded mt-2">
+                                        <h5 class="border-bottom h4 bg-success rounded">{{$t('Places')}}</h5>
+                                        <p v-for="(place, index) in day.places" :key="place.id" class="lead border-bottom">
                                             <Link :href="route('place.show', place.id)" method="get" as="button">{{
-                                               index+1 + ')'+' '+ $langName(place) }}</Link>
+                                               index+1 + '-'+' '+ $langName(place) }}</Link>
                                         </p>
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@
             </div>
         </div>
     </section>
-    <section class="apply container">
+    <section class="apply container bg-white rounded-3" style="opacity:0.90">
         <n-alert v-if="form.wasSuccessful" :title="$t('SuccessfullyApplied')" type="success" closable>
             {{$t('ThanksForChoosingUs')}}
         </n-alert>
@@ -101,6 +101,7 @@
             {{$t('ApplyForThisTour')}}
         </n-button>
     </section>
+    <div class="container" style="height: 5px;"></div>
     <n-modal v-model:show="showModal" preset="dialog" title="Please submit your information" negative-text="Cancel">
         <div class="container">
             <n-form :label-width="80" :model="form" :rules="rules">

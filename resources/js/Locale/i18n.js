@@ -67,7 +67,7 @@ const i18n = createI18n({
             WhatsApp: "WhatsApp",
             Wechat: "Wechat",
             TkmPhoneNumber: "Tkm Phone Number",
-            ChinesePhoneNumber: "Chinese phone number",
+            ChinesePhoneNumber: "中国电话号码",
             UsaPhoneNumber: "USA phone number",
             ThanksForChoosingUs: 'Thanks for choosing us. Our assistant will contact you via email.',
             Message: 'Message',

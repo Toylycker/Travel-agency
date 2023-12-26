@@ -1,10 +1,10 @@
 <template>
-    <div class="container-fluid mt-3 pt-3 text-center justify-content-center align-items-center bg-image"
+    <div class="container-fluid pt-3 text-center justify-content-center align-items-center bg-image"
         :class="{ 'tourleft': upplace == 'left', 'tourright': upplace == 'right' }"
         :style="{backgroundImage:`url(${'img/tour_background.png'})`}"
         style="background-size: contain;background-position: center;  background-repeat: no-repeat;" id="tour">
-        <div class="d-md-flex  mb-3">
-            <transition class="order-md-0 order-sm-2" :appear="true" name="left">
+        <div class="d-md-flex ">
+            <transition class="order-md-0 order-sm-2 bg-white" :appear="true" name="left">
                 <div @mouseover="getleft($event)" @mouseleave="leaveCursor($event)" id="left"
                     class="col-md-6 col-lg-4 mr-3  shadow rounded-3 overflow-hidden" :class="'float'"
                     style="border-bottom-left-radius: 20px; height: 170px;text-align: left;">

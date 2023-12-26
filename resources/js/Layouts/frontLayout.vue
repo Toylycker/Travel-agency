@@ -1,6 +1,6 @@
 <template>
   <Nav class='sticky-top' />
-  <div class="container-fluid min-vh-100">
+  <div class="container-fluid min-vh-100 " style="background-image:url('/img/flag.png'); background-size:auto;">
     <div :class="{ 'container-xxl g-0':$page.component != 'front/Welcome'&&$page.component != 'front/ContactUs'?true:false}">
       <slot></slot>
     </div>

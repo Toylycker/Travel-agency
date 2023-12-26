@@ -13,11 +13,13 @@
                         :options="showlocations" />
                     <n-select class="d-none d-sm-block" v-model:value="category" :label-field="$i18n.locale == 'eng'?'name':'name_cn'" value-field="name" filterable
                         :options="showcategories" />
-                    <n-input v-model:value="vsearch" type="text" placeholder="search..." clearable>
-                        <template #clear-icon>
-                            <n-icon :component="TextClearFormatting16Regular" />
-                        </template>
-                    </n-input>
+                        <bg-white>
+                            <n-input v-model:value="vsearch" type="text" placeholder="search..." clearable>
+                                <template #clear-icon >
+                                    <n-icon :component="TextClearFormatting16Regular" />
+                                </template>
+                            </n-input>
+                        </bg-white>
                     <n-button round @click="searchposts()" :disabled="vsearch == null && category ==null && location==null">
                         <span v-show="vsearch != null || category !=null||location!=null">{{potentialSearchResultLength}}</span>
                         <template #icon>

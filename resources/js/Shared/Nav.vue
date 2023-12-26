@@ -18,10 +18,10 @@
               {{ $t('Places') }}
             </Link>
           </li>
-          <!-- <li class="nav-item">
+          <li class="nav-item">
             <Link class="nav-link" :class="{ 'active': $page.component == 'front/Tours' }" :href="route('tours')"
               tabindex="-1" aria-disabled="true">{{ $t('Tours') }}</Link>
-          </li> -->
+          </li>
           <!-- <li class="nav-item">
             <Link class="nav-link" :class="{ 'active': $page.component == 'front/Blog' }" :href="route('blog')">Blog
             </Link>
