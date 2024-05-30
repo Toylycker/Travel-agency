@@ -73,7 +73,16 @@ const i18n = createI18n({
             Message: 'Message',
             Location: 'Location',
             SuccessfullyApplied: 'Successfully applied',
-            AssistantWillContact: 'Thanks for your message. Our assistant will contact you via email.'
+            AssistantWillContact: 'Thanks for your message. Our assistant will contact you via email.',
+            selected: 'selected',
+            select: 'select',
+            customTourChoosingExplanation: "You can select the places you desire and request a quote for a tour, leaving us your email.",
+            customTour: 'Custom Tour',
+            Done: 'Done',
+            doneChoosing: 'Done choosing? you can press done and fill needy info so that we can get back to you.',
+            selectedPlacesAre: 'selected places are',
+            submitYourInformation: 'Please submit your information'
+
         },
         cn: {
             Welcome: '欢迎',
@@ -143,7 +152,16 @@ const i18n = createI18n({
             Message: '信息',
             Location: '地址',
             SuccessfullyApplied: '已成功应用',
-            AssistantWillContact: '谢谢你的留言。我们的助理将通过电子邮件与您联系。'
+            AssistantWillContact: '谢谢你的留言。我们的助理将通过电子邮件与您联系。',
+            select: '选择',
+            selected: '已选择',
+            customTourChoosingExplanation: "你可以选择你想去的地方，并请求旅游报价，留下你的电子邮件。",
+            customTour: '定制旅游',
+            Done: '完成',
+            doneChoosing: '选好了吗？您可以点击 完成，然后填写所需信息，这样我们就可以与您联系了。',
+            selectedPlacesAre: '选择的地点',
+            submitYourInformation: '请提交您的信息'
+
         }
     }
 });

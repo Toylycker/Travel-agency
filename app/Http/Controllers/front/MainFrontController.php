@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\Category;
 use App\Models\Country;
+use App\Models\CustomTour;
 use App\Models\Day;
 use App\Models\Hotel;
 use App\Models\Image;
@@ -62,7 +63,8 @@ class MainFrontController extends Controller
             'categories'=>Category::get(),
             'locations'=>$locations,
             'show' => $places->count()>0?true:false,
-            'potentialSearchResultLength' =>$request->count?$request->count:null
+            'potentialSearchResultLength' =>$request->count?$request->count:null,
+            'countries' => Country::get()
         ]);
     }
 
@@ -232,6 +234,28 @@ class MainFrontController extends Controller
                 'ip'=>$request->ip()
             ]
         );
+        return redirect()->back();
+    }
+
+    public function customTour(Request $request){
+        $request->validate([
+            'country_id'=>['required', 'numeric'],
+            'email'=>['required', 'email'],
+            'places'=>['required', 'array'],
+            'places.*'=>['required', 'numeric'],
+            'note'=>['nullable', 'max:300'],
+        ]);
+
+        $customTour = CustomTour::create(
+            [
+                'country_id'=>$request->country_id,
+                'email'=>$request->email,
+                'note'=>$request->note,
+                'ip'=>$request->ip()
+            ]
+        );
+
+        $customTour->places()->attach($request->places);
         return redirect()->back();
     }
 }

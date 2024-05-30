@@ -1,27 +1,54 @@
 <template>
 
     <Head title="Places" />
+    <n-alert v-if="form.wasSuccessful" :title="$t('SuccessfullyApplied')" type="success" closable>
+            {{$t('ThanksForChoosingUs')}}
+        </n-alert>
 
     <div class="d-flex justify-content-between mb-3 g-0">
         <div class="">
             <h1>{{ $t('Places') }}</h1>
+            <div class="bg-white container rounded-3 p-1">
+                <div class="d-flex">
+                    <button type="button" class="btn  btn-info btn-sm " @click="customTourStore.toggleMode">
+                        {{
+                            customTourStore.selection_mode ? $t('Places')+' '+ customTourStore.places.length : $t('customTour') }}
+                    </button>
+                    <n-tooltip v-if="!customTourStore.selection_mode" trigger="hover">
+                        <template #trigger>
+                            <n-button dashed class="ml-1" circle type="warning"> ? </n-button>
+                        </template>
+                        {{ $t('customTourChoosingExplanation') }}
+                    </n-tooltip>
+                    <n-tooltip v-if="customTourStore.selection_mode" trigger="hover">
+                        <template #trigger>
+                            <n-button @click="showModal=true" dashed class="ml-1" circle type="success"> {{$t('Done')}} </n-button>
+                        </template>
+                        {{$t('doneChoosing')}}
+                    </n-tooltip>
+                </div>
+            </div>
         </div>
         <div class="d-flex">
             <div class="mx-3">
                 <n-input-group class="mt-3 d-flex">
-                    <n-select class="d-none d-sm-block" v-model:value="location" label-field="name" value-field="id" filterable
-                        :options="showlocations" />
-                    <n-select class="d-none d-sm-block" v-model:value="category" :label-field="$i18n.locale == 'eng'?'name':'name_cn'" value-field="name" filterable
+                    <n-select class="d-none d-sm-block" v-model:value="location" label-field="name" value-field="id"
+                        filterable :options="showlocations" />
+                    <n-select class="d-none d-sm-block" v-model:value="category"
+                        :label-field="$i18n.locale == 'eng' ? 'name' : 'name_cn'" value-field="name" filterable
                         :options="showcategories" />
-                        <bg-white>
-                            <n-input v-model:value="vsearch" type="text" placeholder="search..." clearable>
-                                <template #clear-icon >
-                                    <n-icon :component="TextClearFormatting16Regular" />
-                                </template>
-                            </n-input>
-                        </bg-white>
-                    <n-button round @click="searchposts()" :disabled="vsearch == null && category ==null && location==null">
-                        <span v-show="vsearch != null || category !=null||location!=null">{{potentialSearchResultLength}}</span>
+                    <div>
+                        <n-input v-model:value="vsearch" type="text" placeholder="search..." clearable>
+                            <template #clear-icon>
+                                <n-icon :component="TextClearFormatting16Regular" />
+                            </template>
+                        </n-input>
+                    </div>
+                    <n-button round @click="searchposts()"
+                        :disabled="vsearch == null && category == null && location == null">
+                        <span v-show="vsearch != null || category != null || location != null">{{
+                            potentialSearchResultLength
+                            }}</span>
                         <template #icon>
                             <n-icon :component="Search16Regular">
                             </n-icon>
@@ -34,12 +61,12 @@
 
     <div v-if="show">
         <transition-group tag="div" name="plist" :appear="true" @before-enter="beforeEnter" @enter="enter">
-            <Place @click="showPLace(place.id)" class="place" v-for="(place, index) in places.data" :data-index="index" :key="place.id"
-                :place="place" :even="(index % 2 === 0)?true :false"></Place>
+            <Place class="place" v-for="(place, index) in places.data" :data-index="index" :key="place.id"
+                :place="place" :even="(index % 2 === 0) ? true : false"></Place>
         </transition-group>
 
         <!-- Paginator  -->
-                <Pagination :links='places.links' />
+        <Pagination :links='places.links' />
     </div>
 
     <div v-else class="text-center">
@@ -47,22 +74,62 @@
         <img :src="'img/noMatch.png'" class="img-fluid rounded-start" alt="..." style="object-fit: contain;">
     </div>
 
+    <n-modal v-model:show="showModal" preset="dialog" :title="$t('submitYourInformation')" negative-text="Cancel">
+        <div class="container">
+            <div class="shadow container rounded-3 p-1 my-2"> {{$t('selectedPlacesAre')}} {{ customTourStore.places.length }}</div>
+            <n-form :label-width="80" :model="form" :rules="rules">
+                <n-form-item :label="$t('WhereAreYouFrom')" path="country_id">
+                    <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.country_id" filterable
+                        placeholder="Please Select Your Country" :options="countries" />
+                </n-form-item>
+                <n-form-item :label="$t('Email')" path="email">
+                    <n-auto-complete v-model:value="form.email" :options="CompleteOptions" placeholder="Email" />
+                </n-form-item>
+                <n-form-item :label="$t('AnyNotesOrQuestions')" path="note">
+                    <n-input type="textarea" maxlength="300" show-count clearable v-model:value="form.note"
+                        placeholder="" />
+                </n-form-item>
+            </n-form>
+            <n-button
+                @click="form.post(route('customTour.store'), { onSuccess: () => { 
+                    showModal = false; 
+                    customTourStore.toggleMode();
+                    form.reset('country_id', 'email', 'note');
+                    form.places = storedPlaces;
+                     } })"
+                class="w-100" ghost type="success"
+                :disabled="form.country_id == null || form.country_id == '' || form.email == null || form.email == '' || form.places.length < 1 || form.processing">
+                {{$t('Submit')}}
+            </n-button>
+            <n-alert class="my-2" v-if="Object.keys($page.props.errors).length != 0" title="Errors" type="error" closable>
+                <ul>
+                    <li v-for="error in $page.props.errors" :key="error.name">{{ error }}</li>
+                </ul>
+            </n-alert>
+        </div>
+    </n-modal>
+
 
 
 </template>
 
 <script setup>
 import { Head, Link } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/inertia-vue3';
 import Place from '@/Shared/Place.vue';
 import Pagination from '@/Shared/Pagination.vue';
 import { computed, onMounted, ref, TransitionGroup, watch } from "vue";
 import { Inertia } from '@inertiajs/inertia';
 import gsap from 'gsap';
-import { NSelect, NInput, NInputGroup, NIcon, NButton } from 'naive-ui';
+import { NInput, NInputGroup, NIcon, NButton, NTooltip, NProgress, NSteps, NStep, NTabs, NTabPane, NModal, NForm, NFormItem, NSelect, NAutoComplete, NInputNumber, NDatePicker, NAlert  } from 'naive-ui';
 import { TextClearFormatting16Regular, Search16Regular } from '@vicons/fluent';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useCustomTourStore } from '@/Stores/customTourStore';
 gsap.globalTimeline.play()
 gsap.registerPlugin(ScrollTrigger);
+
+const customTourStore = useCustomTourStore()
+const storedPlaces =  computed(() => {return customTourStore.places});
 
 let props = defineProps(
     [
@@ -74,13 +141,48 @@ let props = defineProps(
         'show',
         'locations',
         'location',
-        'potentialSearchResultLength'
-]
+        'potentialSearchResultLength',
+        'countries'
+    ]
 )
+let onlyAllowNumber = (value) => !value || /^\d+$/.test(value);
+let onlyLetter = (value) => !value || /^[a-zA-Z]+$/.test(value);
+const rules = {
+    'country_id': {
+        type: 'number',
+        required: true,
+        message: 'Please select your country',
+        trigger: ['blur', 'change']
+    },
+    'email': {
+        required: true,
+        message: 'Please input your email',
+        trigger: 'blur'
+    },
+};
+
+const showModal = ref(false);
+const form = useForm({
+    'country_id': null,
+    'email': '',
+    'note': null,
+    'places': storedPlaces
+});
+
+const CompleteOptions = computed(() => {
+    return ['@gmail.com', '@yandex.ru', '@163.com', '@qq.com'].map((suffix) => {
+        const prefix = form.email.split('@')[0]
+        return {
+            label: prefix + suffix,
+            value: prefix + suffix
+        };
+    });
+});
+
 
 let vsearch = ref(props.search);
 let category = ref(props.category);
-let location = ref(props.location?props.location.id:props.location);
+let location = ref(props.location ? props.location.id : props.location);
 
 
 let categoriesWithAll = ref([]);
@@ -97,19 +199,13 @@ const showlocations = computed(() => {
     return locationWithAll;
 })
 
-let showPLace = (id)=>{
-    // console.log('clicked');
-    Inertia.get('/places/show/'+id);
+
+function searchposts() {
+    Inertia.get('/places', { search: vsearch.value, category: category.value, location: location.value, count: props.potentialSearchResultLength }, { replace: true });
 }
 
-function searchposts(){
-    Inertia.get('/places', { search: vsearch.value, category: category.value, location:location.value, count:props.potentialSearchResultLength }, { replace: true });
-    console.log(category.value + '/////'+vsearch.value);
-}
-
-watch([vsearch, category, location], ([newsearch, newcategory, newlocation], [prevsearch,  prevcategory, prevlocation], ) => {
-    console.log(newsearch+''+newcategory+''+newlocation);
-    Inertia.post('/places', { search: newsearch, category: newcategory, location:newlocation }, { preserveState: true, only: ['potentialSearchResultLength'], replace: true });
+watch([vsearch, category, location], ([newsearch, newcategory, newlocation], [prevsearch, prevcategory, prevlocation],) => {
+    Inertia.post('/places', { search: newsearch, category: newcategory, location: newlocation }, { preserveState: true, only: ['potentialSearchResultLength'], replace: true });
 })
 
 

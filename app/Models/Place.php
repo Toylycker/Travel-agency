@@ -15,6 +15,11 @@ class Place extends Model
         return $this->belongsTo(Location::class);
     }
 
+    public function customTour()
+    {
+        return $this->belongsToMany(CustomTour::class, 'custom_tour_places');
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_places');

@@ -102,7 +102,7 @@
         </n-button>
     </section>
     <div class="container" style="height: 5px;"></div>
-    <n-modal v-model:show="showModal" preset="dialog" title="Please submit your information" negative-text="Cancel">
+    <n-modal v-model:show="showModal" preset="dialog" :title="$t('submitYourInformation')" negative-text="Cancel">
         <div class="container">
             <n-form :label-width="80" :model="form" :rules="rules">
                 <n-form-item :label="$t('Name')" path="name">

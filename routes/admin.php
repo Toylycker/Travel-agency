@@ -12,11 +12,16 @@ use App\Http\Controllers\admin\SubjectController;
 use App\Http\Controllers\admin\TourController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\CustomTourController;
 use App\Models\Text;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function(){
+Route::prefix('admin')
+->middleware(['auth', 'admin'])
+->name('admin.')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/download_visitors_log', [DashboardController::class, 'downloadVisitorsLog'])->name('download_visitors_log');
+    Route::get('/delete_visitors_log', [DashboardController::class, 'deleteVisitorsLog'])->name('delete_visitors_log');
 
     Route::put('/tours/{id}/edit/name', [TourController::class, 'putName'])->name('tours.edit.name');
     Route::put('/tours/{id}/edit/name_cn', [TourController::class, 'putName_cn'])->name('tours.edit.name_cn');
@@ -45,6 +50,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     'hotels'=> HotelController::class,
     'users'=> UserController::class]);
     Route::get('/applications/index', [ApplicationController::class, 'index'])->name('applications.index');
+    Route::get('/customTour/index', [CustomTourController::class, 'index'])->name('customTour.index');
     Route::get('/messages/index', [ReceivedMessageController::class, 'index'])->name('messages.index');
 
     Route::get('/subjects/index', [SubjectController::class, 'index'])->name('subjects.index');

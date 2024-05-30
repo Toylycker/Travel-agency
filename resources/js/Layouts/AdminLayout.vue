@@ -94,6 +94,17 @@
           </svg>
           </Link>
         </li>
+        <li>
+          <Link :class="{ 'active': $page.component == 'admin/CustomApplications/index' }"
+            :href="route('admin.customTour.index')" class="nav-link py-3 border-bottom rounded-0" title="Custom Tours"
+            data-bs-toggle="tooltip" data-bs-placement="right">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-app"
+            viewBox="0 0 16 16">
+            <path
+              d="M11 2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h6zM5 1a4 4 0 0 0-4 4v6a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4V5a4 4 0 0 0-4-4H5z" />
+          </svg>
+          </Link>
+        </li>
         <!-- <li>
           <Link :class="{ 'active': $page.component == 'admin/Subjects/index' }"
             :href="route('admin.subjects.index')" class="nav-link py-3 border-bottom rounded-0" title="Applications"
