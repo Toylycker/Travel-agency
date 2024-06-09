@@ -1,5 +1,8 @@
 <template>
-    <Head :title="$t('Welcome')" />
+    <Head :title="$t('Welcome')">
+      <meta name="description" content="Welcome to our travel company! Discover the wonders of Turkmenistan with our expertly guided tours and personalized travel experiences. Plan your unforgettable journey today.">
+      <meta name="keywords" content="Turkmenistan travel, welcome to Turkmenistan, Turkmenistan tours, travel experiences, guided tours, explore Turkmenistan">
+    </Head>
     <header>
       <div class="text-white">{{$t('WelcomeToSunnyTurkmenistan')}}</div>
       <div><a class="text-wt" href="https://jahankeshde.ru" >{{$t('EnjoyTravellingWithUs')}}</a></div>

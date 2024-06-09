@@ -146,10 +146,12 @@
                 <input type="text" class="form-control my-2" v-model="form.texts[index].title_cn">
 
                 <label for="" class="form-label">body</label>
-                <input type="text" class="form-control my-2" v-model="form.texts[index].body">
+                <textarea type="text" class="form-control my-2" v-model="form.texts[index].body"></textarea>
+
 
                 <label for="" class="form-label">body_cn</label>
-                <input type="text" class="form-control my-2" v-model="form.texts[index].body_cn">
+                <textarea type="text" class="form-control my-2" v-model="form.texts[index].body_cn"></textarea>
+
 
                 <div class="container border border-success my-1 rounded mt-2">
                     <label for="exampleInputEmail1" class="form-label">images for text</label>

@@ -1,6 +1,9 @@
 <template>
 
-    <Head title="Places" />
+    <Head title="Places">
+      <meta name="description" content="Discover the top places to visit in Turkmenistan, including the ancient cities of Merv and Nisa, the stunning Darvaza Gas Crater, and the beautiful Köw Ata Underground Lake. Plan your adventure today!">
+      <meta name="keywords" content="Turkmenistan travel, places to visit in Turkmenistan, Merv, Nisa, Darvaza Gas Crater, Köw Ata Underground Lake, Turkmenistan tourism, Turkmenistan attractions">
+    </Head>
     <n-alert v-if="form.wasSuccessful" :title="$t('SuccessfullyApplied')" type="success" closable>
             {{$t('ThanksForChoosingUs')}}
         </n-alert>

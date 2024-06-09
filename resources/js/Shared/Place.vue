@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <div v-if="customTourStore.selection_mode" class="container rounded-3 p-1" :class="check?'bg-info':'bg-white'">
+        <div v-if="customTourStore.selection_mode" class="container rounded-3 p-1 col-lg-1 col-md-2 col-sm-2 col-4" :class="check?'bg-info':'bg-white'">
             <n-checkbox v-if="customTourStore.selection_mode" v-model:checked="check" :on-update:checked="checkExistenceOFId" :checked="true" :default-checked="check">
                 {{check?$t('selected'):$t('select')}}
             </n-checkbox>

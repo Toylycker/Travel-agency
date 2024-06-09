@@ -234,11 +234,11 @@
           <!-- <div class="bg-danger rounded mt-2" v-if="form.errors.days[index].title">{{
                     form.errors.days[index].title }}</div> -->
           <label for="exampleInputEmail1" class="form-label">body</label>
-          <input class="form-control" type="text" v-model="formdays.days[index].body">
+          <textarea class="form-control" type="text" v-model="formdays.days[index].body"></textarea>
           <!-- <div class="bg-danger rounded mt-2" v-if="form.errors.days[index].body">{{
                     form.errors.days[index].body }}</div> -->
           <label for="exampleInputEmail1" class="form-label">body_cn</label>
-          <input class="form-control" type="text" v-model="formdays.days[index].body_cn">
+          <textarea class="form-control" type="text" v-model="formdays.days[index].body_cn"></textarea>
           <!-- <div class="bg-danger rounded mt-2" v-if="form.errors.days[index].body_cn">{{
                     form.errors.days[index].body }}</div> -->
           <label for="exampleInputEmail1" class="form-label">places</label>

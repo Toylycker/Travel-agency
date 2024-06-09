@@ -142,6 +142,9 @@
                 <th>location</th>
                 <th>categories</th>
                 <th>texts</th>
+                <th>meta_title</th>
+                <th>meta_keywords</th>
+                <th>meta_description</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -172,6 +175,9 @@
           <n-dropdown trigger="hover" :options="place.days" @select="handleSelect" key-field="id" label-field="title">
             {{place.total_days}}</n-dropdown>
         </td> -->
+        <td>{{place.meta_title}}</td>
+        <td>{{place.meta_keywords}}</td>
+        <td>{{place.meta_description}}</td>
                 <td>
                     <Link @click="$inertia.delete(route('admin.places.destroy', place.id))" as="button"
                         class="btn btn-danger btn-sm w-100 my-2">Delete</Link>

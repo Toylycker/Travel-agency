@@ -25,7 +25,7 @@ class Tour extends Model
 
     public function applications()
     {
-        return $this->hasMany(Applicationay::class);
+        return $this->hasMany(Application::class);
     }
 
     public function notes(): BelongsToMany

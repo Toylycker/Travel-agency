@@ -1,5 +1,8 @@
 <template>
-    <Head title="Contact Us" />
+    <Head title="Contact Us" >
+        <meta name="description" content="Get in touch with our Jahankeshde travel experts. Contact us for personalized travel plans, inquiries, and support for your trip to Turkmenistan.">
+      <meta name="keywords" content="Turkmenistan travel contact, travel inquiries, Turkmenistan travel support, contact Turkmenistan travel agency, travel plans to Turkmenistan">
+    </Head>
     <div class="container-fluid d-flex justify-content-center align-items-center h-100 w-100" >
         <div class="row w-100">
             <n-page-header class="col-lg-6 col-sm-12 col-md-12 d-flex justify-content-center align-items-center mt-3">

@@ -1,6 +1,9 @@
 <template>
 
-    <Head title="Tours" />
+    <Head title="Tours" >
+    <meta name="description" content="Explore Turkmenistan with our guided tours. Discover ancient cities, natural wonders, and vibrant culture with our expertly curated tour packages. Book your adventure today!">
+    <meta name="keywords" content="Turkmenistan tours, guided tours Turkmenistan, Turkmenistan travel packages, explore Turkmenistan, Turkmenistan attractions, travel to Turkmenistan">
+    </Head>
     <div >
         <Tour @click="showTour(tour.id)" v-for="(tour, index) in tours" :key="tour.id" :tour="tour" :index="index" :data-index="index"/>
         <!-- <div class="container position-absolute bottom-0 start-25 my-3">

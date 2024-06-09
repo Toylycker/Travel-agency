@@ -1,4 +1,8 @@
 <template>
+    <Head :title="'Place - '+place.name" >
+    <meta name="description" :content="place.meta_description">
+      <meta name="keywords" :content="place.meta_keywords">
+    </Head>
     <div v-if="place.videos.length>0" class="container-fluid text-center border my-3">
         <h1>PLace For Video</h1>
     </div>
@@ -44,8 +48,7 @@
                     </n-carousel>
                 </div>
                 <div >
-                    <h4>
-                        {{ $langBody(text) }}
+                    <h4 v-html="$langBody(text)">
                     </h4>
                 </div>
             </div>

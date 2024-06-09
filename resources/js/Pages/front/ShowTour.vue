@@ -1,4 +1,8 @@
 <template >
+    <Head :title="'Tour - '+tour.name" >
+    <meta name="description" :content="tour.meta_description">
+    <meta name="keywords" :content="tour.meta_keywords">
+    </Head>
     <section class="tour">
         <div v-if="tour.map != undefined && $i18n.locale == 'eng'" class="container rounded mt-3">
             <iframe :src='tour.map' width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
@@ -24,8 +28,8 @@
             <div :class="tour.images.length >= 1?'col-lg-9 col-md-8':'col-lg-12 col-md-12'" class="col-sm-12 order-2 bg-white rounded-3 h5 pb-3" style="opacity:0.90">
                 <n-tabs type="line" trigger="hover" class="container">
                     <n-tab-pane name="oasis" :tab="$t('Description')">
-                        <div class="container h-50 overflow-auto border rounded mb-1">
-                            {{ $langBody(tour)}}
+                        <div class="container h-50 overflow-auto border rounded mb-1" v-html="$langBody(tour)">
+                            
                         </div>
                         <div class="container h-50 overflow-auto border rounded">
                             <div class="row m-1">
@@ -73,8 +77,7 @@
                 <n-steps vertical v-model:current="current" :status="currentStatus" class="overflow m-3">
                     <n-step v-for="day in days" :key='day.id' :title="'-'+$t('Day')">
                         <div>
-                            <div class=" container border border-success rounded">
-                                {{ $langBody(day) }}
+                            <div class=" container border border-success rounded" v-html="$langBody(day)">
                             </div>
                             <div v-if="day.places.length > 0">
                                 <div>
@@ -160,6 +163,7 @@
 <script setup>
 import { NProgress, NSteps, NStep, NTabs, NTabPane, NButton, NModal, NForm, NFormItem, NInput, NSelect, NAutoComplete, NInputNumber, NDatePicker, NAlert } from 'naive-ui';
 import { Swiper, SwiperSlide } from "swiper/vue";
+import { Head, useForm } from '@inertiajs/inertia-vue3';
 import "swiper/css";
 import { ref, computed } from '@vue/runtime-core';
 import "swiper/css/effect-cube";

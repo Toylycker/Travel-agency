@@ -174,6 +174,9 @@
         <th>discount_datetime_end</th>
         <th>viewed</th>
         <th>recommended</th>
+        <th>meta_title</th>
+        <th>meta_keywords</th>
+        <th>meta_description</th>
         <th>actions</th>
       </tr>
     </thead>
@@ -193,6 +196,9 @@
         <td>{{tour.discount_datetime_end}}</td>
         <td>{{tour.viewed}}</td>
         <td>{{tour.recommended}}</td>
+        <td>{{tour.meta_title}}</td>
+        <td>{{tour.meta_keywords}}</td>
+        <td>{{tour.meta_description}}</td>
         <td>
           <Link @click="$inertia.delete(route('admin.tours.destroy', tour.id))" as="button"
             class="btn btn-danger btn-sm w-100 my-2">Delete</Link>
