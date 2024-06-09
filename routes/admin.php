@@ -17,7 +17,7 @@ use App\Models\Text;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')
-// ->middleware(['auth', 'admin'])
+->middleware(['auth', 'admin'])
 ->name('admin.')->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/download_visitors_log', [DashboardController::class, 'downloadVisitorsLog'])->name('download_visitors_log');
