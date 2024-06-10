@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NotifyAdmin;
 use App\Models\Application;
 use App\Models\Category;
 use App\Models\Country;
@@ -17,11 +18,13 @@ use App\Models\ReceivedMessage;
 use App\Models\Subject;
 use App\Models\Tour;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
 
 class MainFrontController extends Controller
 {
@@ -199,7 +202,11 @@ class MainFrontController extends Controller
             'message'=>'string|required'
         ]);
 
-        ReceivedMessage::create(['email'=>$request->email, 'message'=>$request->message]);
+        $received_message = ReceivedMessage::create(['email'=>$request->email, 'message'=>$request->message]);
+        try {
+            Mail::to('jahankeshdetm@gmail.com')->send(new NotifyAdmin($received_message));
+        } catch (Exception $e) {
+        }
 
         return Redirect()->back();
 
@@ -234,10 +241,15 @@ class MainFrontController extends Controller
                 'ip'=>$request->ip()
             ]
         );
+
+        try {
+            Mail::to('jahankeshdetm@gmail.com')->send(new NotifyAdmin($application));
+        } catch (Exception $e) {}
+
         return redirect()->back();
     }
 
-    public function customTour(Request $request){
+    function customTour(Request $request){
         $request->validate([
             'country_id'=>['required', 'numeric'],
             'email'=>['required', 'email'],
@@ -255,7 +267,12 @@ class MainFrontController extends Controller
             ]
         );
 
+        
         $customTour->places()->attach($request->places);
+        try {
+            Mail::to('jahankeshdetm@gmail.com')->send(new NotifyAdmin($customTour));
+        } catch (Exception $e) {}
+
         return redirect()->back();
     }
 }
