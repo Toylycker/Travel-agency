@@ -1,4 +1,11 @@
 <template>
+  <!-- Spinner (shown initially) -->
+  <div v-if="!contentVisible" class="d-flex justify-content-center align-items-center vh-100">
+      <div class="spinner-border text-primary big-thick-spinner" style="width: 5rem; height: 5rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  <div v-show="contentVisible">
     <Head :title="$t('Welcome')">
       <meta name="description" content="Welcome to our travel company! Discover the wonders of Turkmenistan with our expertly guided tours and personalized travel experiences. Plan your unforgettable journey today.">
       <meta name="keywords" content="Turkmenistan travel, welcome to Turkmenistan, Turkmenistan tours, travel experiences, guided tours, explore Turkmenistan">
@@ -143,16 +150,22 @@
         </div>
       </div>
     </section>
+  </div>
 </template>
 
 <script setup>
 import { Head } from '@inertiajs/inertia-vue3';
-import Place from '@/Shared/Place.vue';
 import gsap from "gsap";
-import { Sine } from 'gsap/all';
 import { Observer } from 'gsap/Observer';
 import { onMounted, onBeforeUnmount, onUnmounted, ref } from 'vue';
-import {NSpin} from 'naive-ui';
+
+// Ref to track visibility of content
+const contentVisible = ref(false);
+
+// Delay the visibility of content by 3 seconds
+setTimeout(() => {
+  contentVisible.value = true;
+}, 3000);
 
 gsap.registerPlugin(Observer);
 let observer = 0;
@@ -253,29 +266,16 @@ export default { layout: FrontLayout }
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap");
 
+.big-thick-spinner {
+  width: 10rem; /* Bigger spinner */
+  height: 10rem; /* Bigger spinner */
+  border-width: 1rem; /* Thicker spinner */
+  color: #007bff; /* Customize color, you can change to another color */
+}
+
 $bg-gradient: linear-gradient(180deg,
     rgba(0, 0, 0, 0.6) 0%,
     rgba(0, 0, 0, 0.3) 100%);
-
-// * {
-// box-sizing: border-box;
-// user-select: none;
-// }
-
-// a {
-//   color: #fff;
-//   text-decoration: none;
-// }
-
-// body {
-// margin: 0;
-// padding: 0;
-// height: 100vh;
-// color: white;
-// background: black;
-// font-family: "Cormorant Garamond", serif;
-// text-transform: uppercase;
-// }
 
 h2 {
   font-size: clamp(1rem, 5vw, 5rem);
@@ -308,7 +308,6 @@ section {
   // top: 0;
   left: 0;
   position: fixed;
-  visibility: hidden;
 
   .outer,
   .inner {

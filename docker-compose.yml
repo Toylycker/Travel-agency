@@ -4,7 +4,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.app
     container_name: jahankeshde_app
     restart: unless-stopped
     working_dir: /var/www/html
@@ -34,20 +34,21 @@ services:
       - jahankeshde_network
 
   node:
-      ports:
-          - "5173:5173"
-      image: node:22.3.0
-      container_name: jahankeshde_node
-      working_dir: /var/www/html
-      volumes:
-        - ./:/var/www/html
-      depends_on:
-        - app
-      networks:
-        - jahankeshde_network
-      command: "npm install && npm run dev"
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+    container_name: jahankeshde_node
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "5173:5173"
+    depends_on:
+      - app
+    networks:
+      - jahankeshde_network
+    command: "npm install && npm run dev"
   
-  # phpMyAdmin service
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: jahankeshde_phpmyadmin
@@ -68,3 +69,4 @@ volumes:
 networks:
   jahankeshde_network:
     driver: bridge
+    

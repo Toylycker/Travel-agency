@@ -1,0 +1,14 @@
+# Use Node.js v22.3.0
+FROM node:22.3.0
+
+# Set the working directory
+WORKDIR /var/www/html
+
+# Update npm to version 10+
+RUN npm install -g npm@latest
+
+# Copy all files to the container
+COPY . .
+
+# Install dependencies and run the development server
+CMD ["npm", "install"] && ["npm", "run", "dev"]
