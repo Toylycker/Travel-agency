@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class NotifyAdmin extends Mailable
+class NotifyCustomTour extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -24,7 +24,7 @@ class NotifyAdmin extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Notify Admin',
+            subject: 'Jahankeshde.com-dan hat geldi',
         );
     }
 
@@ -32,8 +32,13 @@ class NotifyAdmin extends Mailable
     public function content()
     {
         return new Content(
-            view: 'notify_event',
-            with: ['data' => $this->data],
+            view: 'emails.notify_custom_tour',
+            with: [
+                'country_name'=> $this->data->country->name,
+                'email'=> $this->data->email,
+                'places'=> $this->data->places,
+                'note'=> $this->data->note,
+            ],
         );
     }
 

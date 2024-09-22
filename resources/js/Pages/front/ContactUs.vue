@@ -75,7 +75,7 @@
                     </n-gi>
                     <n-gi class="m-3">
                         <n-statistic :label="$t('Email') + '(1)'" />
-                        <a class="mx-2 s-hover" href="mailto:jahankeshde@gmail.com">
+                        <a class="mx-2 s-hover" href="mailto:jahankeshdetm@gmail.com">
                             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="currentColor"
                                 class="bi bi-envelope" viewBox="0 0 16 16">
                                 <path

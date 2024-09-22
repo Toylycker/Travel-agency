@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
-use App\Mail\NotifyAdmin;
+use App\Mail\NotifyContact;
+use App\Mail\NotifyCustomTour;
+use App\Mail\NotifyTourApplication;
 use App\Models\Application;
 use App\Models\Category;
 use App\Models\Country;
@@ -153,8 +155,7 @@ class MainFrontController extends Controller
         $location = $request->location?Location::findOrFail($request->location):null;
         $hotels = Hotel::with('images', 'rooms')->when($location, function ($query) use ($location){
             $query->where('location_id', $location->id);
-        })->
-        paginate(6)->withQueryString();
+        })->paginate(6)->withQueryString();
         $locations = Location::has('hotels')->get();
         return Inertia::render('front/Hotels', ['hotels'=>$hotels, 'locations'=>$locations, 'location'=>$location?$location->id:0]);
     }
@@ -204,8 +205,9 @@ class MainFrontController extends Controller
 
         $received_message = ReceivedMessage::create(['email'=>$request->email, 'message'=>$request->message]);
         try {
-            Mail::to('jahankeshdetm@gmail.com')->send(new NotifyAdmin($received_message));
+            Mail::to('jahankeshdetm@gmail.com')->send(new NotifyContact($received_message));
         } catch (Exception $e) {
+            return $e;
         }
 
         return Redirect()->back();
@@ -243,8 +245,10 @@ class MainFrontController extends Controller
         );
 
         try {
-            Mail::to('jahankeshdetm@gmail.com')->send(new NotifyAdmin($application));
-        } catch (Exception $e) {}
+            Mail::to('jahankeshdetm@gmail.com')->send(new NotifyTourApplication($application));
+        } catch (Exception $e) {
+            return $e;
+        }
 
         return redirect()->back();
     }
@@ -270,8 +274,10 @@ class MainFrontController extends Controller
         
         $customTour->places()->attach($request->places);
         try {
-            Mail::to('jahankeshdetm@gmail.com')->send(new NotifyAdmin($customTour));
-        } catch (Exception $e) {}
+            Mail::to('jahankeshdetm@gmail.com')->send(new NotifyCustomTour($customTour));
+        } catch (Exception $e) {
+            return $e;
+        }
 
         return redirect()->back();
     }

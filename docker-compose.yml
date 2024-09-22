@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jahankeshde_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    networks:
+      - jahankeshde_network
+
+  db:
+    image: mysql:8.0
+    container_name: jahankeshde_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: jahankeshde
+      MYSQL_USER: developer
+      MYSQL_PASSWORD: 1234
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - jahankeshde_network
+
+  node:
+      ports:
+          - "5173:5173"
+      image: node:22.3.0
+      container_name: jahankeshde_node
+      working_dir: /var/www/html
+      volumes:
+        - ./:/var/www/html
+      depends_on:
+        - app
+      networks:
+        - jahankeshde_network
+      command: "npm install && npm run dev"
+  
+  # phpMyAdmin service
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: jahankeshde_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "8086:80"
+    depends_on:
+      - db
+    networks:
+      - jahankeshde_network
+
+volumes:
+  db_data:
+
+networks:
+  jahankeshde_network:
+    driver: bridge
