@@ -42,15 +42,12 @@ onMounted(() => {
     trackLinks: true,
     accurateTrackBounce: true
   });
-  console.log('initialized');
-  console.log('key is ', yandexMetricaId);
   
 
 // Track page view on every Inertia navigation
   Inertia.on('success', (event) => {
     const url = event.detail.page.url;
     const title = 'needs to be configured later';
-    console.log('tracked');
     
     // Track the page URL and title after navigation
     ym(yandexMetricaId, "hit", url, { title: title });
