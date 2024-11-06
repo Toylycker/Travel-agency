@@ -6,12 +6,11 @@ services:
       context: .
       dockerfile: Dockerfile.app
     container_name: jahankeshde_app
-    restart: unless-stopped
     working_dir: /var/www/html
     volumes:
       - ./:/var/www/html
     ports:
-      - "80:80"
+      - "90:80"
     depends_on:
       - db
     networks:
