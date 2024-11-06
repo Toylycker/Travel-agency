@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/your-repo-url.git'
+                git branch: 'main', url: 'https://github.com/Toylycker/Travel-agency.git'
             }
         }
 
