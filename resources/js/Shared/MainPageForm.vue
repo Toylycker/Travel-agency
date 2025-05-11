@@ -4,12 +4,20 @@
     <n-alert
         v-if="showSuccess"
         type="success"
-        :title="t('Success')"
         closable
         @close="showSuccess = false"
         class="mb-3"
     >
         {{ t('ThanksForChoosingUs') }}
+    </n-alert>
+    <n-alert
+        v-if="showError"
+        type="error"
+        closable
+        @close="showError = false"
+        class="mb-3"
+    >
+        {{ t('error') }}
     </n-alert>
     <form @submit.prevent="submit" class="d-flex flex-column gap-3">
         <div class="form-group">
@@ -48,6 +56,7 @@ import { computed, ref } from "vue";
 
 const { t } = useI18n();
 const showSuccess = ref(false);
+const showError = ref(false);
 
 defineProps(['countries']);
 
@@ -69,16 +78,19 @@ const CompleteOptions = computed(() => {
 
 const submit = () => {
     form.post(route('welcomePageRequest'), {
+        preserveScroll: true,
         onSuccess: () => {
             showSuccess.value = true;
             form.reset();
-            // Hide success message after 3 seconds
             setTimeout(() => {
                 showSuccess.value = false;
             }, 3000);
         },
         onError: (errors) => {
-            console.error(errors);
+            showError.value = true;
+            setTimeout(() => {
+                showError.value = false;
+            }, 3000);
         }
     });
 };

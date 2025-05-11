@@ -295,14 +295,14 @@ class MainFrontController extends Controller
         // Get country name for the email
         $country = Country::find($validated['country_id']);
         
-        // Send email
-        Mail::to('jahankeshdetm@gmail.com')
-            ->send(new CustomTourRequest([
-                'country' => $country->name,
-                'email' => $validated['email'],
-                'note' => $validated['note'],
-            ]));
+            // Send email
+            Mail::to('jahankeshdetm@gmail.com')
+                ->send(new CustomTourRequest([
+                    'country' => $country->name,
+                    'email' => $validated['email'],
+                    'note' => $validated['note'],
+                ]));
 
-        return redirect()->back();
+            return redirect()->back();
     }
 }
