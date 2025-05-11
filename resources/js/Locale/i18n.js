@@ -110,6 +110,8 @@ const i18n = createI18n({
             'Modern capital with unique architecture': 'Modern capital with unique architecture',
             'The famous "Gates of Hell"': 'The famous "Gates of Hell"',
             'UNESCO World Heritage Site': 'UNESCO World Heritage Site',
+            'Darvaza Gas Crater': 'Darvaza Gas Crater',
+            'Ancient Merv': 'Ancient Merv',
         },
         cn: {
             Welcome: '欢迎',
@@ -216,6 +218,8 @@ const i18n = createI18n({
             'Modern capital with unique architecture': '独特建筑的现代首都',
             'The famous "Gates of Hell"': '著名的"地狱之门"',
             'UNESCO World Heritage Site': '联合国教科文组织世界遗产地',
+            'Darvaza Gas Crater': '达尔瓦扎天然气坑',
+            'Ancient Merv': '古代梅尔夫',
         }
     }
 });

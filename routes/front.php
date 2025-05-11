@@ -22,7 +22,8 @@ Route::get('/places/show/{id}', [MainFrontController::class, 'showplace'])->name
 // Route::get('/blog/show/{id}', [MainFrontController::class, 'showpost'])->name('blog.show');
 
 Route::post('/application/store', [MainFrontController::class, 'storeApplication'])->name('application.store')->middleware('track.visits');
-Route::post('/customTour/store', [MainFrontController::class, 'customTour'])->name('customTour.store')->middleware('track.visits');
+Route::post('/custom-tour/store', [MainFrontController::class, 'customTour'])->name('customTour.store')->middleware('track.visits');
+Route::post('/welcome-page-request', [MainFrontController::class, 'submitWelcomePageRequest'])->name('welcomePageRequest');
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');

@@ -27,6 +27,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\CustomTourRequest;
 
 class MainFrontController extends Controller
 {
@@ -279,6 +280,28 @@ class MainFrontController extends Controller
         } catch (Exception $e) {
             return $e;
         }
+
+        return redirect()->back();
+    }
+
+    public function submitWelcomePageRequest(Request $request)
+    {
+        $validated = $request->validate([
+            'country_id' => 'required|exists:countries,id',
+            'email' => 'required|email',
+            'note' => 'required|string|min:10',
+        ]);
+
+        // Get country name for the email
+        $country = Country::find($validated['country_id']);
+        
+        // Send email
+        Mail::to('jahankeshdetm@gmail.com')
+            ->send(new CustomTourRequest([
+                'country' => $country->name,
+                'email' => $validated['email'],
+                'note' => $validated['note'],
+            ]));
 
         return redirect()->back();
     }

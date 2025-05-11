@@ -1,6 +1,16 @@
 <template>
 <div class="form-container p-4 bg-white bg-opacity-90 rounded-3 shadow-lg mx-auto" style="width: min(500px, 95%);">
     <h2 class="text-center mb-4 fs-3">{{ t('Plan Your Dream Trip') }}</h2>
+    <n-alert
+        v-if="showSuccess"
+        type="success"
+        :title="t('Success')"
+        closable
+        @close="showSuccess = false"
+        class="mb-3"
+    >
+        {{ t('ThanksForChoosingUs') }}
+    </n-alert>
     <form @submit.prevent="submit" class="d-flex flex-column gap-3">
         <div class="form-group">
             <n-select 
@@ -23,7 +33,7 @@
                 :placeholder="t('Tell us about your travel requirements')" 
                 :autosize="{ minRows: 3, maxRows: 5 }" />
         </div>
-        <n-button type="primary" @click="submit" :loading="form.processing" class="submit-btn mt-2" style="opacity: 1 !important;">
+        <n-button type="primary" attr-type="submit" :loading="form.processing" class="submit-btn mt-2" style="color: white !important;">
             {{ t('Send Inquiry') }}
         </n-button>
     </form>
@@ -31,12 +41,14 @@
 </template>
 
 <script setup>
-import { NInputGroup, NSpace, NSelect, NAutoComplete, NInput, NButton } from 'naive-ui';
+import { NInputGroup, NSpace, NSelect, NAutoComplete, NInput, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { useForm } from '@inertiajs/inertia-vue3';
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
-const { t } = useI18n()
+const { t } = useI18n();
+const showSuccess = ref(false);
+
 defineProps(['countries']);
 
 const form = useForm({
@@ -56,9 +68,17 @@ const CompleteOptions = computed(() => {
 });
 
 const submit = () => {
-    form.post(route('customTour'), {
+    form.post(route('welcomePageRequest'), {
         onSuccess: () => {
+            showSuccess.value = true;
             form.reset();
+            // Hide success message after 3 seconds
+            setTimeout(() => {
+                showSuccess.value = false;
+            }, 3000);
+        },
+        onError: (errors) => {
+            console.error(errors);
         }
     });
 };
@@ -81,6 +101,7 @@ const submit = () => {
 
 :deep(.n-button) {
     font-weight: 600;
+    color: white !important;
 }
 
 @media (max-width: 768px) {
