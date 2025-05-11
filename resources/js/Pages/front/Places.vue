@@ -83,7 +83,7 @@
             <n-form :label-width="80" :model="form" :rules="rules">
                 <n-form-item :label="$t('WhereAreYouFrom')" path="country_id">
                     <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.country_id" filterable
-                        placeholder="Please Select Your Country" :options="countries" />
+                        :placeholder="t('selectedPlacesAre')" :options="countries" />
                 </n-form-item>
                 <n-form-item :label="$t('Email')" path="email">
                     <n-auto-complete v-model:value="form.email" :options="CompleteOptions" placeholder="Email" />
@@ -128,6 +128,9 @@ import { NInput, NInputGroup, NIcon, NButton, NTooltip, NProgress, NSteps, NStep
 import { TextClearFormatting16Regular, Search16Regular } from '@vicons/fluent';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useCustomTourStore } from '@/Stores/customTourStore';
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 gsap.globalTimeline.play()
 gsap.registerPlugin(ScrollTrigger);
 

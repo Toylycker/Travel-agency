@@ -32,7 +32,8 @@ class MainFrontController extends Controller
 {
     public function index()
     {
-        return Inertia::render('front/Welcome');
+        $countries = Country::get();
+        return Inertia::render('front/Welcome', compact(['countries']));
     }
 
     public function places(Request $request)

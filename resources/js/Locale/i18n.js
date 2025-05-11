@@ -81,7 +81,8 @@ const i18n = createI18n({
             Done: 'Done',
             doneChoosing: 'Done choosing? you can press done and fill needy info so that we can get back to you.',
             selectedPlacesAre: 'selected places are',
-            submitYourInformation: 'Please submit your information'
+            submitYourInformation: 'Please submit your information',
+            pleaseSelectYourCountry: 'Please Select Your Country'
 
         },
         cn: {
@@ -160,7 +161,8 @@ const i18n = createI18n({
             Done: '完成',
             doneChoosing: '选好了吗？您可以点击 完成，然后填写所需信息，这样我们就可以与您联系了。',
             selectedPlacesAre: '选择的地点',
-            submitYourInformation: '请提交您的信息'
+            submitYourInformation: '请提交您的信息',
+            pleaseSelectYourCountry: '请您选择您的国家'
 
         }
     }
