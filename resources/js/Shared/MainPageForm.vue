@@ -1,14 +1,37 @@
 <template>
-<div>
-    <n-input-group>
-        <n-select class="mb-2" :style="{ width: '33%' }" label-field="name" value-field="id" v-model:value="form.country_id" filterable
-            :placeholder="t('selectedPlacesAre')" :options="countries" />
-        <n-auto-complete v-model:value="form.email" :options="CompleteOptions" placeholder="Email" />
-    </n-input-group>
+<div class="form-container p-4 bg-white bg-opacity-90 rounded-3 shadow-lg mx-auto" style="width: min(500px, 95%);">
+    <h2 class="text-center mb-4 fs-3">{{ t('Plan Your Dream Trip') }}</h2>
+    <form @submit.prevent="submit" class="d-flex flex-column gap-3">
+        <div class="form-group">
+            <n-select 
+                v-model:value="form.country_id" 
+                label-field="name" 
+                value-field="id" 
+                filterable
+                :placeholder="t('Where are you from?')" 
+                :options="countries" />
+        </div>
+        <div class="form-group">
+            <n-auto-complete 
+                v-model:value="form.email" 
+                :options="CompleteOptions" 
+                :placeholder="t('Your Email')" />
+        </div>
+        <div class="form-group">
+            <n-input type="textarea" 
+                v-model:value="form.note" 
+                :placeholder="t('Tell us about your travel requirements')" 
+                :autosize="{ minRows: 3, maxRows: 5 }" />
+        </div>
+        <n-button type="primary" @click="submit" :loading="form.processing" class="submit-btn mt-2" style="opacity: 1 !important;">
+            {{ t('Send Inquiry') }}
+        </n-button>
+    </form>
 </div>
 </template>
+
 <script setup>
-import { NInputGroup, NSpace, NSelect,  NAutoComplete} from 'naive-ui';
+import { NInputGroup, NSpace, NSelect, NAutoComplete, NInput, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { computed } from "vue";
@@ -19,7 +42,7 @@ defineProps(['countries']);
 const form = useForm({
     'country_id': null,
     'email': '',
-    'note': null,
+    'note': '',
 });
 
 const CompleteOptions = computed(() => {
@@ -31,4 +54,47 @@ const CompleteOptions = computed(() => {
         };
     });
 });
+
+const submit = () => {
+    form.post(route('customTour'), {
+        onSuccess: () => {
+            form.reset();
+        }
+    });
+};
 </script>
+
+<style scoped>
+.form-container {
+    backdrop-filter: blur(10px);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+:deep(.n-input),
+:deep(.n-select),
+:deep(.n-auto-complete) {
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+:deep(.n-button) {
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        padding: 1.25rem !important;
+        margin: 0 1rem;
+    }
+    
+    .form-container h2 {
+        font-size: 1.25rem !important;
+    }
+
+    .form-group {
+        margin-bottom: 0.75rem;
+    }
+}
+</style>
