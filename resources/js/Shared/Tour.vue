@@ -9,16 +9,16 @@
         </div>
         
         <div class="tour-card__content">
-            <div class="tour-card__stats">
-                <div class="stat">
+            <div class="tour-card__stats row">
+                <div class="stat col-4">
                     <n-icon size="20"><calendar-outline/></n-icon>
                     <span>{{ tour.total_days }} {{ $t('TotalDays') }}</span>
                 </div>
-                <div class="stat">
+                <div class="stat col-4">
                     <n-icon size="20"><location-outline/></n-icon>
                     <span>{{ total_places_count }} {{ $t('VisitingPlaces') }}</span>
                 </div>
-                <div class="stat">
+                <div class="stat col-4">
                     <n-icon size="20"><cash-outline/></n-icon>
                     <span>{{ tour.tour_prices }}$</span>
                 </div>
@@ -26,7 +26,7 @@
             
             <p class="tour-card__description">{{ $langBody(tour) }}</p>
             
-            <n-button class="tour-card__button" type="primary" block>
+            <n-button class="tour-card__button bg-success text-white w-100" ghost>
                 {{ $t('ViewDetails') }}
             </n-button>
         </div>
@@ -103,9 +103,6 @@ const total_places_count = computed(() => {
 }
 
 .tour-card__stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
     margin-bottom: 1rem;
 }
 
@@ -134,8 +131,12 @@ const total_places_count = computed(() => {
 }
 
 @media (max-width: 768px) {
-    .tour-card__stats {
-        grid-template-columns: repeat(2, 1fr);
+    .stat {
+        font-size: 0.75rem;
+    }
+    
+    .stat span {
+        white-space: nowrap;
     }
 }
 </style>
