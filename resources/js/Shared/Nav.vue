@@ -48,8 +48,6 @@
 <script setup>
 import { useMainStore } from '@/Stores/mainStore';
 import { Link } from '@inertiajs/inertia-vue3';
-import { ref } from '@vue/runtime-core';
-import { useI18n } from 'vue-i18n'
 
 const mainStore = useMainStore()
 

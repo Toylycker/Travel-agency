@@ -15,7 +15,7 @@
               <h1 class="display-4 fw-bold mb-4">{{ $t('Discover Turkmenistan') }}</h1>
               <p class="lead mb-4">{{ $t('Experience the rich culture, stunning landscapes, and warm hospitality of Turkmenistan with our expertly crafted tours.') }}</p>
               <div class="d-flex gap-3">
-                <n-button type="primary" size="large" @click="scrollToSection('tours')">
+                <n-button type="primary" size="large" @click="Inertia.get(route('tours'))">
                   {{ $t('Explore Tours') }}
                 </n-button>
                 <n-button ghost type="primary" size="large" @click="scrollToSection('about')">
@@ -24,7 +24,9 @@
               </div>
             </div>
             <div class="col-lg-6 col-md-12 d-flex justify-content-center">
-              <MainPageForm :countries="countries" />
+              <div class="form-container w-100">
+                <MainPageForm :countries="countries" />
+              </div>
             </div>
           </div>
         </div>
@@ -264,9 +266,9 @@
     <!-- Footer Section -->
     <footer class="footer-section py-5 bg-success text-white">
       <div class="container">
-        <div class="row g-4">
+        <div class="row g-4 justify-content-center">
           <!-- Quick Links -->
-          <div class="col-lg-4 col-md-6">
+          <div class="col-lg-5 col-md-6">
             <h3 class="h4 mb-4">{{ $t('Quick Links') }}</h3>
             <ul class="list-unstyled footer-links">
               <li class="mb-3">
@@ -291,7 +293,7 @@
           </div>
 
           <!-- Contact Info -->
-          <div class="col-lg-4 col-md-6">
+          <div class="col-lg-5 col-md-6">
             <h3 class="h4 mb-4">{{ $t('Contact Information') }}</h3>
             <ul class="list-unstyled footer-contact">
               <li class="mb-3 d-flex align-items-center">
@@ -309,22 +311,6 @@
                 </a>
               </li>
             </ul>
-          </div>
-
-          <!-- Social Media -->
-          <div class="col-lg-4 col-md-12">
-            <h3 class="h4 mb-4">{{ $t('Connect With Us') }}</h3>
-            <div class="social-links d-flex gap-3">
-              <a href="https://www.instagram.com/jahankeshde_travell" class="social-link" target="_blank">
-                <i class="fab fa-instagram fa-2x"></i>
-              </a>
-              <a href="https://t.me/Jahankeshde" class="social-link" target="_blank">
-                <i class="fab fa-telegram fa-2x"></i>
-              </a>
-              <a href="https://wa.me/+99365013013" class="social-link" target="_blank">
-                <i class="fab fa-whatsapp fa-2x"></i>
-              </a>
-            </div>
           </div>
         </div>
 
@@ -371,7 +357,8 @@ export default { layout: FrontLayout }
 
 .feature-card {
   transition: transform 0.3s ease;
-  background-color: rgba(255, 255, 255, 0.85) !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
   
   &:hover {
     transform: translateY(-5px);
@@ -387,7 +374,8 @@ export default { layout: FrontLayout }
 }
 
 .about-section .col-lg-6 {
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .destination-card {
@@ -408,60 +396,12 @@ export default { layout: FrontLayout }
   }
 }
 
-.testimonial-card {
-  background-color: rgba(255, 255, 255, 0.85);
-  transition: transform 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-5px);
-  }
-}
-
-.tip-card {
-  background-color: rgba(255, 255, 255, 0.85);
-  transition: transform 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-5px);
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-section .hero-background {
-    height: auto !important;
-    min-height: 100vh;
-    padding: 2rem 0;
-  }
-
-  .destination-card {
-    height: 250px;
-  }
-
-  .testimonial-card, .tip-card {
-    margin-bottom: 1rem;
-  }
-}
-
-.testimonials-section {
-  background-color: #f8f9fa;
-  overflow: hidden;
-
-  .testimonial-bg-pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: radial-gradient(#e9ecef 2px, transparent 2px);
-    background-size: 30px 30px;
-    opacity: 0.3;
-  }
-}
-
 .testimonial-item {
   padding: 2rem;
   position: relative;
   transition: all 0.4s ease;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
 
   &:hover {
     transform: translateY(-10px);
@@ -490,20 +430,17 @@ export default { layout: FrontLayout }
 
 .left-testimonial {
   clip-path: polygon(0% 0%, 95% 0%, 100% 100%, 5% 100%);
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   box-shadow: -5px 5px 15px rgba(0,0,0,0.1);
 }
 
 .center-testimonial {
   clip-path: polygon(5% 0%, 95% 0%, 100% 95%, 0% 100%);
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   margin-top: 2rem;
 }
 
 .right-testimonial {
   clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
 }
 

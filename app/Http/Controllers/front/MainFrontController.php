@@ -295,9 +295,9 @@ class MainFrontController extends Controller
     public function submitWelcomePageRequest(Request $request)
     {
         $validated = $request->validate([
-            'country_id' => 'required|exists:countries,id',
+            'country_id' => 'nullable|exists:countries,id',
             'email' => 'required|email',
-            'note' => 'required|string|min:10',
+            'note' => 'nullable|string|min:5|max:2000',
         ]);
 
         // Get country name for the email

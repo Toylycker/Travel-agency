@@ -41,7 +41,7 @@
                 :placeholder="t('Tell us about your travel requirements')" 
                 :autosize="{ minRows: 3, maxRows: 5 }" />
         </div>
-        <n-button type="primary" attr-type="submit" :loading="form.processing" class="submit-btn mt-2" style="color: white !important;">
+        <n-button class="bg-success" secondary type="primary" attr-type="submit" :loading="form.processing">
             {{ t('Send Inquiry') }}
         </n-button>
     </form>
@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { NInputGroup, NSpace, NSelect, NAutoComplete, NInput, NButton, NAlert } from 'naive-ui';
+import { NSelect, NAutoComplete, NInput, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { computed, ref } from "vue";
