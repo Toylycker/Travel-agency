@@ -33,144 +33,147 @@
       </div>
     </div>
 
-    <!-- Features Section -->
-    <div class="features-section py-5 bg-light">
-      <div class="container">
-        <div class="row g-4">
-          <div class="col-md-4">
-            <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
-              <i class="fas fa-map-marked-alt fa-3x text-success mb-3"></i>
-              <h3 class="h4 mb-3">{{ $t('Customized Tours') }}</h3>
-              <p>{{ $t('Create your perfect itinerary with our personalized tour planning service.') }}</p>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
-              <i class="fas fa-users fa-3x text-success mb-3"></i>
-              <h3 class="h4 mb-3">{{ $t('Expert Guides') }}</h3>
-              <p>{{ $t('Travel with knowledgeable local guides who bring the destination to life.') }}</p>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
-              <i class="fas fa-hotel fa-3x text-success mb-3"></i>
-              <h3 class="h4 mb-3">{{ $t('Quality Accommodations') }}</h3>
-              <p>{{ $t('Stay in carefully selected hotels that offer comfort and authentic experiences.') }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- About Section -->
-    <div id="about" class="about-section py-5">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-6 mb-4 mb-lg-0">
-            <img src="/img/ashgabat/Ashgabat.jpeg" alt="About Turkmenistan" class="img-fluid rounded-3 shadow">
-          </div>
-          <div class="col-lg-6 p-4 rounded-3">
-            <h2 class="display-5 mb-4">{{ $t('Why Choose Us') }}</h2>
-            <div class="mb-4">
-              <h4><i class="fas fa-check-circle text-success me-2"></i>{{ $t('Local Expertise') }}</h4>
-              <p>{{ $t('Our team consists of experienced local guides with deep knowledge of Turkmenistan.') }}</p>
-            </div>
-            <div class="mb-4">
-              <h4><i class="fas fa-check-circle text-success me-2"></i>{{ $t('Personalized Service') }}</h4>
-              <p>{{ $t('We tailor each tour to match your interests, preferences, and travel style.') }}</p>
-            </div>
-            <div class="mb-4">
-              <h4><i class="fas fa-check-circle text-success me-2"></i>{{ $t('Cultural Immersion') }}</h4>
-              <p>{{ $t('Experience authentic local culture with our carefully curated activities and experiences.') }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Popular Destinations -->
-    <div id="destinations" class="destinations-section py-5 bg-light">
-      <div class="container">
-        <h2 class="text-center display-5 mb-5">{{ $t('Popular Destinations') }}</h2>
-        <div class="row g-4">
-          <div v-for="tour in popularTours" :key="tour.id" class="col-md-4">
-            <div class="destination-card position-relative rounded-3 overflow-hidden">
-              <img :src="'/storage/tours/' + tour.main_image" :alt="tour.name" class="img-fluid w-100">
-              <div class="destination-overlay position-absolute w-100 h-100 top-0 start-0 d-flex align-items-end p-3">
-                <div class="text-white">
-                  <h3 class="h4 mb-2">{{ tour.name }}</h3>
-                  <p class="mb-2">{{ $t('Duration') }}: {{ tour.total_days }} {{ $t('days') }}</p>
-                  <p class="mb-0">{{ $t('Price') }}: {{ tour.tour_prices }}</p>
-                  <n-button type="primary" size="small" class="mt-2" @click="goToTour(tour.id)">
-                    {{ $t('View Details') }}
-                  </n-button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Testimonials Section -->
-    <div class="testimonials-section py-5 position-relative">
-      <div class="testimonial-bg-pattern"></div>
-      <div class="container">
-        <h2 class="text-center display-5 mb-5">{{ $t('What Our Travelers Say') }}</h2>
-        <div class="testimonials-wrapper position-relative">
-          <div class="row">
+    <!-- Main Content Container -->
+    <div class="main-content-container">
+      <!-- Features Section -->
+      <div class="features-section py-5">
+        <div class="container">
+          <div class="row g-4">
             <div class="col-md-4">
-              <div class="testimonial-item left-testimonial">
-                <div class="testimonial-content">
-                  <div class="quote-icon">
-                    <i class="fas fa-quote-left fa-2x text-success"></i>
-                  </div>
-                  <p class="testimonial-text">{{ $t('The tour of Turkmenistan exceeded all my expectations. The ancient ruins of Merv and the modern architecture of Ashgabat created an unforgettable contrast. Our guide was incredibly knowledgeable and made the experience truly special.') }}</p>
-                  <div class="testimonial-author d-flex align-items-center">
-                    <div class="author-image">
-                      <img src="/img/testimonials/traveler1.jpg" alt="Sarah Johnson" class="rounded-circle">
-                    </div>
-                    <div class="author-info ms-3">
-                      <h4 class="h5 mb-1">Sarah Johnson</h4>
-                      <p class="text-muted mb-0">{{ $t('United States') }}</p>
-                    </div>
-                  </div>
-                </div>
+              <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
+                <i class="fas fa-map-marked-alt fa-3x text-success mb-3"></i>
+                <h3 class="h4 mb-3">{{ $t('Customized Tours') }}</h3>
+                <p>{{ $t('Create your perfect itinerary with our personalized tour planning service.') }}</p>
               </div>
             </div>
             <div class="col-md-4">
-              <div class="testimonial-item center-testimonial">
-                <div class="testimonial-content">
-                  <div class="quote-icon">
-                    <i class="fas fa-quote-left fa-2x text-success"></i>
-                  </div>
-                  <p class="testimonial-text">{{ $t('An amazing journey through the Silk Road history. The Darvaza Gas Crater was a spectacular sight at night. The local hospitality and traditional food made this trip truly authentic.') }}</p>
-                  <div class="testimonial-author d-flex align-items-center">
-                    <div class="author-image">
-                      <img src="/img/testimonials/traveler2.jpg" alt="Liu Wei" class="rounded-circle">
-                    </div>
-                    <div class="author-info ms-3">
-                      <h4 class="h5 mb-1">Liu Wei</h4>
-                      <p class="text-muted mb-0">{{ $t('China') }}</p>
-                    </div>
+              <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
+                <i class="fas fa-users fa-3x text-success mb-3"></i>
+                <h3 class="h4 mb-3">{{ $t('Expert Guides') }}</h3>
+                <p>{{ $t('Travel with knowledgeable local guides who bring the destination to life.') }}</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
+                <i class="fas fa-hotel fa-3x text-success mb-3"></i>
+                <h3 class="h4 mb-3">{{ $t('Quality Accommodations') }}</h3>
+                <p>{{ $t('Stay in carefully selected hotels that offer comfort and authentic experiences.') }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- About Section -->
+      <div id="about" class="about-section py-5">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+              <img src="/img/ashgabat/Ashgabat.jpeg" alt="About Turkmenistan" class="img-fluid rounded-3 shadow">
+            </div>
+            <div class="col-lg-6 p-4 rounded-3">
+              <h2 class="display-5 mb-4">{{ $t('Why Choose Us') }}</h2>
+              <div class="mb-4">
+                <h4><i class="fas fa-check-circle text-success me-2"></i>{{ $t('Local Expertise') }}</h4>
+                <p>{{ $t('Our team consists of experienced local guides with deep knowledge of Turkmenistan.') }}</p>
+              </div>
+              <div class="mb-4">
+                <h4><i class="fas fa-check-circle text-success me-2"></i>{{ $t('Personalized Service') }}</h4>
+                <p>{{ $t('We tailor each tour to match your interests, preferences, and travel style.') }}</p>
+              </div>
+              <div class="mb-4">
+                <h4><i class="fas fa-check-circle text-success me-2"></i>{{ $t('Cultural Immersion') }}</h4>
+                <p>{{ $t('Experience authentic local culture with our carefully curated activities and experiences.') }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Popular Destinations -->
+      <div id="destinations" class="destinations-section py-5">
+        <div class="container">
+          <h2 class="text-center display-5 mb-5">{{ $t('Popular Destinations') }}</h2>
+          <div class="row g-4">
+            <div v-for="tour in popularTours" :key="tour.id" class="col-md-4">
+              <div class="destination-card position-relative rounded-3 overflow-hidden">
+                <img :src="'/storage/tours/' + tour.main_image" :alt="tour.name" class="img-fluid w-100">
+                <div class="destination-overlay position-absolute w-100 h-100 top-0 start-0 d-flex align-items-end p-3">
+                  <div class="text-white">
+                    <h3 class="h4 mb-2">{{ tour.name }}</h3>
+                    <p class="mb-2">{{ $t('Duration') }}: {{ tour.total_days }} {{ $t('days') }}</p>
+                    <p class="mb-0">{{ $t('Price') }}: {{ tour.tour_prices }}</p>
+                    <n-button type="primary" size="small" class="mt-2" @click="goToTour(tour.id)">
+                      {{ $t('View Details') }}
+                    </n-button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
-              <div class="testimonial-item right-testimonial">
-                <div class="testimonial-content">
-                  <div class="quote-icon">
-                    <i class="fas fa-quote-left fa-2x text-success"></i>
-                  </div>
-                  <p class="testimonial-text">{{ $t('The custom tour package was perfectly tailored to our interests. From the ancient sites to the modern city life, everything was well-organized. The guides were friendly and professional throughout our journey.') }}</p>
-                  <div class="testimonial-author d-flex align-items-center">
-                    <div class="author-image">
-                      <img src="/img/testimonials/traveler3.jpg" alt="Maria Garcia" class="rounded-circle">
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonials Section -->
+      <div class="testimonials-section py-5 position-relative">
+        <div class="testimonial-bg-pattern"></div>
+        <div class="container">
+          <h2 class="text-center display-5 mb-5">{{ $t('What Our Travelers Say') }}</h2>
+          <div class="testimonials-wrapper position-relative">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="testimonial-item left-testimonial">
+                  <div class="testimonial-content">
+                    <div class="quote-icon">
+                      <i class="fas fa-quote-left fa-2x text-success"></i>
                     </div>
-                    <div class="author-info ms-3">
-                      <h4 class="h5 mb-1">Maria Garcia</h4>
-                      <p class="text-muted mb-0">{{ $t('Spain') }}</p>
+                    <p class="testimonial-text">{{ $t('The tour of Turkmenistan exceeded all my expectations. The ancient ruins of Merv and the modern architecture of Ashgabat created an unforgettable contrast. Our guide was incredibly knowledgeable and made the experience truly special.') }}</p>
+                    <div class="testimonial-author d-flex align-items-center">
+                      <div class="author-image">
+                        <img src="/img/testimonials/traveler1.jpg" alt="Sarah Johnson" class="rounded-circle">
+                      </div>
+                      <div class="author-info ms-3">
+                        <h4 class="h5 mb-1">Sarah Johnson</h4>
+                        <p class="text-muted mb-0">{{ $t('United States') }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="testimonial-item center-testimonial">
+                  <div class="testimonial-content">
+                    <div class="quote-icon">
+                      <i class="fas fa-quote-left fa-2x text-success"></i>
+                    </div>
+                    <p class="testimonial-text">{{ $t('An amazing journey through the Silk Road history. The Darvaza Gas Crater was a spectacular sight at night. The local hospitality and traditional food made this trip truly authentic.') }}</p>
+                    <div class="testimonial-author d-flex align-items-center">
+                      <div class="author-image">
+                        <img src="/img/testimonials/traveler2.jpg" alt="Liu Wei" class="rounded-circle">
+                      </div>
+                      <div class="author-info ms-3">
+                        <h4 class="h5 mb-1">Liu Wei</h4>
+                        <p class="text-muted mb-0">{{ $t('China') }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="testimonial-item right-testimonial">
+                  <div class="testimonial-content">
+                    <div class="quote-icon">
+                      <i class="fas fa-quote-left fa-2x text-success"></i>
+                    </div>
+                    <p class="testimonial-text">{{ $t('The custom tour package was perfectly tailored to our interests. From the ancient sites to the modern city life, everything was well-organized. The guides were friendly and professional throughout our journey.') }}</p>
+                    <div class="testimonial-author d-flex align-items-center">
+                      <div class="author-image">
+                        <img src="/img/testimonials/traveler3.jpg" alt="Maria Garcia" class="rounded-circle">
+                      </div>
+                      <div class="author-info ms-3">
+                        <h4 class="h5 mb-1">Maria Garcia</h4>
+                        <p class="text-muted mb-0">{{ $t('Spain') }}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -179,39 +182,39 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Why Turkmenistan Section -->
-    <div class="why-turkmenistan-section py-5 bg-light">
-      <div class="container">
-        <h2 class="text-center display-5 mb-5">{{ $t('Why Visit Turkmenistan') }}</h2>
-        <div class="row g-4">
-          <div class="col-md-6 col-lg-3">
-            <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
-              <i class="fas fa-landmark fa-3x text-success mb-3"></i>
-              <h3 class="h4 mb-3">{{ $t('Rich History') }}</h3>
-              <p>{{ $t('Explore ancient Silk Road cities and archaeological sites dating back thousands of years.') }}</p>
+      <!-- Why Turkmenistan Section -->
+      <div class="why-turkmenistan-section py-5">
+        <div class="container">
+          <h2 class="text-center display-5 mb-5">{{ $t('Why Visit Turkmenistan') }}</h2>
+          <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+              <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
+                <i class="fas fa-landmark fa-3x text-success mb-3"></i>
+                <h3 class="h4 mb-3">{{ $t('Rich History') }}</h3>
+                <p>{{ $t('Explore ancient Silk Road cities and archaeological sites dating back thousands of years.') }}</p>
+              </div>
             </div>
-          </div>
-          <div class="col-md-6 col-lg-3">
-            <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
-              <i class="fas fa-horse fa-3x text-success mb-3"></i>
-              <h3 class="h4 mb-3">{{ $t('Unique Culture') }}</h3>
-              <p>{{ $t('Experience the legendary Akhal-Teke horses and traditional Turkmen hospitality.') }}</p>
+            <div class="col-md-6 col-lg-3">
+              <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
+                <i class="fas fa-horse fa-3x text-success mb-3"></i>
+                <h3 class="h4 mb-3">{{ $t('Unique Culture') }}</h3>
+                <p>{{ $t('Experience the legendary Akhal-Teke horses and traditional Turkmen hospitality.') }}</p>
+              </div>
             </div>
-          </div>
-          <div class="col-md-6 col-lg-3">
-            <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
-              <i class="fas fa-mountain fa-3x text-success mb-3"></i>
-              <h3 class="h4 mb-3">{{ $t('Natural Wonders') }}</h3>
-              <p>{{ $t('From the Karakum Desert to the Kopet Dag Mountains, discover diverse landscapes.') }}</p>
+            <div class="col-md-6 col-lg-3">
+              <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
+                <i class="fas fa-mountain fa-3x text-success mb-3"></i>
+                <h3 class="h4 mb-3">{{ $t('Natural Wonders') }}</h3>
+                <p>{{ $t('From the Karakum Desert to the Kopet Dag Mountains, discover diverse landscapes.') }}</p>
+              </div>
             </div>
-          </div>
-          <div class="col-md-6 col-lg-3">
-            <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
-              <i class="fas fa-city fa-3x text-success mb-3"></i>
-              <h3 class="h4 mb-3">{{ $t('Modern Marvels') }}</h3>
-              <p>{{ $t('Witness the stunning architecture of Ashgabat, the marble city of Central Asia.') }}</p>
+            <div class="col-md-6 col-lg-3">
+              <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
+                <i class="fas fa-city fa-3x text-success mb-3"></i>
+                <h3 class="h4 mb-3">{{ $t('Modern Marvels') }}</h3>
+                <p>{{ $t('Witness the stunning architecture of Ashgabat, the marble city of Central Asia.') }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -355,17 +358,27 @@ export default { layout: FrontLayout }
   }
 }
 
+.main-content-container {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+}
+
 .feature-card {
   transition: transform 0.3s ease;
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(10px);
+  background: rgba(40, 167, 69, 0.1) !important;
+  border: 1px solid rgba(40, 167, 69, 0.2);
+  border-radius: 15px;
   
   &:hover {
     transform: translateY(-5px);
+    background: rgba(40, 167, 69, 0.15) !important;
+    border-color: rgba(40, 167, 69, 0.3);
   }
 
   i {
     transition: all 0.3s ease;
+    color: #28a745;
   }
 
   &:hover i {
@@ -374,8 +387,7 @@ export default { layout: FrontLayout }
 }
 
 .about-section .col-lg-6 {
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  background: none;
 }
 
 .destination-card {
@@ -400,48 +412,42 @@ export default { layout: FrontLayout }
   padding: 2rem;
   position: relative;
   transition: all 0.4s ease;
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(10px);
+  background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(255, 255, 255, 0.2)) !important;
+  border: 1px solid rgba(40, 167, 69, 0.2);
+  border-radius: 15px;
 
   &:hover {
     transform: translateY(-10px);
-  }
-
-  .testimonial-content {
-    position: relative;
-    z-index: 2;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.15), rgba(255, 255, 255, 0.25)) !important;
   }
 
   .quote-icon {
-    position: absolute;
-    top: -1rem;
-    left: -1rem;
-    opacity: 0.2;
+    color: rgba(40, 167, 69, 0.3);
   }
 
   .author-image img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border: 3px solid #fff;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    border: 3px solid rgba(40, 167, 69, 0.2);
   }
 }
 
 .left-testimonial {
   clip-path: polygon(0% 0%, 95% 0%, 100% 100%, 5% 100%);
-  box-shadow: -5px 5px 15px rgba(0,0,0,0.1);
+  box-shadow: -5px 5px 15px rgba(40, 167, 69, 0.1);
 }
 
 .center-testimonial {
   clip-path: polygon(5% 0%, 95% 0%, 100% 95%, 0% 100%);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.1);
   margin-top: 2rem;
+  background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(255, 255, 255, 0.2)) !important;
+  border-color: rgba(0, 123, 255, 0.2);
 }
 
 .right-testimonial {
   clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
-  box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 5px 5px 15px rgba(40, 167, 69, 0.1);
+  background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(255, 255, 255, 0.2)) !important;
+  border-color: rgba(220, 53, 69, 0.2);
 }
 
 .travel-tips-section {
@@ -588,5 +594,21 @@ export default { layout: FrontLayout }
       justify-content: center;
     }
   }
+}
+
+.form-container {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.features-section,
+.destinations-section,
+.why-turkmenistan-section,
+.testimonials-section {
+  background: none;
+  position: relative;
 }
 </style>
