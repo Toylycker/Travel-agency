@@ -27,7 +27,7 @@
             <p class="tour-card__description">{{ $langBody(tour) }}</p>
             
             <n-button class="tour-card__button bg-success text-white w-100" ghost>
-                {{ $t('ViewDetails') }}
+                {{ $t('View Details') }}
             </n-button>
         </div>
     </div>
