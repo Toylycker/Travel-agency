@@ -1,203 +1,141 @@
 <template>
-    <div class="container-fluid pt-3 text-center justify-content-center align-items-center bg-image"
-        :class="{ 'tourleft': upplace == 'left', 'tourright': upplace == 'right' }"
-        :style="{backgroundImage:`url(${'img/tour_background.png'})`}"
-        style="background-size: contain;background-position: center;  background-repeat: no-repeat;" id="tour">
-        <div class="d-md-flex ">
-            <transition class="order-md-0 order-sm-2 bg-white" :appear="true" name="left">
-                <div @mouseover="getleft($event)" @mouseleave="leaveCursor($event)" id="left"
-                    class="col-md-6 col-lg-4 mr-3  shadow rounded-3 overflow-hidden" :class="'float'"
-                    style="border-bottom-left-radius: 20px; height: 170px;text-align: left;">
-                    <div class="mx-1">
-                        <n-button class="my-2 w-100" style="text-align: center;" type="primary" dashed ghost>
-                            <h5>{{ $langName(tour) }}</h5>
-                        </n-button>
-                        <!-- <h3 class="mt-2" style="text-align: center;">{{ tour.name }}</h3> -->
-                        <div class="container">
-                            <n-button-group class="w-100" vertical>
-                                <n-button class="w-100" type="primary" round dashed>
-                                    {{$t('TotalDays')}}:{{ tour.total_days }}
-                                </n-button>
-
-
-                                <n-button class="w-100" type="primary" ghost dashed>
-                                    {{ $t('VisitingPlaces') }}:{{ total_places_count }}
-                                </n-button>
-
-
-                                <n-button class="w-100" type="primary" ghost round dashed>
-                                    {{ $t('Price') }}:{{ tour.tour_prices }}$
-                                </n-button>
-                            </n-button-group>
-
-
-                        </div>
-                    </div>
+    <div class="tour-card" :class="{ 'tour-card--hover': isHovered }" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+        <div class="tour-card__image">
+            <img v-if="tour.main_image" :src="'/storage/tours/' + tour.main_image" :alt="$langName(tour)">
+            <img v-else :src="'/img/turkmenistan.jpeg'" :alt="$langName(tour)">
+            <div class="tour-card__overlay">
+                <h3 class="tour-card__title">{{ $langName(tour) }}</h3>
+            </div>
+        </div>
+        
+        <div class="tour-card__content">
+            <div class="tour-card__stats">
+                <div class="stat">
+                    <n-icon size="20"><calendar-outline/></n-icon>
+                    <span>{{ tour.total_days }} {{ $t('TotalDays') }}</span>
                 </div>
-            </transition>
-            <transition class="order-md-1 order-sm-0" :appear="true" name="center">
-                <div @mouseover="getcenter()" @mouseleave="leaveCursor($event)"
-                    class="col-md-6 col-lg-4 mx-3 bg-white shadow rounded-3" id="center" style="height: 170px;">
-                    <!-- <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m52!1m12!1m3!1d3178032.860928466!2d58.36552423384894!3d38.934313986368686!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m37!3e0!4m5!1s0x3f6ffe1bab3684d9%3A0x3cde013f62d3ade9!2sAshgabat%2C%20Turkmenistan!3m2!1d37.9600766!2d58.3260629!4m5!1s0x402c1a2c8507ce31%3A0xc0682af196323024!2sAwaza%20der%C3%BDa%2C%20Turkmenistan!3m2!1d39.958283099999996!2d52.8569665!4m5!1s0x3f62b4f7b4d79731%3A0x1b7a8833c89ceca!2sDerweze%2C%20Turkmenistan!3m2!1d40.173957099999996!2d58.4169385!4m5!1s0x3f4170abd6e93cc7%3A0xbbae37e82e0dccce!2sMerv%2C%20Turkmenistan!3m2!1d37.664426!2d62.1747186!4m5!1s0x3f44e0040d5c38dd%3A0x5ca437696975e741!2sTurkmenabat%2C%20Turkmenistan!3m2!1d39.0041313!2d63.568808!4m5!1s0x41ddad1280665aad%3A0xbc519b36baa4f375!2zS8O2bmXDvHJnZW5jaCwgVHVya21lbmlzdGFu!3m2!1d42.324218699999996!2d59.1818543!5e0!3m2!1sen!2sus!4v1662656011952!5m2!1sen!2sus"
-                        width="100%" height="100%" style="border:0;"  class="rounded-3" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe> -->
-                    <img style="height: 170px;"  v-if="tour.main_image" class="rounded-3 img-fluid rounded-start w-100"
-                        :src="'/storage/tours/' + tour.main_image" alt="...">
-                    
-                    <img style="height: 170px;" v-else class="rounded-3 img-fluid rounded-start w-100" :src="'/img/turkmenistan.jpeg'"
-                        alt="...">
-                
+                <div class="stat">
+                    <n-icon size="20"><location-outline/></n-icon>
+                    <span>{{ total_places_count }} {{ $t('VisitingPlaces') }}</span>
                 </div>
-            </transition>
-            <transition class="order-md-2 order-sm-3" :appear="true" name="right">
-                <div @mouseover="getright($event)" @mouseleave="leaveCursor($event)" id="right"
-                    class="col-4 ml-3 bg-white shadow overflow-hidden rounded-3 d-none d-md-block" :class="'float'"
-                    style="border-top-right-radius: 20px;height: 170px;">
-                    <p class="m-3">{{ $langBody(tour)}}</p>
+                <div class="stat">
+                    <n-icon size="20"><cash-outline/></n-icon>
+                    <span>{{ tour.tour_prices }}$</span>
                 </div>
-            </transition>
+            </div>
+            
+            <p class="tour-card__description">{{ $langBody(tour) }}</p>
+            
+            <n-button class="tour-card__button" type="primary" block>
+                {{ $t('ViewDetails') }}
+            </n-button>
         </div>
     </div>
 </template>
+
 <script setup>
-import gsap from 'gsap';
-import { isInteger } from 'lodash-es';
-import { NImage, NButton, NButtonGroup } from 'naive-ui';
-import { computed, onMounted, onUnmounted, onBeforeUnmount, ref, Transition, watch } from 'vue';
-import { Sine } from 'gsap/all';
-import { Inertia } from '@inertiajs/inertia';
-let direction = ref('vertical');
-const props = defineProps(['tour', 'index'])
-let total_places = ref(0);
-let upplace = ref('');
+import { NButton, NIcon } from 'naive-ui';
+import { CalendarOutline, LocationOutline, CashOutline } from '@vicons/ionicons5';
+import { ref, computed } from 'vue';
 
-// onUnmounted(()=>{
-//     gsap.globalTimeline.clear();
-// });
-
-
-// ^^^ here mounted finished
-
-function getleft($e) {
-    upplace.value = 'left'
-    gsap.globalTimeline.pause();
-}
-function getcenter($e) {
-    gsap.globalTimeline.pause();
-}
-function getright($e) {
-    upplace.value = 'right'
-    gsap.globalTimeline.pause();
-}
-
-function leaveCursor($event) {
-    upplace.value = '';
-    gsap.globalTimeline.resume();
-}
+const props = defineProps(['tour', 'index']);
+const isHovered = ref(false);
+const total_places = ref(0);
 
 const total_places_count = computed(() => {
     props.tour.days.forEach(day => {
         total_places.value += day.places_count;
     });
-    return total_places;
-})
-
-onBeforeUnmount(() => {
-    gsap.globalTimeline.resume();
+    return total_places.value;
 });
-
 </script>
-<style>
-/* enter start */
-.left-enter-from {
-    opacity: 0;
-    transform: translateX(-300px);
+
+<style scoped>
+.tour-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-.center-enter-from {
-    opacity: 0;
-    scale: 0;
-
+.tour-card--hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
-.right-enter-from {
-    opacity: 0;
-    transform: translateX(300px);
+.tour-card__image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
 }
 
-/* .left-enter-to {}
-
-.center-enter-to {}
-
-.right-enter-to {} */
-
-.left-enter-active {
-    transition: all 1s ease;
+.tour-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-.center-enter-active {
-    transition: all 1s ease;
+.tour-card--hover .tour-card__image img {
+    transform: scale(1.05);
 }
 
-.right-enter-active {
-    transition: all 1s ease;
+.tour-card__overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
 }
 
-/* enter end  */
-/* leave start */
-
-.left-leave-from {
-    opacity: 1;
+.tour-card__title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
-.center-leave-from {
-    opacity: 1;
+.tour-card__content {
+    padding: 1.5rem;
 }
 
-.right-leave-from {
-    opacity: 1;
+.tour-card__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
-.left-leave-to {
-    opacity: 0;
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #666;
 }
 
-.center-leave-to {
-    opacity: 0;
+.tour-card__description {
+    margin: 1rem 0;
+    font-size: 0.875rem;
+    color: #666;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-.right-leave-to {
-    opacity: 0;
+.tour-card__button {
+    margin-top: 1rem;
 }
 
-.left-leave-active {
-    transition: all 1s ease;
-}
-
-.center-leave-active {
-    transition: all 1s ease;
-}
-
-.right-leave-active {
-    transition: all 1s ease;
-}
-
-.tourleft:hover {
-    transform: rotate(3deg);
-}
-
-.tourright:hover {
-    transform: rotate(-3deg);
-}
-
-/* .tourcenter:hover {
-    transform: rotate(-3deg);
-    scale: 1.05;
-} */
-
-#tour:hover {
-    /* transform: rotate(-3deg); */
-    scale: 1.1;
+@media (max-width: 768px) {
+    .tour-card__stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 </style>
