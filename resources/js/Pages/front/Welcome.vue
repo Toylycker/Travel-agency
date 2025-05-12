@@ -109,6 +109,157 @@
         </div>
       </div>
     </div>
+
+    <!-- Testimonials Section -->
+    <div class="testimonials-section py-5 position-relative">
+      <div class="testimonial-bg-pattern"></div>
+      <div class="container">
+        <h2 class="text-center display-5 mb-5">{{ $t('What Our Travelers Say') }}</h2>
+        <div class="testimonials-wrapper position-relative">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="testimonial-item left-testimonial">
+                <div class="testimonial-content">
+                  <div class="quote-icon">
+                    <i class="fas fa-quote-left fa-2x text-success"></i>
+                  </div>
+                  <p class="testimonial-text">{{ $t('The tour of Turkmenistan exceeded all my expectations. The ancient ruins of Merv and the modern architecture of Ashgabat created an unforgettable contrast. Our guide was incredibly knowledgeable and made the experience truly special.') }}</p>
+                  <div class="testimonial-author d-flex align-items-center">
+                    <div class="author-image">
+                      <img src="/img/testimonials/traveler1.jpg" alt="Sarah Johnson" class="rounded-circle">
+                    </div>
+                    <div class="author-info ms-3">
+                      <h4 class="h5 mb-1">Sarah Johnson</h4>
+                      <p class="text-muted mb-0">{{ $t('United States') }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="testimonial-item center-testimonial">
+                <div class="testimonial-content">
+                  <div class="quote-icon">
+                    <i class="fas fa-quote-left fa-2x text-success"></i>
+                  </div>
+                  <p class="testimonial-text">{{ $t('An amazing journey through the Silk Road history. The Darvaza Gas Crater was a spectacular sight at night. The local hospitality and traditional food made this trip truly authentic.') }}</p>
+                  <div class="testimonial-author d-flex align-items-center">
+                    <div class="author-image">
+                      <img src="/img/testimonials/traveler2.jpg" alt="Liu Wei" class="rounded-circle">
+                    </div>
+                    <div class="author-info ms-3">
+                      <h4 class="h5 mb-1">Liu Wei</h4>
+                      <p class="text-muted mb-0">{{ $t('China') }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="testimonial-item right-testimonial">
+                <div class="testimonial-content">
+                  <div class="quote-icon">
+                    <i class="fas fa-quote-left fa-2x text-success"></i>
+                  </div>
+                  <p class="testimonial-text">{{ $t('The custom tour package was perfectly tailored to our interests. From the ancient sites to the modern city life, everything was well-organized. The guides were friendly and professional throughout our journey.') }}</p>
+                  <div class="testimonial-author d-flex align-items-center">
+                    <div class="author-image">
+                      <img src="/img/testimonials/traveler3.jpg" alt="Maria Garcia" class="rounded-circle">
+                    </div>
+                    <div class="author-info ms-3">
+                      <h4 class="h5 mb-1">Maria Garcia</h4>
+                      <p class="text-muted mb-0">{{ $t('Spain') }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Why Turkmenistan Section -->
+    <div class="why-turkmenistan-section py-5 bg-light">
+      <div class="container">
+        <h2 class="text-center display-5 mb-5">{{ $t('Why Visit Turkmenistan') }}</h2>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
+              <i class="fas fa-landmark fa-3x text-success mb-3"></i>
+              <h3 class="h4 mb-3">{{ $t('Rich History') }}</h3>
+              <p>{{ $t('Explore ancient Silk Road cities and archaeological sites dating back thousands of years.') }}</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
+              <i class="fas fa-horse fa-3x text-success mb-3"></i>
+              <h3 class="h4 mb-3">{{ $t('Unique Culture') }}</h3>
+              <p>{{ $t('Experience the legendary Akhal-Teke horses and traditional Turkmen hospitality.') }}</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
+              <i class="fas fa-mountain fa-3x text-success mb-3"></i>
+              <h3 class="h4 mb-3">{{ $t('Natural Wonders') }}</h3>
+              <p>{{ $t('From the Karakum Desert to the Kopet Dag Mountains, discover diverse landscapes.') }}</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="feature-card text-center p-4 rounded-3 shadow-sm h-100">
+              <i class="fas fa-city fa-3x text-success mb-3"></i>
+              <h3 class="h4 mb-3">{{ $t('Modern Marvels') }}</h3>
+              <p>{{ $t('Witness the stunning architecture of Ashgabat, the marble city of Central Asia.') }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Travel Tips Section -->
+    <div class="travel-tips-section py-5 position-relative overflow-hidden">
+      <div class="tips-bg-overlay"></div>
+      <div class="container">
+        <h2 class="text-center display-5 mb-5 text-white">{{ $t('Essential Travel Tips') }}</h2>
+        <div class="tips-container">
+          <!-- Best Time Tip -->
+          <div class="tip-item tip-timing">
+            <div class="tip-icon-wrapper">
+              <i class="fas fa-calendar-alt fa-3x"></i>
+            </div>
+            <div class="tip-content">
+              <h3 class="h4">{{ $t('Best Time to Visit') }}</h3>
+              <p>{{ $t('Spring (March-May) and Fall (September-November) offer the most pleasant weather for traveling.') }}</p>
+            </div>
+            <div class="tip-shape"></div>
+          </div>
+
+          <!-- Visa Tip -->
+          <div class="tip-item tip-visa">
+            <div class="tip-icon-wrapper">
+              <i class="fas fa-passport fa-3x"></i>
+            </div>
+            <div class="tip-content">
+              <h3 class="h4">{{ $t('Visa Information') }}</h3>
+              <p>{{ $t('All visitors need a visa. We assist with invitation letters and visa processing.') }}</p>
+            </div>
+            <div class="tip-shape"></div>
+          </div>
+
+          <!-- Currency Tip -->
+          <div class="tip-item tip-currency">
+            <div class="tip-icon-wrapper">
+              <i class="fas fa-money-bill-wave fa-3x"></i>
+            </div>
+            <div class="tip-content">
+              <h3 class="h4">{{ $t('Currency & Payments') }}</h3>
+              <p>{{ $t('Bring US dollars in cash. Credit cards are accepted in major hotels in Ashgabat.') }}</p>
+            </div>
+            <div class="tip-shape"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -184,6 +335,24 @@ export default { layout: FrontLayout }
   }
 }
 
+.testimonial-card {
+  background-color: rgba(255, 255, 255, 0.85);
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.tip-card {
+  background-color: rgba(255, 255, 255, 0.85);
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
 @media (max-width: 768px) {
   .hero-section .hero-background {
     height: auto !important;
@@ -193,6 +362,156 @@ export default { layout: FrontLayout }
 
   .destination-card {
     height: 250px;
+  }
+
+  .testimonial-card, .tip-card {
+    margin-bottom: 1rem;
+  }
+}
+
+.testimonials-section {
+  background-color: #f8f9fa;
+  overflow: hidden;
+
+  .testimonial-bg-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(#e9ecef 2px, transparent 2px);
+    background-size: 30px 30px;
+    opacity: 0.3;
+  }
+}
+
+.testimonial-item {
+  padding: 2rem;
+  position: relative;
+  transition: all 0.4s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+  }
+
+  .testimonial-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .quote-icon {
+    position: absolute;
+    top: -1rem;
+    left: -1rem;
+    opacity: 0.2;
+  }
+
+  .author-image img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  }
+}
+
+.left-testimonial {
+  clip-path: polygon(0% 0%, 95% 0%, 100% 100%, 5% 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: -5px 5px 15px rgba(0,0,0,0.1);
+}
+
+.center-testimonial {
+  clip-path: polygon(5% 0%, 95% 0%, 100% 95%, 0% 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  margin-top: 2rem;
+}
+
+.right-testimonial {
+  clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+}
+
+.travel-tips-section {
+  background: url('/img/ashgabat/Ashgabat.jpeg') center/cover no-repeat fixed;
+  min-height: 600px;
+
+  .tips-bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(0,0,0,0.7), rgba(0,0,0,0.4));
+  }
+
+  .tips-container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+  }
+}
+
+.tip-item {
+  flex: 0 1 350px;
+  padding: 2rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  transition: all 0.4s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+    backdrop-filter: blur(15px);
+
+    .tip-icon-wrapper {
+      transform: scale(1.1);
+    }
+  }
+
+  .tip-icon-wrapper {
+    margin-bottom: 1.5rem;
+    transition: transform 0.4s ease;
+    color: #4CAF50;
+  }
+
+  .tip-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .tip-shape {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    top: -100%;
+    left: -100%;
+    transition: all 0.6s ease;
+  }
+
+  &:hover .tip-shape {
+    transform: translate(50%, 50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .testimonial-item {
+    margin-bottom: 2rem;
+    clip-path: none !important;
+  }
+
+  .tip-item {
+    flex: 0 1 100%;
+    margin: 1rem;
   }
 }
 </style>
