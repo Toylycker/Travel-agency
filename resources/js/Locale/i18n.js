@@ -138,6 +138,11 @@ const i18n = createI18n({
             'Spring (March-May) and Fall (September-November) offer the most pleasant weather for traveling.': 'Spring (March-May) and Fall (September-November) offer the most pleasant weather for traveling.',
             'All visitors need a visa. We assist with invitation letters and visa processing.': 'All visitors need a visa. We assist with invitation letters and visa processing.',
             'Bring US dollars in cash. Credit cards are accepted in major hotels in Ashgabat.': 'Bring US dollars in cash. Credit cards are accepted in major hotels in Ashgabat.',
+            'Quick Links': 'Quick Links',
+            'Contact Information': 'Contact Information',
+            'Connect With Us': 'Connect With Us',
+            'Ashgabat, Turkmenistan': 'Ashgabat, Turkmenistan',
+            'All rights reserved': 'All rights reserved',
         },
         cn: {
             Welcome: '欢迎',
@@ -272,6 +277,11 @@ const i18n = createI18n({
             'Spring (March-May) and Fall (September-November) offer the most pleasant weather for traveling.': '春季（3月-5月）和秋季（9月-11月）提供最宜人的旅行天气。',
             'All visitors need a visa. We assist with invitation letters and visa processing.': '所有访客都需要签证。我们协助办理邀请函和签证手续。',
             'Bring US dollars in cash. Credit cards are accepted in major hotels in Ashgabat.': '请携带美元现金。阿什哈巴德的主要酒店接受信用卡。',
+            'Quick Links': '快速链接',
+            'Contact Information': '联系信息',
+            'Connect With Us': '关注我们',
+            'Ashgabat, Turkmenistan': '阿什哈巴德，土库曼斯坦',
+            'All rights reserved': '版权所有',
         }
     }
 });
