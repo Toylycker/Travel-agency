@@ -112,6 +112,9 @@ const i18n = createI18n({
             'UNESCO World Heritage Site': 'UNESCO World Heritage Site',
             'Darvaza Gas Crater': 'Darvaza Gas Crater',
             'Ancient Merv': 'Ancient Merv',
+            'Duration': 'Duration',
+            'days': 'days',
+            'View Details': 'View Details',
         },
         cn: {
             Welcome: '欢迎',
@@ -220,6 +223,9 @@ const i18n = createI18n({
             'UNESCO World Heritage Site': '联合国教科文组织世界遗产地',
             'Darvaza Gas Crater': '达尔瓦扎天然气坑',
             'Ancient Merv': '古代梅尔夫',
+            'Duration': '时长',
+            'days': '天',
+            'View Details': '查看详情',
         }
     }
 });

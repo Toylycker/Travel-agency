@@ -34,7 +34,15 @@ class MainFrontController extends Controller
     public function index()
     {
         $countries = Country::get();
-        return Inertia::render('front/Welcome', compact(['countries']));
+        $tours = Tour::inRandomOrder()
+            ->with(['images', 'days'])
+            ->take(3)
+            ->get();
+            
+        return Inertia::render('front/Welcome', [
+            'countries' => $countries,
+            'popularTours' => $tours
+        ]);
     }
 
     public function places(Request $request)

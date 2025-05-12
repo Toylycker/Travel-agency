@@ -91,35 +91,17 @@
       <div class="container">
         <h2 class="text-center display-5 mb-5">{{ $t('Popular Destinations') }}</h2>
         <div class="row g-4">
-          <div class="col-md-4">
+          <div v-for="tour in popularTours" :key="tour.id" class="col-md-4">
             <div class="destination-card position-relative rounded-3 overflow-hidden">
-              <img src="/img/ashgabat/Ashgabat.jpeg" alt="Ashgabat" class="img-fluid w-100">
+              <img :src="'/storage/tours/' + tour.main_image" :alt="tour.name" class="img-fluid w-100">
               <div class="destination-overlay position-absolute w-100 h-100 top-0 start-0 d-flex align-items-end p-3">
                 <div class="text-white">
-                  <h3 class="h4 mb-2">{{ $t('Ashgabat') }}</h3>
-                  <p class="mb-0">{{ $t('Modern capital with unique architecture') }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="destination-card position-relative rounded-3 overflow-hidden">
-              <img src="/img/darvaza/darvaza.jpeg" alt="Darvaza" class="img-fluid w-100">
-              <div class="destination-overlay position-absolute w-100 h-100 top-0 start-0 d-flex align-items-end p-3">
-                <div class="text-white">
-                  <h3 class="h4 mb-2">{{ $t('Darvaza Gas Crater') }}</h3>
-                  <p class="mb-0">{{ $t('The famous "Gates of Hell"') }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="destination-card position-relative rounded-3 overflow-hidden">
-              <img src="/img/merv/merv.jpeg" alt="Ancient Merv" class="img-fluid w-100">
-              <div class="destination-overlay position-absolute w-100 h-100 top-0 start-0 d-flex align-items-end p-3">
-                <div class="text-white">
-                  <h3 class="h4 mb-2">{{ $t('Ancient Merv') }}</h3>
-                  <p class="mb-0">{{ $t('UNESCO World Heritage Site') }}</p>
+                  <h3 class="h4 mb-2">{{ tour.name }}</h3>
+                  <p class="mb-2">{{ $t('Duration') }}: {{ tour.total_days }} {{ $t('days') }}</p>
+                  <p class="mb-0">{{ $t('Price') }}: {{ tour.tour_prices }}</p>
+                  <n-button type="primary" size="small" class="mt-2" @click="goToTour(tour.id)">
+                    {{ $t('View Details') }}
+                  </n-button>
                 </div>
               </div>
             </div>
@@ -135,14 +117,19 @@ import { Head } from '@inertiajs/inertia-vue3';
 import MainPageForm from '@/Shared/MainPageForm.vue';
 import { NButton } from 'naive-ui';
 import { onMounted } from 'vue';
+import { Inertia } from '@inertiajs/inertia';
 
-defineProps(['countries']);
+defineProps(['countries', 'popularTours']);
 
 const scrollToSection = (sectionId) => {
   const element = document.getElementById(sectionId);
   if (element) {
     element.scrollIntoView({ behavior: 'smooth' });
   }
+};
+
+const goToTour = (tourId) => {
+  Inertia.visit(route('tour.show', tourId));
 };
 </script>
 
