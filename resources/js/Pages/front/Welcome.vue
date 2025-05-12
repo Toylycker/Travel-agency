@@ -72,18 +72,33 @@
               <img src="/img/ashgabat/Ashgabat.jpeg" alt="About Turkmenistan" class="img-fluid rounded-3 shadow">
             </div>
             <div class="col-lg-6 p-4 rounded-3">
-              <h2 class="display-5 mb-4">{{ $t('Why Choose Us') }}</h2>
-              <div class="mb-4">
-                <h4><i class="fas fa-check-circle text-success me-2"></i>{{ $t('Local Expertise') }}</h4>
-                <p>{{ $t('Our team consists of experienced local guides with deep knowledge of Turkmenistan.') }}</p>
+              <h2 class="display-5 mb-4 text-success">{{ $t('Why Choose Us') }}</h2>
+              <div class="why-choose-item mb-4">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="icon-wrapper me-3">
+                    <i class="fas fa-check-circle text-success fa-2x"></i>
+                  </div>
+                  <h4 class="mb-0 text-success">{{ $t('Local Expertise') }}</h4>
+                </div>
+                <p class="ms-5 mb-0">{{ $t('Our team consists of experienced local guides with deep knowledge of Turkmenistan.') }}</p>
               </div>
-              <div class="mb-4">
-                <h4><i class="fas fa-check-circle text-success me-2"></i>{{ $t('Personalized Service') }}</h4>
-                <p>{{ $t('We tailor each tour to match your interests, preferences, and travel style.') }}</p>
+              <div class="why-choose-item mb-4">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="icon-wrapper me-3">
+                    <i class="fas fa-check-circle text-success fa-2x"></i>
+                  </div>
+                  <h4 class="mb-0 text-success">{{ $t('Personalized Service') }}</h4>
+                </div>
+                <p class="ms-5 mb-0">{{ $t('We tailor each tour to match your interests, preferences, and travel style.') }}</p>
               </div>
-              <div class="mb-4">
-                <h4><i class="fas fa-check-circle text-success me-2"></i>{{ $t('Cultural Immersion') }}</h4>
-                <p>{{ $t('Experience authentic local culture with our carefully curated activities and experiences.') }}</p>
+              <div class="why-choose-item mb-4">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="icon-wrapper me-3">
+                    <i class="fas fa-check-circle text-success fa-2x"></i>
+                  </div>
+                  <h4 class="mb-0 text-success">{{ $t('Cultural Immersion') }}</h4>
+                </div>
+                <p class="ms-5 mb-0">{{ $t('Experience authentic local culture with our carefully curated activities and experiences.') }}</p>
               </div>
             </div>
           </div>
@@ -610,5 +625,105 @@ export default { layout: FrontLayout }
 .testimonials-section {
   background: none;
   position: relative;
+}
+
+.why-choose-item {
+  position: relative;
+  padding: 1.5rem;
+  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(255, 255, 255, 0.2));
+  border: 1px solid rgba(40, 167, 69, 0.2);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateX(10px);
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.15), rgba(255, 255, 255, 0.25));
+  }
+
+  .icon-wrapper {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(40, 167, 69, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  &:hover .icon-wrapper {
+    background: rgba(40, 167, 69, 0.2);
+    transform: scale(1.1);
+  }
+
+  h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  p {
+    color: #666;
+    line-height: 1.6;
+  }
+}
+
+// Form responsive fixes
+.form-container {
+  @media (max-width: 768px) {
+    margin: 1rem;
+    padding: 1.5rem;
+    width: calc(100% - 2rem) !important;
+
+    :deep(.n-form) {
+      .n-form-item {
+        margin-bottom: 1rem;
+      }
+
+      .n-input,
+      .n-auto-complete,
+      .n-select {
+        width: 100%;
+      }
+
+      textarea {
+        min-height: 100px;
+      }
+
+      .n-button {
+        width: 100%;
+        margin-top: 1rem;
+        position: static !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+    }
+  }
+
+  :deep(.n-button) {
+    position: relative !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+  }
+}
+
+// Improve hero section responsiveness
+.hero-section {
+  @media (max-width: 768px) {
+    .hero-background {
+      min-height: 100vh !important;
+      height: auto !important;
+      padding: 2rem 0;
+    }
+
+    .text-white {
+      text-align: center;
+      margin-bottom: 2rem;
+
+      .d-flex {
+        justify-content: center;
+      }
+    }
+  }
 }
 </style>
