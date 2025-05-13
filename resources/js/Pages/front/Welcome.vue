@@ -145,7 +145,7 @@
                     <p class="testimonial-text">{{ $t('The tour of Turkmenistan exceeded all my expectations. The ancient ruins of Merv and the modern architecture of Ashgabat created an unforgettable contrast. Our guide was incredibly knowledgeable and made the experience truly special.') }}</p>
                     <div class="testimonial-author d-flex align-items-center">
                       <div class="author-image">
-                        <img src="/img/testimonials/traveler1.jpg" alt="Sarah Johnson" class="rounded-circle">
+                        <!-- <img src="/img/testimonials/traveler1.jpg" alt="Sarah Johnson" class="rounded-circle"> -->
                       </div>
                       <div class="author-info ms-3">
                         <h4 class="h5 mb-1">Sarah Johnson</h4>
@@ -164,7 +164,7 @@
                     <p class="testimonial-text">{{ $t('An amazing journey through the Silk Road history. The Darvaza Gas Crater was a spectacular sight at night. The local hospitality and traditional food made this trip truly authentic.') }}</p>
                     <div class="testimonial-author d-flex align-items-center">
                       <div class="author-image">
-                        <img src="/img/testimonials/traveler2.jpg" alt="Liu Wei" class="rounded-circle">
+                        <!-- <img src="/img/testimonials/traveler2.jpg" alt="Liu Wei" class="rounded-circle"> -->
                       </div>
                       <div class="author-info ms-3">
                         <h4 class="h5 mb-1">Liu Wei</h4>
@@ -183,7 +183,7 @@
                     <p class="testimonial-text">{{ $t('The custom tour package was perfectly tailored to our interests. From the ancient sites to the modern city life, everything was well-organized. The guides were friendly and professional throughout our journey.') }}</p>
                     <div class="testimonial-author d-flex align-items-center">
                       <div class="author-image">
-                        <img src="/img/testimonials/traveler3.jpg" alt="Maria Garcia" class="rounded-circle">
+                        <!-- <img src="/img/testimonials/traveler3.jpg" alt="Maria Garcia" class="rounded-circle"> -->
                       </div>
                       <div class="author-info ms-3">
                         <h4 class="h5 mb-1">Maria Garcia</h4>
