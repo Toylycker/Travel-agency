@@ -7,11 +7,11 @@
             <div class="selection-content">
                 <span v-if="!check" class="selection-status">
                     <i class="fas fa-plus-circle"></i>
-                    <span class="selection-text">Add to Tour</span>
+                    <span class="selection-text">{{ $t('addToTour') }}</span>
                 </span>
                 <span v-else class="selection-status">
                     <i class="fas fa-check-circle"></i>
-                    <span class="selection-text">Added to Tour!</span>
+                    <span class="selection-text">{{ $t('addedToTour') }}</span>
                 </span>
             </div>
         </div>
@@ -137,6 +137,13 @@ let direction = ref('vertical');
     display: flex;
     justify-content: center;
     align-items: center;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin: 0 auto;
+    width: fit-content;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .selection-status {
@@ -156,6 +163,10 @@ let direction = ref('vertical');
 
 .is-selected .selection-status {
     color: white;
+}
+
+.is-selected .selection-content {
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .selection-status i {
