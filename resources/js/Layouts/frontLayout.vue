@@ -10,13 +10,14 @@
     </noscript>
     </div>
   </div>
+  <Footer />
 </template>
 
 <script setup>
 import Nav from '@/Shared/Nav.vue';
 import { onMounted } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
-import { usePage } from '@inertiajs/inertia-vue3';
+import Footer from '@/Shared/Footer.vue';
 
 onMounted(() => {
   const yandexMetricaId = import.meta.env.VITE_YANDEX_METRICA_ID;
