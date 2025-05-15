@@ -340,11 +340,8 @@ const handleSubmit = () => {
           : null
       };
 
-      // Use post() instead of put() to ensure data is properly formatted
-      form.post(route('admin.transportations.update', props.transportation.id), {
-        ...data,
-        _method: 'PUT'
-      });
+      // Use put() directly instead of post() with _method: 'PUT'
+      form.put(route('admin.transportations.update', props.transportation.id), data);
     }
   })
 }
