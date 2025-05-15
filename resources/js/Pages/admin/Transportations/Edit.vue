@@ -20,21 +20,48 @@
         require-mark-placement="right-hanging"
         @submit.prevent="handleSubmit"
       >
+        <div v-if="Object.keys(form.errors).length > 0" class="mb-4 p-4 bg-red-50 border border-red-200 rounded">
+          <p class="text-red-600 font-medium">Please correct the following errors:</p>
+          <ul class="mt-2 list-disc list-inside">
+            <li v-for="(error, key) in form.errors" :key="key" class="text-red-500">
+              {{ error }}
+            </li>
+          </ul>
+        </div>
+
         <n-grid :cols="2" :x-gap="24">
           <n-form-item-gi label="Type" path="type">
             <n-select
               v-model:value="form.type"
               :options="vehicleTypes"
               placeholder="Select vehicle type"
+              :status="form.errors.type ? 'error' : undefined"
             />
+            <div v-if="form.errors.type" class="text-red-500 text-sm mt-1">
+              {{ form.errors.type }}
+            </div>
           </n-form-item-gi>
 
           <n-form-item-gi label="Brand" path="brand">
-            <n-input v-model:value="form.brand" placeholder="Enter brand" />
+            <n-input 
+              v-model:value="form.brand" 
+              placeholder="Enter brand"
+              :status="form.errors.brand ? 'error' : undefined"
+            />
+            <div v-if="form.errors.brand" class="text-red-500 text-sm mt-1">
+              {{ form.errors.brand }}
+            </div>
           </n-form-item-gi>
 
           <n-form-item-gi label="Model" path="model">
-            <n-input v-model:value="form.model" placeholder="Enter model" />
+            <n-input 
+              v-model:value="form.model" 
+              placeholder="Enter model"
+              :status="form.errors.model ? 'error' : undefined"
+            />
+            <div v-if="form.errors.model" class="text-red-500 text-sm mt-1">
+              {{ form.errors.model }}
+            </div>
           </n-form-item-gi>
 
           <n-form-item-gi label="Year" path="year">
@@ -43,7 +70,11 @@
               placeholder="Enter year"
               :min="1950"
               :max="new Date().getFullYear()"
+              :status="form.errors.year ? 'error' : undefined"
             />
+            <div v-if="form.errors.year" class="text-red-500 text-sm mt-1">
+              {{ form.errors.year }}
+            </div>
           </n-form-item-gi>
 
           <n-form-item-gi label="Seats" path="seats">
@@ -51,15 +82,33 @@
               v-model:value="form.seats"
               placeholder="Enter number of seats"
               :min="1"
+              :status="form.errors.seats ? 'error' : undefined"
             />
+            <div v-if="form.errors.seats" class="text-red-500 text-sm mt-1">
+              {{ form.errors.seats }}
+            </div>
           </n-form-item-gi>
 
           <n-form-item-gi label="License Plate" path="license_plate">
-            <n-input v-model:value="form.license_plate" placeholder="Enter license plate" />
+            <n-input 
+              v-model:value="form.license_plate" 
+              placeholder="Enter license plate"
+              :status="form.errors.license_plate ? 'error' : undefined"
+            />
+            <div v-if="form.errors.license_plate" class="text-red-500 text-sm mt-1">
+              {{ form.errors.license_plate }}
+            </div>
           </n-form-item-gi>
 
           <n-form-item-gi label="Color" path="color">
-            <n-input v-model:value="form.color" placeholder="Enter color" />
+            <n-input 
+              v-model:value="form.color" 
+              placeholder="Enter color"
+              :status="form.errors.color ? 'error' : undefined"
+            />
+            <div v-if="form.errors.color" class="text-red-500 text-sm mt-1">
+              {{ form.errors.color }}
+            </div>
           </n-form-item-gi>
 
           <n-form-item-gi label="Features" path="features">
@@ -68,7 +117,11 @@
               multiple
               :options="featureOptions"
               placeholder="Select features"
+              :status="form.errors.features ? 'error' : undefined"
             />
+            <div v-if="form.errors.features" class="text-red-500 text-sm mt-1">
+              {{ form.errors.features }}
+            </div>
           </n-form-item-gi>
         </n-grid>
 
@@ -99,7 +152,11 @@
               :default-time="[0, 0, 0, 0]"
               :is-date-disabled="(current) => current < Date.now()"
               placeholder="Select insurance expiry date"
+              :status="form.errors.insurance_expiry ? 'error' : undefined"
             />
+            <div v-if="form.errors.insurance_expiry" class="text-red-500 text-sm mt-1">
+              {{ form.errors.insurance_expiry }}
+            </div>
           </n-form-item-gi>
 
           <n-form-item-gi label="Technical Inspection" path="technical_inspection_expiry">
@@ -110,7 +167,11 @@
               :default-time="[0, 0, 0, 0]"
               :is-date-disabled="(current) => current < Date.now()"
               placeholder="Select technical inspection expiry date"
+              :status="form.errors.technical_inspection_expiry ? 'error' : undefined"
             />
+            <div v-if="form.errors.technical_inspection_expiry" class="text-red-500 text-sm mt-1">
+              {{ form.errors.technical_inspection_expiry }}
+            </div>
           </n-form-item-gi>
         </n-grid>
 
@@ -153,6 +214,10 @@ const props = defineProps({
   transportation: {
     type: Object,
     required: true
+  },
+  errors: {
+    type: Object,
+    default: () => ({})
   }
 })
 
