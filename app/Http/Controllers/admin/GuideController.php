@@ -17,12 +17,12 @@ class GuideController extends Controller
     public function index()
     {
         $guides = $this->guideService->all();
-        return Inertia::render('admin.guides.index', compact('guides'));
+        return Inertia::render('admin/Guides/Index', compact('guides'));
     }
 
     public function create()
     {
-        return Inertia::render('admin.guides.create');
+        return Inertia::render('admin/Guides/Create');
     }
 
     public function store(Request $request)
@@ -47,12 +47,12 @@ class GuideController extends Controller
 
     public function show(Guide $guide)
     {
-        return Inertia::render('admin.guides.show', compact('guide'));
+        return Inertia::render('admin/Guides/Show', compact('guide'));
     }
 
     public function edit(Guide $guide)
     {
-        return Inertia::render('admin.guides.edit', compact('guide'));
+        return Inertia::render('admin/Guides/Edit', compact('guide'));
     }
 
     public function update(Request $request, Guide $guide)

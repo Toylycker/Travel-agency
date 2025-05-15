@@ -17,12 +17,12 @@ class CostController extends Controller
     public function index()
     {
         $costs = $this->costService->all();
-        return Inertia::render('admin.costs.index', compact('costs'));
+        return Inertia::render('admin/Costs/Index', compact('costs'));
     }
 
     public function create()
     {
-        return Inertia::render('admin.costs.create');
+        return Inertia::render('admin/Costs/Create');
     }
 
     public function store(Request $request)
@@ -45,12 +45,12 @@ class CostController extends Controller
 
     public function show(Cost $cost)
     {
-        return Inertia::render('admin.costs.show', compact('cost'));
+        return Inertia::render('admin/Costs/Show', compact('cost'));
     }
 
     public function edit(Cost $cost)
     {
-        return Inertia::render('admin.costs.edit', compact('cost'));
+        return Inertia::render('admin/Costs/Edit', compact('cost'));
     }
 
     public function update(Request $request, Cost $cost)

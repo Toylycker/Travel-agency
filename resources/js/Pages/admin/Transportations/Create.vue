@@ -1,15 +1,13 @@
 <template>
     <div class="page-header">
-      <n-page-header>
-        <template #title>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">
           Create Transportation
-        </template>
-        <template #extra>
-          <n-button @click="handleBack">
-            Back
-          </n-button>
-        </template>
-      </n-page-header>
+        </h2>
+        <n-button @click="handleBack">
+          Back
+        </n-button>
+      </div>
     </div>
 
     <n-card>
@@ -62,7 +60,7 @@
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
 import { Inertia } from '@inertiajs/inertia'
-import AdminLayout from '@/Layouts/AdminLayout.vue'
+import { NButton, NCard, NForm, NFormItem, NInput } from 'naive-ui'
 
 const formRef = ref(null)
 const loading = ref(false)
@@ -102,11 +100,6 @@ const handleSubmit = () => {
   })
 }
 </script>
-
-<script>
-import AdminLayout from '@/Layouts/AdminLayout.vue';
-export default { layout: AdminLayout }
-</script> 
 
 <script>
 import AdminLayout from '@/Layouts/AdminLayout.vue';

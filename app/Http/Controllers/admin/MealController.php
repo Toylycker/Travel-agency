@@ -17,12 +17,12 @@ class MealController extends Controller
     public function index()
     {
         $meals = $this->mealService->all();
-        return Inertia::render('admin.meals.index', compact('meals'));
+        return Inertia::render('admin/Meals/Index', compact('meals'));
     }
 
     public function create()
     {
-        return Inertia::render('admin.meals.create');
+        return Inertia::render('admin/Meals/Create');
     }
 
     public function store(Request $request)
@@ -44,12 +44,12 @@ class MealController extends Controller
 
     public function show(Meal $meal)
     {
-        return Inertia::render('admin.meals.show', compact('meal'));
+        return Inertia::render('admin/Meals/Show', compact('meal'));
     }
 
     public function edit(Meal $meal)
     {
-        return Inertia::render('admin.meals.edit', compact('meal'));
+        return Inertia::render('admin/Meals/Edit', compact('meal'));
     }
 
     public function update(Request $request, Meal $meal)

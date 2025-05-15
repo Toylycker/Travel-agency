@@ -1,15 +1,13 @@
 <template>
     <div class="page-header">
-      <n-page-header>
-        <template #title>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">
           Edit Transportation
-        </template>
-        <template #extra>
-          <n-button @click="handleBack">
-            Back
-          </n-button>
-        </template>
-      </n-page-header>
+        </h2>
+        <n-button @click="handleBack">
+          Back
+        </n-button>
+      </div>
     </div>
 
     <n-card>

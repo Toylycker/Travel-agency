@@ -17,12 +17,12 @@ class TransportationController extends Controller
     public function index()
     {
         $transportations = $this->transportationService->all();
-        return Inertia::render('admin.transportations.index', compact('transportations'));
+        return Inertia::render('admin/Transportations/Index', compact('transportations'));
     }
 
     public function create()
     {
-        return Inertia::render('admin.transportations.create');
+        return Inertia::render('admin/Transportations/Create');
     }
 
     public function store(Request $request)
@@ -36,18 +36,18 @@ class TransportationController extends Controller
 
         $transportation = $this->transportationService->create($validated);
 
-        return redirect()->route('admin.transportations.index')
+        return redirect()->route('admin/Transportations/Index')
             ->with('success', 'Transportation created successfully.');
     }
 
     public function show(Transportation $transportation)
     {
-        return Inertia::render('admin.transportations.show', compact('transportation'));
+        return Inertia::render('admin/Transportations/Show', compact('transportation'));
     }
 
     public function edit(Transportation $transportation)
     {
-        return Inertia::render('admin.transportations.edit', compact('transportation'));
+        return Inertia::render('admin/Transportations/Edit', compact('transportation'));
     }
 
     public function update(Request $request, Transportation $transportation)

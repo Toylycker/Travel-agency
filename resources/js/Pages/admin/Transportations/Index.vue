@@ -1,15 +1,13 @@
 <template>
   <div class="page-header">
-    <n-page-header>
-      <template #title>
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">
         Transportations
-      </template>
-      <template #extra>
-        <n-button type="primary" @click="handleCreate">
-          Add Transportation
-        </n-button>
-      </template>
-    </n-page-header>
+      </h2>
+      <n-button type="primary" @click="handleCreate">
+        Add Transportation
+      </n-button>
+    </div>
   </div>
 
   <n-card>
@@ -25,9 +23,10 @@
 
 <script setup>
 import { h, ref } from 'vue'
-import { NButton, NPopconfirm, NSpace } from 'naive-ui'
+import { NButton, NPopconfirm, NSpace, NCard, NDataTable } from 'naive-ui'
 import { Link } from '@inertiajs/inertia-vue3'
 import { Inertia } from '@inertiajs/inertia'
+import { Head } from '@inertiajs/inertia-vue3'
 
 const props = defineProps({
   transportations: {
