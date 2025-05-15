@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Location extends Model
+class Location extends BaseModel
 {
     use HasFactory;
     protected $guarded = ['id'];
@@ -30,6 +30,4 @@ class Location extends Model
     {
         return $this->hasMany(Hotel::class);
     }
-
-
 }
