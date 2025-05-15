@@ -20,23 +20,103 @@
         require-mark-placement="right-hanging"
         @submit.prevent="handleSubmit"
       >
-        <n-form-item label="Name" path="name">
-          <n-input v-model:value="form.name" placeholder="Enter name" />
+        <n-grid :cols="2" :x-gap="24">
+          <n-form-item-gi label="Type" path="type">
+            <n-select
+              v-model:value="form.type"
+              :options="vehicleTypes"
+              placeholder="Select vehicle type"
+            />
+          </n-form-item-gi>
+
+          <n-form-item-gi label="Brand" path="brand">
+            <n-input v-model:value="form.brand" placeholder="Enter brand" />
+          </n-form-item-gi>
+
+          <n-form-item-gi label="Model" path="model">
+            <n-input v-model:value="form.model" placeholder="Enter model" />
+          </n-form-item-gi>
+
+          <n-form-item-gi label="Year" path="year">
+            <n-input-number
+              v-model:value="form.year"
+              placeholder="Enter year"
+              :min="1950"
+              :max="new Date().getFullYear()"
+            />
+          </n-form-item-gi>
+
+          <n-form-item-gi label="Seats" path="seats">
+            <n-input-number
+              v-model:value="form.seats"
+              placeholder="Enter number of seats"
+              :min="1"
+            />
+          </n-form-item-gi>
+
+          <n-form-item-gi label="License Plate" path="license_plate">
+            <n-input v-model:value="form.license_plate" placeholder="Enter license plate" />
+          </n-form-item-gi>
+
+          <n-form-item-gi label="Color" path="color">
+            <n-input v-model:value="form.color" placeholder="Enter color" />
+          </n-form-item-gi>
+
+          <n-form-item-gi label="Features" path="features">
+            <n-select
+              v-model:value="form.features"
+              multiple
+              :options="featureOptions"
+              placeholder="Select features"
+            />
+          </n-form-item-gi>
+        </n-grid>
+
+        <n-divider>Amenities</n-divider>
+
+        <n-grid :cols="3" :x-gap="24">
+          <n-form-item-gi label="WiFi" path="has_wifi">
+            <n-switch v-model:value="form.has_wifi" />
+          </n-form-item-gi>
+
+          <n-form-item-gi label="AC" path="has_ac">
+            <n-switch v-model:value="form.has_ac" />
+          </n-form-item-gi>
+
+          <n-form-item-gi label="TV" path="has_tv">
+            <n-switch v-model:value="form.has_tv" />
+          </n-form-item-gi>
+        </n-grid>
+
+        <n-divider>Important Dates</n-divider>
+
+        <n-grid :cols="2" :x-gap="24">
+          <n-form-item-gi label="Insurance Expiry" path="insurance_expiry">
+            <n-date-picker
+              v-model:value="form.insurance_expiry"
+              type="date"
+              placeholder="Select insurance expiry date"
+            />
+          </n-form-item-gi>
+
+          <n-form-item-gi label="Technical Inspection" path="technical_inspection_expiry">
+            <n-date-picker
+              v-model:value="form.technical_inspection_expiry"
+              type="date"
+              placeholder="Select technical inspection expiry date"
+            />
+          </n-form-item-gi>
+        </n-grid>
+
+        <n-form-item label="Status" path="is_active">
+          <n-switch v-model:value="form.is_active" />
         </n-form-item>
 
-        <n-form-item label="Description" path="description">
-          <n-input
-            v-model:value="form.description"
-            type="textarea"
-            placeholder="Enter description"
-          />
-        </n-form-item>
-
-        <div class="flex justify-end gap-2">
-          <n-button @click="$router.back()">
+        <div class="flex justify-end gap-2 mt-4">
+          <n-button @click="handleBack">
             Cancel
           </n-button>
-          <n-button type="primary" attr-type="submit" :loading="loading">
+          <n-button class="bg-success" type="primary" attr-type="submit" :loading="form.processing">
             Create Transportation
           </n-button>
         </div>
@@ -48,46 +128,104 @@
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
 import { Inertia } from '@inertiajs/inertia'
-import { NButton, NCard, NForm, NFormItem, NInput } from 'naive-ui'
+import {
+  NButton,
+  NCard,
+  NForm,
+  NFormItem,
+  NFormItemGi,
+  NInput,
+  NInputNumber,
+  NSelect,
+  NSwitch,
+  NDatePicker,
+  NGrid,
+  NDivider
+} from 'naive-ui'
 
 const formRef = ref(null)
-const loading = ref(false)
+
+const vehicleTypes = [
+  { label: 'Bus', value: 'bus' },
+  { label: 'Van', value: 'van' },
+  { label: 'Car', value: 'car' }
+]
+
+const featureOptions = [
+  { label: 'USB Charging', value: 'USB Charging' },
+  { label: 'Bluetooth Audio', value: 'Bluetooth Audio' },
+  { label: 'Leather Seats', value: 'Leather Seats' },
+  { label: 'Panoramic Roof', value: 'Panoramic Roof' },
+  { label: 'Luggage Space', value: 'Luggage Space' },
+  { label: 'Mini Fridge', value: 'Mini Fridge' },
+  { label: 'Reading Lights', value: 'Reading Lights' },
+  { label: 'Reclining Seats', value: 'Reclining Seats' }
+]
 
 const form = useForm({
-  name: '',
-  description: ''
+  type: null,
+  brand: '',
+  model: '',
+  year: null,
+  seats: null,
+  license_plate: '',
+  color: '',
+  features: [],
+  has_wifi: false,
+  has_ac: true,
+  has_tv: false,
+  insurance_expiry: null,
+  technical_inspection_expiry: null,
+  is_active: true
 })
 
 const rules = {
-  name: {
+  type: {
     required: true,
-    message: 'Please enter name',
+    message: 'Please select vehicle type',
+    trigger: 'blur'
+  },
+  brand: {
+    required: true,
+    message: 'Please enter brand',
+    trigger: 'blur'
+  },
+  model: {
+    required: true,
+    message: 'Please enter model',
+    trigger: 'blur'
+  },
+  year: {
+    required: true,
+    message: 'Please enter year',
+    trigger: 'blur'
+  },
+  seats: {
+    required: true,
+    message: 'Please enter number of seats',
+    trigger: 'blur'
+  },
+  license_plate: {
+    required: true,
+    message: 'Please enter license plate',
     trigger: 'blur'
   }
 }
 
 const handleBack = () => {
-  Inertia.visit(route('admin.transportations.index'))
+  window.location = route('admin.transportations.index')
 }
 
 const handleSubmit = () => {
   formRef.value?.validate((errors) => {
     if (!errors) {
-      loading.value = true
-      form.post(route('admin.transportations.store'), {
-        onSuccess: () => {
-          loading.value = false
-        },
-        onError: () => {
-          loading.value = false
-        }
-      })
+      form.post(route('admin.transportations.store'))
     }
   })
 }
 </script>
 
 <script>
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue'
 export default { layout: AdminLayout }
 </script> 

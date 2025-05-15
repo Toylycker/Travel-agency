@@ -4,7 +4,7 @@
       <h2 class="text-2xl font-bold">
         Transportations
       </h2>
-      <n-button type="primary" @click="handleCreate">
+      <n-button class="bg-info" type="primary" @click="handleCreate">
         Add Transportation
       </n-button>
     </div>
@@ -131,7 +131,8 @@ const columns = [
                   NButton,
                   {
                     type: 'primary',
-                    size: 'small'
+                    size: 'small',
+                    class: 'bg-info'
                   },
                   { default: () => 'Edit' }
                 )
@@ -149,7 +150,8 @@ const columns = [
                   NButton,
                   {
                     type: 'error',
-                    size: 'small'
+                    size: 'small',
+                    class: 'bg-danger'
                   },
                   { default: () => 'Delete' }
                 )

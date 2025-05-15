@@ -53,11 +53,26 @@ class TransportationController extends Controller
     public function update(Request $request, Transportation $transportation)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'name_cn' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'description_cn' => 'nullable|string',
+            'type' => 'nullable|string|in:bus,van,car',
+            'brand' => 'nullable|string|max:255',
+            'model' => 'nullable|string|max:255',
+            'year' => 'nullable|integer|min:1950|max:' . (date('Y') + 1),
+            'seats' => 'nullable|integer|min:1',
+            'license_plate' => 'nullable|string|max:255|unique:transportations,license_plate,' . $transportation->id,
+            'color' => 'nullable|string|max:255',
+            'has_wifi' => 'boolean',
+            'has_ac' => 'boolean',
+            'has_tv' => 'boolean',
+            'features' => 'nullable|array',
+            'insurance_expiry' => 'nullable|date',
+            'technical_inspection_expiry' => 'nullable|date',
+            'is_active' => 'boolean'
         ]);
+
+        // Convert features array to JSON string for storage
+        if (isset($validated['features'])) {
+            $validated['features'] = json_encode($validated['features']);
+        }
 
         $this->transportationService->update($transportation->id, $validated);
 
