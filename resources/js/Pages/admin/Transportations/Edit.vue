@@ -12,7 +12,6 @@
 
     <n-card>
       <n-form
-        ref="formRef"
         :model="form"
         :rules="rules"
         label-placement="left"
@@ -145,31 +144,25 @@
 
         <n-grid :cols="2" :x-gap="24">
           <n-form-item-gi label="Insurance Expiry" path="insurance_expiry">
-            <n-date-picker
-              v-model:value="form.insurance_expiry"
+            <input
               type="date"
-              clearable
-              :actions="null"
-              format="dd/MM/yyyy"
-              placeholder="Select insurance expiry date"
-              :status="form.errors.insurance_expiry ? 'error' : undefined"
+              v-model="form.insurance_expiry"
+              class="form-control"
+              :class="{ 'is-invalid': form.errors.insurance_expiry }"
             />
-            <div v-if="form.errors.insurance_expiry" class="text-red-500 text-sm mt-1">
+            <div v-if="form.errors.insurance_expiry" class="invalid-feedback">
               {{ form.errors.insurance_expiry }}
             </div>
           </n-form-item-gi>
 
           <n-form-item-gi label="Technical Inspection" path="technical_inspection_expiry">
-            <n-date-picker
-              v-model:value="form.technical_inspection_expiry"
+            <input
               type="date"
-              clearable
-              :actions="null"
-              format="dd/MM/yyyy"
-              placeholder="Select technical inspection expiry date"
-              :status="form.errors.technical_inspection_expiry ? 'error' : undefined"
+              v-model="form.technical_inspection_expiry"
+              class="form-control"
+              :class="{ 'is-invalid': form.errors.technical_inspection_expiry }"
             />
-            <div v-if="form.errors.technical_inspection_expiry" class="text-red-500 text-sm mt-1">
+            <div v-if="form.errors.technical_inspection_expiry" class="invalid-feedback">
               {{ form.errors.technical_inspection_expiry }}
             </div>
           </n-form-item-gi>
@@ -205,7 +198,6 @@ import {
   NInputNumber,
   NSelect,
   NSwitch,
-  NDatePicker,
   NGrid,
   NDivider
 } from 'naive-ui'
@@ -220,8 +212,6 @@ const props = defineProps({
     default: () => ({})
   }
 })
-
-const formRef = ref(null)
 
 const vehicleTypes = [
   { label: 'Bus', value: 'bus' },
@@ -271,8 +261,8 @@ const form = useForm({
   has_wifi: Boolean(props.transportation.has_wifi),
   has_ac: props.transportation.has_ac ?? true,
   has_tv: Boolean(props.transportation.has_tv),
-  insurance_expiry: parseDate(props.transportation.insurance_expiry),
-  technical_inspection_expiry: parseDate(props.transportation.technical_inspection_expiry),
+  insurance_expiry: formatDate(props.transportation.insurance_expiry),
+  technical_inspection_expiry: formatDate(props.transportation.technical_inspection_expiry),
   is_active: props.transportation.is_active ?? true
 })
 
@@ -316,42 +306,14 @@ const handleBack = () => {
 }
 
 const handleSubmit = () => {
-  formRef.value?.validate((errors) => {
-    if (!errors) {
-      // Create a new object with all form data
-      const data = {
-        type: form.type,
-        brand: form.brand,
-        model: form.model,
-        year: form.year,
-        seats: form.seats,
-        license_plate: form.license_plate,
-        color: form.color,
-        features: form.features,
-        has_wifi: form.has_wifi,
-        has_ac: form.has_ac,
-        has_tv: form.has_tv,
-        is_active: form.is_active,
-        insurance_expiry: form.insurance_expiry instanceof Date 
-          ? `${form.insurance_expiry.getFullYear()}-${String(form.insurance_expiry.getMonth() + 1).padStart(2, '0')}-${String(form.insurance_expiry.getDate()).padStart(2, '0')}`
-          : null,
-        technical_inspection_expiry: form.technical_inspection_expiry instanceof Date
-          ? `${form.technical_inspection_expiry.getFullYear()}-${String(form.technical_inspection_expiry.getMonth() + 1).padStart(2, '0')}-${String(form.technical_inspection_expiry.getDate()).padStart(2, '0')}`
-          : null
-      };
-
-      // Use put() directly instead of post() with _method: 'PUT'
-      form.put(route('admin.transportations.update', props.transportation.id), data);
-    }
-  })
+      form.put(route('admin.transportations.update', props.transportation.id));
 }
 
-onMounted(() => {
-  // Validate the form after it's mounted to clear initial validation messages
-  nextTick(() => {
-    formRef.value?.validate()
-  })
-})
+function formatDate(timestamp) {
+  if (!timestamp) return null;
+  const date = new Date(timestamp);
+  return date.toISOString().slice(0, 10); // Or any format you prefer
+}
 </script>
 
 <script>

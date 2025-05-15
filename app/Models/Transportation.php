@@ -51,7 +51,7 @@ class Transportation extends BaseModel
             $this->attributes['insurance_expiry'] = null;
             return;
         }
-        
+    
         if (strpos($value, '/') !== false) {
             $parts = explode('/', $value);
             if (count($parts) === 3) {
@@ -59,8 +59,8 @@ class Transportation extends BaseModel
                 return;
             }
         }
-        
-        $this->attributes['insurance_expiry'] = $value;
+    
+        $this->attributes['insurance_expiry'] = substr($value, 0, 10);
     }
 
     protected function setTechnicalInspectionExpiryAttribute($value)
@@ -78,6 +78,6 @@ class Transportation extends BaseModel
             }
         }
         
-        $this->attributes['technical_inspection_expiry'] = $value;
+        $this->attributes['technical_inspection_expiry'] = substr($value, 0, 10);
     }
 } 
