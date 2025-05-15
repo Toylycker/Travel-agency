@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\TransportationService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TransportationController extends Controller
 {
@@ -15,12 +16,12 @@ class TransportationController extends Controller
     public function index()
     {
         $transportations = $this->transportationService->all();
-        return view('admin.transportations.index', compact('transportations'));
+        return Inertia::render('admin.transportations.index', compact('transportations'));
     }
 
     public function create()
     {
-        return view('admin.transportations.create');
+        return Inertia::render('admin.transportations.create');
     }
 
     public function store(Request $request)
@@ -41,13 +42,13 @@ class TransportationController extends Controller
     public function show($id)
     {
         $transportation = $this->transportationService->findOrFail($id);
-        return view('admin.transportations.show', compact('transportation'));
+        return Inertia::render('admin.transportations.show', compact('transportation'));
     }
 
     public function edit($id)
     {
         $transportation = $this->transportationService->findOrFail($id);
-        return view('admin.transportations.edit', compact('transportation'));
+        return Inertia::render('admin.transportations.edit', compact('transportation'));
     }
 
     public function update(Request $request, $id)
@@ -61,7 +62,7 @@ class TransportationController extends Controller
 
         $this->transportationService->update($id, $validated);
 
-        return redirect()->route('admin.transportations.index')
+        return redirect()->back()
             ->with('success', 'Transportation updated successfully.');
     }
 
@@ -69,7 +70,7 @@ class TransportationController extends Controller
     {
         $this->transportationService->delete($id);
 
-        return redirect()->route('admin.transportations.index')
+        return redirect()->bacl()
             ->with('success', 'Transportation deleted successfully.');
     }
 } 

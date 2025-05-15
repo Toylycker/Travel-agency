@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\MealService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class MealController extends Controller
 {
@@ -15,12 +16,12 @@ class MealController extends Controller
     public function index()
     {
         $meals = $this->mealService->all();
-        return view('admin.meals.index', compact('meals'));
+        return Inertia::render('admin.meals.index', compact('meals'));
     }
 
     public function create()
     {
-        return view('admin.meals.create');
+        return Inertia::render('admin.meals.create');
     }
 
     public function store(Request $request)
@@ -36,20 +37,20 @@ class MealController extends Controller
 
         $meal = $this->mealService->create($validated);
 
-        return redirect()->route('admin.meals.index')
+        return redirect()->back()
             ->with('success', 'Meal created successfully.');
     }
 
     public function show($id)
     {
         $meal = $this->mealService->findOrFail($id);
-        return view('admin.meals.show', compact('meal'));
+        return Inertia::render('admin.meals.show', compact('meal'));
     }
 
     public function edit($id)
     {
         $meal = $this->mealService->findOrFail($id);
-        return view('admin.meals.edit', compact('meal'));
+        return Inertia::render('admin.meals.edit', compact('meal'));
     }
 
     public function update(Request $request, $id)
@@ -65,7 +66,7 @@ class MealController extends Controller
 
         $this->mealService->update($id, $validated);
 
-        return redirect()->route('admin.meals.index')
+        return redirect()->back()
             ->with('success', 'Meal updated successfully.');
     }
 
@@ -73,7 +74,7 @@ class MealController extends Controller
     {
         $this->mealService->delete($id);
 
-        return redirect()->route('admin.meals.index')
+        return redirect()->back()
             ->with('success', 'Meal deleted successfully.');
     }
 } 

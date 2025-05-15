@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\GuideService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class GuideController extends Controller
 {
@@ -15,12 +16,12 @@ class GuideController extends Controller
     public function index()
     {
         $guides = $this->guideService->all();
-        return view('admin.guides.index', compact('guides'));
+        return Inertia::render('admin.guides.index', compact('guides'));
     }
 
     public function create()
     {
-        return view('admin.guides.create');
+        return Inertia::render('admin.guides.create');
     }
 
     public function store(Request $request)
@@ -39,20 +40,20 @@ class GuideController extends Controller
 
         $guide = $this->guideService->create($validated);
 
-        return redirect()->route('admin.guides.index')
+        return redirect()->back()
             ->with('success', 'Guide created successfully.');
     }
 
     public function show($id)
     {
         $guide = $this->guideService->findOrFail($id);
-        return view('admin.guides.show', compact('guide'));
+        return Inertia::render('admin.guides.show', compact('guide'));
     }
 
     public function edit($id)
     {
         $guide = $this->guideService->findOrFail($id);
-        return view('admin.guides.edit', compact('guide'));
+        return Inertia::render('admin.guides.edit', compact('guide'));
     }
 
     public function update(Request $request, $id)
@@ -71,7 +72,7 @@ class GuideController extends Controller
 
         $this->guideService->update($id, $validated);
 
-        return redirect()->route('admin.guides.index')
+        return redirect()->back()
             ->with('success', 'Guide updated successfully.');
     }
 
@@ -79,7 +80,7 @@ class GuideController extends Controller
     {
         $this->guideService->delete($id);
 
-        return redirect()->route('admin.guides.index')
+        return redirect()->back()
             ->with('success', 'Guide deleted successfully.');
     }
 } 

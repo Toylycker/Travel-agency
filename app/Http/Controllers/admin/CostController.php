@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\CostService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CostController extends Controller
 {
@@ -15,12 +16,12 @@ class CostController extends Controller
     public function index()
     {
         $costs = $this->costService->all();
-        return view('admin.costs.index', compact('costs'));
+        return Inertia::render('admin.costs.index', compact('costs'));
     }
 
     public function create()
     {
-        return view('admin.costs.create');
+        return Inertia::render('admin.costs.create');
     }
 
     public function store(Request $request)
@@ -37,20 +38,20 @@ class CostController extends Controller
 
         $cost = $this->costService->create($validated);
 
-        return redirect()->route('admin.costs.index')
+        return redirect()->back()
             ->with('success', 'Cost created successfully.');
     }
 
     public function show($id)
     {
         $cost = $this->costService->findOrFail($id);
-        return view('admin.costs.show', compact('cost'));
+        return Inertia::render('admin.costs.show', compact('cost'));
     }
 
     public function edit($id)
     {
         $cost = $this->costService->findOrFail($id);
-        return view('admin.costs.edit', compact('cost'));
+        return Inertia::render('admin.costs.edit', compact('cost'));
     }
 
     public function update(Request $request, $id)
@@ -67,7 +68,7 @@ class CostController extends Controller
 
         $this->costService->update($id, $validated);
 
-        return redirect()->route('admin.costs.index')
+        return redirect()->back()
             ->with('success', 'Cost updated successfully.');
     }
 
@@ -75,7 +76,7 @@ class CostController extends Controller
     {
         $this->costService->delete($id);
 
-        return redirect()->route('admin.costs.index')
+        return redirect()->back()
             ->with('success', 'Cost deleted successfully.');
     }
 } 
