@@ -13,6 +13,10 @@ use App\Http\Controllers\admin\TourController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\CustomTourController;
+use App\Http\Controllers\admin\TransportationController;
+use App\Http\Controllers\admin\CostController;
+use App\Http\Controllers\admin\GuideController;
+use App\Http\Controllers\admin\MealController;
 use App\Models\Text;
 use Illuminate\Support\Facades\Route;
 
@@ -48,7 +52,12 @@ Route::prefix('admin')
     'tours'=> TourController::class,
     'posts'=> PostController::class,
     'hotels'=> HotelController::class,
-    'users'=> UserController::class]);
+    'users'=> UserController::class,
+    'transportations' => TransportationController::class,
+    'costs' => CostController::class,
+    'guides' => GuideController::class,
+    'meals' => MealController::class,
+    ]);
     Route::get('/applications/index', [ApplicationController::class, 'index'])->name('applications.index');
     Route::get('/customTour/index', [CustomTourController::class, 'index'])->name('customTour.index');
     Route::get('/messages/index', [ReceivedMessageController::class, 'index'])->name('messages.index');
