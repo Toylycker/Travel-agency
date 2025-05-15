@@ -8,11 +8,8 @@ use Illuminate\Http\Request;
 
 class CostController extends Controller
 {
-    protected $costService;
-
-    public function __construct(CostService $costService)
+    public function __construct(protected CostService $costService)
     {
-        $this->costService = $costService;
     }
 
     public function index()

@@ -8,11 +8,8 @@ use Illuminate\Http\Request;
 
 class MealController extends Controller
 {
-    protected $mealService;
-
-    public function __construct(MealService $mealService)
+    public function __construct(protected MealService $mealService)
     {
-        $this->mealService = $mealService;
     }
 
     public function index()

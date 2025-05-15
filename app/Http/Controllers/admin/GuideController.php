@@ -8,11 +8,8 @@ use Illuminate\Http\Request;
 
 class GuideController extends Controller
 {
-    protected $guideService;
-
-    public function __construct(GuideService $guideService)
+    public function __construct(protected GuideService $guideService)
     {
-        $this->guideService = $guideService;
     }
 
     public function index()

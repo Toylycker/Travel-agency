@@ -8,11 +8,8 @@ use Illuminate\Http\Request;
 
 class TransportationController extends Controller
 {
-    protected $transportationService;
-
-    public function __construct(TransportationService $transportationService)
+    public function __construct(protected TransportationService $transportationService)
     {
-        $this->transportationService = $transportationService;
     }
 
     public function index()
