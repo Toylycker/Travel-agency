@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Transportation extends BaseModel
 {
+    use HasFactory;
+
     protected $table = 'transportations';
     protected $guarded = ['id'];
     public $timestamps = false;

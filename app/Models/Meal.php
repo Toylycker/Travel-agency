@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Meal extends BaseModel
 {
+    use HasFactory;
+    
     protected $guarded = ['id'];
     public $timestamps = false;
 

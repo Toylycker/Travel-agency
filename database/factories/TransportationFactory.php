@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Transportation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TransportationFactory extends Factory
 {
+    protected $model = Transportation::class;
     protected $vehicleTypes = [
         'car' => [
             'brands' => ['Toyota', 'Mercedes', 'BMW', 'Audi', 'Lexus'],

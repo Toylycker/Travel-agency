@@ -60,7 +60,13 @@
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
 import { Inertia } from '@inertiajs/inertia'
-import AdminLayout from '@/Layouts/AdminLayout.vue'
+import {
+  NCard,
+  NForm,
+  NFormItem,
+  NInput,
+  NButton
+} from 'naive-ui'
 
 const props = defineProps({
   transportation: {

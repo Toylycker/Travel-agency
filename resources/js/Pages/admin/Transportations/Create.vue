@@ -24,23 +24,11 @@
           <n-input v-model:value="form.name" placeholder="Enter name" />
         </n-form-item>
 
-        <n-form-item label="Chinese Name" path="name_cn">
-          <n-input v-model:value="form.name_cn" placeholder="Enter Chinese name" />
-        </n-form-item>
-
         <n-form-item label="Description" path="description">
           <n-input
             v-model:value="form.description"
             type="textarea"
             placeholder="Enter description"
-          />
-        </n-form-item>
-
-        <n-form-item label="Chinese Description" path="description_cn">
-          <n-input
-            v-model:value="form.description_cn"
-            type="textarea"
-            placeholder="Enter Chinese description"
           />
         </n-form-item>
 
@@ -67,9 +55,7 @@ const loading = ref(false)
 
 const form = useForm({
   name: '',
-  name_cn: '',
-  description: '',
-  description_cn: ''
+  description: ''
 })
 
 const rules = {

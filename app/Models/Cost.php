@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Cost extends BaseModel
 {
+    use HasFactory;
     protected $guarded = ['id'];
 
     protected $casts = [

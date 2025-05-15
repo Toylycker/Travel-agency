@@ -23,7 +23,7 @@
 
 <script setup>
 import { h, ref } from 'vue'
-import { NButton, NPopconfirm, NSpace, NCard, NDataTable } from 'naive-ui'
+import { NButton, NPopconfirm, NSpace, NCard, NDataTable, NTag } from 'naive-ui'
 import { Link } from '@inertiajs/inertia-vue3'
 import { Inertia } from '@inertiajs/inertia'
 import { Head } from '@inertiajs/inertia-vue3'
@@ -45,12 +45,73 @@ const columns = [
     key: 'id'
   },
   {
-    title: 'Name',
-    key: 'name'
+    title: 'Type',
+    key: 'type'
   },
   {
-    title: 'Chinese Name',
-    key: 'name_cn'
+    title: 'Brand',
+    key: 'brand'
+  },
+  {
+    title: 'Model',
+    key: 'model'
+  },
+  {
+    title: 'Year',
+    key: 'year'
+  },
+  {
+    title: 'Seats',
+    key: 'seats'
+  },
+  {
+    title: 'License Plate',
+    key: 'license_plate'
+  },
+  {
+    title: 'Color',
+    key: 'color'
+  },
+  {
+    title: 'Features',
+    key: 'features',
+    render(row) {
+      if (!row.features) return '-'
+      return Array.isArray(row.features) ? row.features.join(', ') : row.features
+    }
+  },
+  {
+    title: 'Amenities',
+    key: 'amenities',
+    render(row) {
+      const amenities = []
+      if (row.has_wifi) amenities.push('WiFi')
+      if (row.has_ac) amenities.push('AC')
+      if (row.has_tv) amenities.push('TV')
+      return amenities.join(', ') || '-'
+    }
+  },
+  {
+    title: 'Insurance Expiry',
+    key: 'insurance_expiry'
+  },
+  {
+    title: 'Technical Inspection',
+    key: 'technical_inspection_expiry'
+  },
+  {
+    title: 'Status',
+    key: 'is_active',
+    render(row) {
+      return h(
+        NTag,
+        {
+          type: row.is_active ? 'success' : 'error',
+          size: 'small'
+        },
+        { default: () => row.is_active ? 'Active' : 'Inactive' }
+      )
+    }
   },
   {
     title: 'Actions',
