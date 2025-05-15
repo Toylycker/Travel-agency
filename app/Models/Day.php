@@ -33,6 +33,21 @@ class Day extends BaseModel
         return $this->belongsToMany(Hotel::class, 'day_hotels');
     }
 
+    public function transportations(): BelongsToMany
+    {
+        return $this->belongsToMany(Transportation::class, 'day_transportation');
+    }
+
+    public function meals(): BelongsToMany
+    {
+        return $this->belongsToMany(Meal::class, 'day_meal');
+    }
+
+    public function guides(): BelongsToMany
+    {
+        return $this->belongsToMany(Guide::class, 'day_guide');
+    }
+
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
