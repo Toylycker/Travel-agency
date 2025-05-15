@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Meal;
 use App\Services\MealService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -41,19 +42,17 @@ class MealController extends Controller
             ->with('success', 'Meal created successfully.');
     }
 
-    public function show($id)
+    public function show(Meal $meal)
     {
-        $meal = $this->mealService->findOrFail($id);
         return Inertia::render('admin.meals.show', compact('meal'));
     }
 
-    public function edit($id)
+    public function edit(Meal $meal)
     {
-        $meal = $this->mealService->findOrFail($id);
         return Inertia::render('admin.meals.edit', compact('meal'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Meal $meal)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -64,15 +63,15 @@ class MealController extends Controller
             'cuisine' => 'nullable|string|max:100',
         ]);
 
-        $this->mealService->update($id, $validated);
+        $this->mealService->update($meal->id, $validated);
 
         return redirect()->back()
             ->with('success', 'Meal updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Meal $meal)
     {
-        $this->mealService->delete($id);
+        $this->mealService->delete($meal->id);
 
         return redirect()->back()
             ->with('success', 'Meal deleted successfully.');

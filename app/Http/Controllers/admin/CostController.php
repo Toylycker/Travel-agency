@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cost;
 use App\Services\CostService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -42,19 +43,17 @@ class CostController extends Controller
             ->with('success', 'Cost created successfully.');
     }
 
-    public function show($id)
+    public function show(Cost $cost)
     {
-        $cost = $this->costService->findOrFail($id);
         return Inertia::render('admin.costs.show', compact('cost'));
     }
 
-    public function edit($id)
+    public function edit(Cost $cost)
     {
-        $cost = $this->costService->findOrFail($id);
         return Inertia::render('admin.costs.edit', compact('cost'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Cost $cost)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -66,15 +65,15 @@ class CostController extends Controller
             'costable_type' => 'required|string',
         ]);
 
-        $this->costService->update($id, $validated);
+        $this->costService->update($cost->id, $validated);
 
         return redirect()->back()
             ->with('success', 'Cost updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Cost $cost)
     {
-        $this->costService->delete($id);
+        $this->costService->delete($cost->id);
 
         return redirect()->back()
             ->with('success', 'Cost deleted successfully.');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Transportation;
 use App\Services\TransportationService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -39,19 +40,17 @@ class TransportationController extends Controller
             ->with('success', 'Transportation created successfully.');
     }
 
-    public function show($id)
+    public function show(Transportation $transportation)
     {
-        $transportation = $this->transportationService->findOrFail($id);
         return Inertia::render('admin.transportations.show', compact('transportation'));
     }
 
-    public function edit($id)
+    public function edit(Transportation $transportation)
     {
-        $transportation = $this->transportationService->findOrFail($id);
         return Inertia::render('admin.transportations.edit', compact('transportation'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Transportation $transportation)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -60,17 +59,17 @@ class TransportationController extends Controller
             'description_cn' => 'nullable|string',
         ]);
 
-        $this->transportationService->update($id, $validated);
+        $this->transportationService->update($transportation->id, $validated);
 
         return redirect()->back()
             ->with('success', 'Transportation updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Transportation $transportation)
     {
-        $this->transportationService->delete($id);
+        $this->transportationService->delete($transportation->id);
 
-        return redirect()->bacl()
+        return redirect()->back()
             ->with('success', 'Transportation deleted successfully.');
     }
 } 

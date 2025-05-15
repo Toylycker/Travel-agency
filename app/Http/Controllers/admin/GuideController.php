@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Guide;
 use App\Services\GuideService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -44,24 +45,22 @@ class GuideController extends Controller
             ->with('success', 'Guide created successfully.');
     }
 
-    public function show($id)
+    public function show(Guide $guide)
     {
-        $guide = $this->guideService->findOrFail($id);
         return Inertia::render('admin.guides.show', compact('guide'));
     }
 
-    public function edit($id)
+    public function edit(Guide $guide)
     {
-        $guide = $this->guideService->findOrFail($id);
         return Inertia::render('admin.guides.edit', compact('guide'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Guide $guide)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'name_cn' => 'nullable|string|max:255',
-            'email' => 'required|email|unique:guides,email,' . $id,
+            'email' => 'required|email|unique:guides,email,' . $guide->id,
             'phone' => 'required|string|max:20',
             'languages' => 'required|string',
             'bio' => 'nullable|string',
@@ -70,15 +69,15 @@ class GuideController extends Controller
             'availability' => 'nullable|string',
         ]);
 
-        $this->guideService->update($id, $validated);
+        $this->guideService->update($guide->id, $validated);
 
         return redirect()->back()
             ->with('success', 'Guide updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Guide $guide)
     {
-        $this->guideService->delete($id);
+        $this->guideService->delete($guide->id);
 
         return redirect()->back()
             ->with('success', 'Guide deleted successfully.');
