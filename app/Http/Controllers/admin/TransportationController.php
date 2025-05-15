@@ -87,6 +87,7 @@ class TransportationController extends Controller
                 ->withErrors($e->validator)
                 ->withInput();
         } catch (\Exception $e) {
+            info($e->getMessage());
             return redirect()->back()
                 ->withErrors(['error' => 'An error occurred while updating the transportation.'])
                 ->withInput();

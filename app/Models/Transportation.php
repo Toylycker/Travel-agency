@@ -13,6 +13,16 @@ class Transportation extends BaseModel
     protected $guarded = ['id'];
     public $timestamps = false;
 
+    protected $casts = [
+        'has_wifi' => 'boolean',
+        'has_ac' => 'boolean',
+        'has_tv' => 'boolean',
+        'is_active' => 'boolean',
+        'features' => 'array',
+        'insurance_expiry' => 'date',
+        'technical_inspection_expiry' => 'date'
+    ];
+
     public function days(): BelongsToMany
     {
         return $this->belongsToMany(Day::class, 'day_transportation')
@@ -33,5 +43,41 @@ class Transportation extends BaseModel
     public function videos()
     {
         return $this->morphMany(Video::class, 'videoable');
+    }
+
+    protected function setInsuranceExpiryAttribute($value)
+    {
+        if (!$value) {
+            $this->attributes['insurance_expiry'] = null;
+            return;
+        }
+        
+        if (strpos($value, '/') !== false) {
+            $parts = explode('/', $value);
+            if (count($parts) === 3) {
+                $this->attributes['insurance_expiry'] = "{$parts[2]}-{$parts[1]}-{$parts[0]}";
+                return;
+            }
+        }
+        
+        $this->attributes['insurance_expiry'] = $value;
+    }
+
+    protected function setTechnicalInspectionExpiryAttribute($value)
+    {
+        if (!$value) {
+            $this->attributes['technical_inspection_expiry'] = null;
+            return;
+        }
+        
+        if (strpos($value, '/') !== false) {
+            $parts = explode('/', $value);
+            if (count($parts) === 3) {
+                $this->attributes['technical_inspection_expiry'] = "{$parts[2]}-{$parts[1]}-{$parts[0]}";
+                return;
+            }
+        }
+        
+        $this->attributes['technical_inspection_expiry'] = $value;
     }
 } 

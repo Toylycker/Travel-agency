@@ -149,8 +149,8 @@
               v-model:value="form.insurance_expiry"
               type="date"
               clearable
-              :default-time="[0, 0, 0, 0]"
-              :is-date-disabled="(current) => current < Date.now()"
+              :actions="null"
+              format="dd/MM/yyyy"
               placeholder="Select insurance expiry date"
               :status="form.errors.insurance_expiry ? 'error' : undefined"
             />
@@ -164,8 +164,8 @@
               v-model:value="form.technical_inspection_expiry"
               type="date"
               clearable
-              :default-time="[0, 0, 0, 0]"
-              :is-date-disabled="(current) => current < Date.now()"
+              :actions="null"
+              format="dd/MM/yyyy"
               placeholder="Select technical inspection expiry date"
               :status="form.errors.technical_inspection_expiry ? 'error' : undefined"
             />
@@ -240,10 +240,10 @@ const featureOptions = [
   { label: 'Reclining Seats', value: 'Reclining Seats' }
 ]
 
-const formatDateForPicker = (dateString) => {
+const parseDate = (dateString) => {
   if (!dateString) return null;
   const date = new Date(dateString);
-  return date.getTime();
+  return !isNaN(date.getTime()) ? date : null;
 };
 
 const form = useForm({
@@ -271,8 +271,8 @@ const form = useForm({
   has_wifi: Boolean(props.transportation.has_wifi),
   has_ac: props.transportation.has_ac ?? true,
   has_tv: Boolean(props.transportation.has_tv),
-  insurance_expiry: formatDateForPicker(props.transportation.insurance_expiry),
-  technical_inspection_expiry: formatDateForPicker(props.transportation.technical_inspection_expiry),
+  insurance_expiry: parseDate(props.transportation.insurance_expiry),
+  technical_inspection_expiry: parseDate(props.transportation.technical_inspection_expiry),
   is_active: props.transportation.is_active ?? true
 })
 
@@ -318,7 +318,33 @@ const handleBack = () => {
 const handleSubmit = () => {
   formRef.value?.validate((errors) => {
     if (!errors) {
-      form.put(route('admin.transportations.update', props.transportation.id))
+      // Create a new object with all form data
+      const data = {
+        type: form.type,
+        brand: form.brand,
+        model: form.model,
+        year: form.year,
+        seats: form.seats,
+        license_plate: form.license_plate,
+        color: form.color,
+        features: form.features,
+        has_wifi: form.has_wifi,
+        has_ac: form.has_ac,
+        has_tv: form.has_tv,
+        is_active: form.is_active,
+        insurance_expiry: form.insurance_expiry instanceof Date 
+          ? `${form.insurance_expiry.getFullYear()}-${String(form.insurance_expiry.getMonth() + 1).padStart(2, '0')}-${String(form.insurance_expiry.getDate()).padStart(2, '0')}`
+          : null,
+        technical_inspection_expiry: form.technical_inspection_expiry instanceof Date
+          ? `${form.technical_inspection_expiry.getFullYear()}-${String(form.technical_inspection_expiry.getMonth() + 1).padStart(2, '0')}-${String(form.technical_inspection_expiry.getDate()).padStart(2, '0')}`
+          : null
+      };
+
+      // Use post() instead of put() to ensure data is properly formatted
+      form.post(route('admin.transportations.update', props.transportation.id), {
+        ...data,
+        _method: 'PUT'
+      });
     }
   })
 }
