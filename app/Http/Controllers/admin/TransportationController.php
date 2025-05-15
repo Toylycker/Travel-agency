@@ -28,21 +28,31 @@ class TransportationController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'name_cn' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'description_cn' => 'nullable|string',
+            'type' => 'nullable|string|in:bus,van,car',
+            'brand' => 'nullable|string|max:255',
+            'model' => 'nullable|string|max:255', 
+            'year' => 'nullable|integer|min:1950|max:' . (date('Y') + 1),
+            'seats' => 'nullable|integer|min:1',
+            'license_plate' => 'nullable|string|max:255|unique:transportations,license_plate',
+            'color' => 'nullable|string|max:255',
+            'has_wifi' => 'boolean',
+            'has_ac' => 'boolean',
+            'has_tv' => 'boolean',
+            'features' => 'nullable|array',
+            'insurance_expiry' => 'nullable|date',
+            'technical_inspection_expiry' => 'nullable|date',
+            'is_active' => 'boolean'
         ]);
 
-        $transportation = $this->transportationService->create($validated);
+        // Convert features array to JSON string for storage
+        if (isset($validated['features'])) {
+            $validated['features'] = json_encode($validated['features']);
+        }
 
-        return redirect()->route('admin/Transportations/Index')
+        $this->transportationService->create($validated);
+
+        return redirect()->back()
             ->with('success', 'Transportation created successfully.');
-    }
-
-    public function show(Transportation $transportation)
-    {
-        return Inertia::render('admin/Transportations/Show', compact('transportation'));
     }
 
     public function edit(Transportation $transportation)

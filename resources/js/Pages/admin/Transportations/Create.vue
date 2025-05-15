@@ -92,19 +92,27 @@
 
         <n-grid :cols="2" :x-gap="24">
           <n-form-item-gi label="Insurance Expiry" path="insurance_expiry">
-            <n-date-picker
-              v-model:value="form.insurance_expiry"
+            <input
               type="date"
-              placeholder="Select insurance expiry date"
+              v-model="form.insurance_expiry"
+              class="form-control"
+              :class="{ 'is-invalid': form.errors.insurance_expiry }"
             />
+            <div v-if="form.errors.insurance_expiry" class="invalid-feedback">
+              {{ form.errors.insurance_expiry }}
+            </div>
           </n-form-item-gi>
 
           <n-form-item-gi label="Technical Inspection" path="technical_inspection_expiry">
-            <n-date-picker
-              v-model:value="form.technical_inspection_expiry"
+            <input
               type="date"
-              placeholder="Select technical inspection expiry date"
+              v-model="form.technical_inspection_expiry"
+              class="form-control"
+              :class="{ 'is-invalid': form.errors.technical_inspection_expiry }"
             />
+            <div v-if="form.errors.technical_inspection_expiry" class="invalid-feedback">
+              {{ form.errors.technical_inspection_expiry }}
+            </div>
           </n-form-item-gi>
         </n-grid>
 
@@ -138,7 +146,6 @@ import {
   NInputNumber,
   NSelect,
   NSwitch,
-  NDatePicker,
   NGrid,
   NDivider
 } from 'naive-ui'
@@ -162,6 +169,12 @@ const featureOptions = [
   { label: 'Reclining Seats', value: 'Reclining Seats' }
 ]
 
+function formatDate(date) {
+  if (!date) return null;
+  const d = new Date(date);
+  return d.toISOString().slice(0, 10); // Returns YYYY-MM-DD format
+}
+
 const form = useForm({
   type: null,
   brand: '',
@@ -183,32 +196,34 @@ const rules = {
   type: {
     required: true,
     message: 'Please select vehicle type',
-    trigger: 'blur'
+    trigger: ['blur', 'change']
   },
   brand: {
     required: true,
     message: 'Please enter brand',
-    trigger: 'blur'
+    trigger: ['blur', 'change']
   },
   model: {
     required: true,
     message: 'Please enter model',
-    trigger: 'blur'
+    trigger: ['blur', 'change']
   },
   year: {
     required: true,
+    type: 'number',
     message: 'Please enter year',
-    trigger: 'blur'
+    trigger: ['blur', 'change']
   },
   seats: {
     required: true,
+    type: 'number',
     message: 'Please enter number of seats',
-    trigger: 'blur'
+    trigger: ['blur', 'change']
   },
   license_plate: {
     required: true,
     message: 'Please enter license plate',
-    trigger: 'blur'
+    trigger: ['blur', 'change']
   }
 }
 
@@ -217,11 +232,7 @@ const handleBack = () => {
 }
 
 const handleSubmit = () => {
-  formRef.value?.validate((errors) => {
-    if (!errors) {
-      form.post(route('admin.transportations.store'))
-    }
-  })
+  form.post(route('admin.transportations.store'));
 }
 </script>
 
