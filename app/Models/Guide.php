@@ -11,7 +11,9 @@ class Guide extends BaseModel
 
     public function days(): BelongsToMany
     {
-        return $this->belongsToMany(Day::class, 'day_guide');
+        return $this->belongsToMany(Day::class, 'day_guide')
+            ->withPivot(['start_time', 'end_time', 'notes'])
+            ->withTimestamps();
     }
 
     public function images()

@@ -6,12 +6,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Transportation extends BaseModel
 {
+    protected $table = 'transportations';
     protected $guarded = ['id'];
     public $timestamps = false;
 
     public function days(): BelongsToMany
     {
-        return $this->belongsToMany(Day::class, 'day_transportation');
+        return $this->belongsToMany(Day::class, 'day_transportation')
+            ->withPivot(['pickup_time', 'dropoff_time', 'pickup_location', 'dropoff_location', 'estimated_duration', 'route_notes'])
+            ->withTimestamps();
     }
 
     public function images()

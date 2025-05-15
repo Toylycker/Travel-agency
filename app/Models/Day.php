@@ -35,17 +35,23 @@ class Day extends BaseModel
 
     public function transportations(): BelongsToMany
     {
-        return $this->belongsToMany(Transportation::class, 'day_transportation');
+        return $this->belongsToMany(Transportation::class, 'day_transportation')
+            ->withPivot(['pickup_time', 'dropoff_time', 'pickup_location', 'dropoff_location', 'estimated_duration', 'route_notes'])
+            ->withTimestamps();
     }
 
     public function meals(): BelongsToMany
     {
-        return $this->belongsToMany(Meal::class, 'day_meal');
+        return $this->belongsToMany(Meal::class, 'day_meal')
+            ->withPivot(['serving_time', 'serving_location', 'number_of_people', 'special_requests'])
+            ->withTimestamps();
     }
 
     public function guides(): BelongsToMany
     {
-        return $this->belongsToMany(Guide::class, 'day_guide');
+        return $this->belongsToMany(Guide::class, 'day_guide')
+            ->withPivot(['start_time', 'end_time', 'notes'])
+            ->withTimestamps();
     }
 
     public function comments()
