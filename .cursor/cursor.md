@@ -1,0 +1,62 @@
+# 🧭 Cursor Architecture Guide for Travel Agency
+
+## ✅ Overview
+This is a Laravel + Vue 3 + Inertia.js travel agency platform. Every feature must follow a clear architecture with separation of concerns.
+
+---
+
+## 📐 Architectural Rules
+
+### 1. Models
+- Located in `App\Models`
+- No business logic inside models
+
+### 2. Services
+- Each model has a matching service:
+  - `Booking` → `BookingService`
+  - `Tour` → `TourService`
+- Services are placed in `App\Services`
+- Handle all logic like creation, updates, deletions, syncs, etc.
+
+### 3. Controllers
+- Located in `App\Http\Controllers`
+- Only receive the request, call service methods, and return responses
+- No DB logic or decisions here
+
+### 4. Actions
+- Reusable logic blocks in `App\Actions`
+- Used when service logic becomes multi-step or reusable
+
+### 5. Vue + Inertia
+- All frontend views are built in Vue 3
+- Communicate via Inertia with backend controllers
+- Do not implement business logic in Vue
+
+### 6. Route Organization
+
+All routes are declared in dedicated files and included via `web.php`:
+
+```php
+// routes/web.php
+require __DIR__.'/auth.php';
+require __DIR__.'/front.php';
+require __DIR__.'/admin.php';
+
+### 7. Route Declaration Rules
+
+- All routes must be grouped using `Route::prefix()` and `Route::middleware()` where applicable.
+- Use `->name()` to prefix all route names for consistency and clarity.
+- Use `Route::resources([...])` for standard CRUD where applicable.
+- Use `Route::get()`, `Route::post()`, `Route::put()`, and `Route::delete()` for custom endpoints that don’t fit into resource routes.
+- Group related custom update endpoints under logical patterns such as:
+  - `/tours/{id}/edit/name`
+  - `/tours/{id}/edit/body_cn`
+  - `/tours/{id}/edit/map`
+- Always follow the pattern `[Controller::class, 'methodName']` for controller declarations.
+- Keep route names clear and consistent, using dot notation:
+  - `tours.edit.name`
+  - `texts.store`
+  - `places.update.this`
+- Use parameter binding in routes as needed:
+  - Example: `/subjects/update/{subject}`
+- Use dedicated routes for each action instead of overloading controller methods.
