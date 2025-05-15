@@ -17,6 +17,11 @@ class Transportation extends BaseModel
             ->withTimestamps();
     }
 
+    public function costs()
+    {
+        return $this->morphMany(Cost::class, 'costable');
+    }
+
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');

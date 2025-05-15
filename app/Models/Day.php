@@ -43,7 +43,7 @@ class Day extends BaseModel
     public function meals(): BelongsToMany
     {
         return $this->belongsToMany(Meal::class, 'day_meal')
-            ->withPivot(['serving_time', 'serving_location', 'number_of_people', 'special_requests'])
+            ->withPivot(['serving_time', 'serving_location', 'special_requests'])
             ->withTimestamps();
     }
 
@@ -51,6 +51,13 @@ class Day extends BaseModel
     {
         return $this->belongsToMany(Guide::class, 'day_guide')
             ->withPivot(['start_time', 'end_time', 'notes'])
+            ->withTimestamps();
+    }
+
+    public function costs(): BelongsToMany
+    {
+        return $this->belongsToMany(Cost::class, 'cost_day')
+            ->withPivot(['notes'])
             ->withTimestamps();
     }
 

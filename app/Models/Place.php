@@ -30,6 +30,11 @@ class Place extends BaseModel
         return $this->belongsToMany(Day::class, 'day_places');
     }
 
+    public function costs()
+    {
+        return $this->morphMany(Cost::class, 'costable');
+    }
+
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
