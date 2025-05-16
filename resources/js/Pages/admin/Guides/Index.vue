@@ -48,8 +48,8 @@ const columns = [
     key: 'name'
   },
   {
-    title: 'Chinese Name',
-    key: 'name_cn'
+    title: 'Surname',
+    key: 'surname'
   },
   {
     title: 'Phone',
@@ -60,17 +60,42 @@ const columns = [
     key: 'email'
   },
   {
-    title: 'Status',
-    key: 'status',
+    title: 'Bio',
+    key: 'bio',
     render(row) {
-      const type = row.status === 'active' ? 'success' : 'warning'
+      return row.bio ? row.bio.substring(0, 50) + (row.bio.length > 50 ? '...' : '') : ''
+    }
+  },
+  {
+    title: 'Years of Experience',
+    key: 'years_of_experience'
+  },
+  {
+    title: 'Languages',
+    key: 'languages',
+    render(row) {
+      return row.languages ? row.languages.join(', ') : ''
+    }
+  },
+  {
+    title: 'License Number',
+    key: 'license_number'
+  },
+  {
+    title: 'License Expiry',
+    key: 'license_expiry'
+  },
+  {
+    title: 'Status',
+    key: 'is_active',
+    render(row) {
       return h(
         NTag,
         {
-          type,
+          type: row.is_active ? 'success' : 'error',
           size: 'small'
         },
-        { default: () => row.status }
+        { default: () => row.is_active ? 'Active' : 'Inactive' }
       )
     }
   },
