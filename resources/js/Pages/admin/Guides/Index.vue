@@ -1,15 +1,13 @@
 <template>
   <div class="page-header">
-    <n-page-header>
-      <template #title>
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">
         Guides
-      </template>
-      <template #extra>
-        <n-button type="primary" @click="handleCreate">
-          Add Guide
-        </n-button>
-      </template>
-    </n-page-header>
+      </h2>
+      <n-button class="bg-info" type="primary" @click="handleCreate">
+        Add Guide
+      </n-button>
+    </div>
   </div>
 
   <n-card>
@@ -27,7 +25,7 @@
 import { h, ref } from 'vue'
 import { NButton, NPopconfirm, NSpace, NTag } from 'naive-ui'
 import { Link } from '@inertiajs/inertia-vue3'
-import AdminLayout from '@/Layouts/AdminLayout.vue'
+import { NCard, NDataTable } from 'naive-ui'
 
 const props = defineProps({
   guides: {

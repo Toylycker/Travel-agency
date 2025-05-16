@@ -12,6 +12,10 @@ class Guide extends BaseModel
     protected $guarded = ['id'];
     public $timestamps = false;
 
+    protected $casts = [
+            'languages' => 'array',
+        ];
+
     public function days(): BelongsToMany
     {
         return $this->belongsToMany(Day::class, 'day_guide')
