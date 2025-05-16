@@ -19,14 +19,7 @@
         require-mark-placement="right-hanging"
         @submit.prevent="handleSubmit"
       >
-        <div v-if="Object.keys(form.errors).length > 0" class="mb-4 p-4 bg-red-50 border border-red-200 rounded">
-          <p class="text-red-600 font-medium">Please correct the following errors:</p>
-          <ul class="mt-2 list-disc list-inside">
-            <li v-for="(error, key) in form.errors" :key="key" class="text-red-500">
-              {{ error }}
-            </li>
-          </ul>
-        </div>
+        <ValidationErrorsShower :errors="form.errors" />
 
         <n-grid :cols="2" :x-gap="24">
           <n-form-item-gi label="Type" path="type">
@@ -201,6 +194,8 @@ import {
   NGrid,
   NDivider
 } from 'naive-ui'
+import ValidationErrorsShower from '@/Components/ValidationErrorsShower.vue'
+import { formatDate } from '@/lib/dateUtils'
 
 const props = defineProps({
   transportation: {
@@ -229,12 +224,6 @@ const featureOptions = [
   { label: 'Reading Lights', value: 'Reading Lights' },
   { label: 'Reclining Seats', value: 'Reclining Seats' }
 ]
-
-const parseDate = (dateString) => {
-  if (!dateString) return null;
-  const date = new Date(dateString);
-  return !isNaN(date.getTime()) ? date : null;
-};
 
 const form = useForm({
   type: props.transportation.type,
@@ -306,13 +295,11 @@ const handleBack = () => {
 }
 
 const handleSubmit = () => {
-      form.put(route('admin.transportations.update', props.transportation.id));
-}
-
-function formatDate(timestamp) {
-  if (!timestamp) return null;
-  const date = new Date(timestamp);
-  return date.toISOString().slice(0, 10); // Or any format you prefer
+      form.put(route('admin.transportations.update', props.transportation.id), {
+        onSuccess: () => {
+          alert('Transportation updated successfully! 🎉')
+        }
+      });
 }
 </script>
 
