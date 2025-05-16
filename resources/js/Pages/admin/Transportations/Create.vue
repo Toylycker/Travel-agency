@@ -12,7 +12,6 @@
 
     <n-card>
       <n-form
-        ref="formRef"
         :model="form"
         :rules="rules"
         label-placement="left"
@@ -20,6 +19,9 @@
         require-mark-placement="right-hanging"
         @submit.prevent="handleSubmit"
       >
+
+      <ValidationErrorsShower :errors="form.errors" />
+
         <n-grid :cols="2" :x-gap="24">
           <n-form-item-gi label="Type" path="type">
             <n-select
@@ -135,7 +137,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
-import { Inertia } from '@inertiajs/inertia'
+import ValidationErrorsShower from '@/Components/ValidationErrorsShower.vue';
 import {
   NButton,
   NCard,
@@ -149,8 +151,6 @@ import {
   NGrid,
   NDivider
 } from 'naive-ui'
-
-const formRef = ref(null)
 
 const vehicleTypes = [
   { label: 'Bus', value: 'bus' },
@@ -168,12 +168,6 @@ const featureOptions = [
   { label: 'Reading Lights', value: 'Reading Lights' },
   { label: 'Reclining Seats', value: 'Reclining Seats' }
 ]
-
-function formatDate(date) {
-  if (!date) return null;
-  const d = new Date(date);
-  return d.toISOString().slice(0, 10); // Returns YYYY-MM-DD format
-}
 
 const form = useForm({
   type: null,
@@ -232,7 +226,12 @@ const handleBack = () => {
 }
 
 const handleSubmit = () => {
-  form.post(route('admin.transportations.store'));
+  form.post(route('admin.transportations.store'), {
+        onSuccess: () => {
+          alert('Transportation created successfully! 🎉')
+          form.reset()
+        }
+      });
 }
 </script>
 

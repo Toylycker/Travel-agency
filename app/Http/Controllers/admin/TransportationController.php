@@ -28,9 +28,9 @@ class TransportationController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'type' => 'nullable|string|in:bus,van,car',
-            'brand' => 'nullable|string|max:255',
-            'model' => 'nullable|string|max:255', 
+            'type' => 'required|string|in:bus,van,car',
+            'brand' => 'required|string|max:255',
+            'model' => 'required|string|max:255', 
             'year' => 'nullable|integer|min:1950|max:' . (date('Y') + 1),
             'seats' => 'nullable|integer|min:1',
             'license_plate' => 'nullable|string|max:255|unique:transportations,license_plate',
