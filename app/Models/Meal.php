@@ -14,7 +14,11 @@ class Meal extends BaseModel
 
     protected $casts = [
         'allergens' => 'array',
-    ];
+        'is_vegetarian' => 'boolean',
+        'is_vegan' => 'boolean',
+        'is_halal' => 'boolean',
+        'is_active' => 'boolean',
+            ];
 
     public function days(): BelongsToMany
     {

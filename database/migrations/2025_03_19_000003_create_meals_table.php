@@ -22,7 +22,6 @@ return new class extends Migration
             $table->boolean('contains_gluten')->default(false);
             $table->json('allergens')->nullable(); // Array of allergens
             $table->decimal('calories', 8, 2)->nullable();
-            $table->decimal('price', 10, 2)->nullable();
             $table->integer('preparation_time')->nullable(); // in minutes
             $table->boolean('is_active')->default(true);
             $table->timestamps();

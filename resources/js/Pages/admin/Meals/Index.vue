@@ -126,14 +126,6 @@ const columns = [
     }
   },
   {
-    title: 'Price',
-    key: 'price',
-    width: 100,
-    render(row) {
-      return row.price ? `$${row.price}` : '-'
-    }
-  },
-  {
     title: 'Prep Time',
     key: 'preparation_time',
     width: 120,

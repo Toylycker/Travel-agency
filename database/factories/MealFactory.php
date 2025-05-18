@@ -77,7 +77,6 @@ class MealFactory extends Factory
                 'Milk'
             ], fake()->numberBetween(0, 4)),
             'calories' => fake()->numberBetween(200, 1200),
-            'price' => fake()->randomFloat(2, 10, 100),
             'preparation_time' => fake()->numberBetween(15, 120),
             'is_active' => fake()->boolean(90),
         ];

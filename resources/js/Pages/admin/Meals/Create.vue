@@ -39,16 +39,6 @@
             <n-input v-model:value="form.cuisine" placeholder="Enter cuisine type" />
           </n-form-item-gi>
 
-          <n-form-item-gi label="Price" path="price">
-            <n-input-number
-              v-model:value="form.price"
-              placeholder="Enter price"
-              :min="0"
-              :precision="2"
-              prefix="$"
-            />
-          </n-form-item-gi>
-
           <n-form-item-gi label="Calories" path="calories">
             <n-input-number
               v-model:value="form.calories"
@@ -176,7 +166,6 @@ const form = useForm({
   type: null,
   description: '',
   cuisine: '',
-  price: null,
   calories: null,
   preparation_time: null,
   is_vegetarian: false,
@@ -203,12 +192,6 @@ const rules = {
   cuisine: {
     required: true,
     message: 'Please enter cuisine type',
-    trigger: ['blur', 'change']
-  },
-  price: {
-    required: true,
-    type: 'number',
-    message: 'Please enter price',
     trigger: ['blur', 'change']
   },
   calories: {
