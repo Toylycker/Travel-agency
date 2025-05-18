@@ -26,6 +26,7 @@ import { h, ref } from 'vue'
 import { NButton, NPopconfirm, NSpace, NTag } from 'naive-ui'
 import { Link } from '@inertiajs/inertia-vue3'
 import { NCard, NDataTable } from 'naive-ui'
+import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
   guides: {
@@ -127,7 +128,10 @@ const columns = [
           h(
             NPopconfirm,
             {
-              onPositiveClick: () => handleDelete(row.id)
+              onPositiveClick: () => handleDelete(row.id),
+              positiveButtonProps: {
+                class: 'bg-success'
+              }
             },
             {
               default: () => 'Are you sure?',
