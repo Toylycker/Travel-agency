@@ -73,8 +73,8 @@
 <script setup>
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
-import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Inertia } from '@inertiajs/inertia'
+import { NButton, NForm, NFormItem, NInput, NSelect, NCard, NPageHeader } from 'naive-ui'
 
 const formRef = ref(null)
 const loading = ref(false)

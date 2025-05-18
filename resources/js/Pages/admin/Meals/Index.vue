@@ -5,7 +5,7 @@
           Meals
         </template>
         <template #extra>
-          <n-button type="primary" @click="handleCreate">
+          <n-button type="primary" @click="handleCreate" class="bg-success text-white">
             Add Meal
           </n-button>
         </template>
@@ -19,6 +19,7 @@
         :pagination="pagination"
         :bordered="false"
         striped
+        :scroll-x="1800"
       />
     </n-card>
 </template>
@@ -44,24 +45,25 @@ const columns = [
   {
     title: 'ID',
     key: 'id',
-    width: 60
+    width: 80,
+    fixed: 'left'
   },
   {
     title: 'Name',
-    key: 'name'
-  },
-  {
-    title: 'Chinese Name',
-    key: 'name_cn'
+    key: 'name',
+    width: 200,
+    fixed: 'left'
   },
   {
     title: 'Description',
     key: 'description',
+    width: 250,
     ellipsis: true
   },
   {
     title: 'Type',
     key: 'type',
+    width: 120,
     render(row) {
       const typeColors = {
         breakfast: 'success',
@@ -78,6 +80,7 @@ const columns = [
   {
     title: 'Cuisine',
     key: 'cuisine',
+    width: 120,
     render(row) {
       return h(NTag, {
         type: 'info',
@@ -88,6 +91,7 @@ const columns = [
   {
     title: 'Dietary Info',
     key: 'dietary',
+    width: 280,
     render(row) {
       const tags = []
       if (row.is_vegetarian) tags.push(h(NTag, { type: 'success', style: 'margin-right: 4px' }, { default: () => 'Vegetarian' }))
@@ -99,6 +103,7 @@ const columns = [
   {
     title: 'Allergens',
     key: 'allergens_info',
+    width: 300,
     render(row) {
       const tags = []
       if (row.contains_nuts) tags.push(h(NTag, { type: 'warning', style: 'margin-right: 4px' }, { default: () => 'Nuts' }))
@@ -109,12 +114,13 @@ const columns = [
           tags.push(h(NTag, { type: 'error', style: 'margin-right: 4px' }, { default: () => allergen }))
         })
       }
-      return h(NSpace, { size: 'small' }, { default: () => tags })
+      return h(NSpace, { size: 'small', wrap: true }, { default: () => tags })
     }
   },
   {
     title: 'Calories',
     key: 'calories',
+    width: 100,
     render(row) {
       return row.calories ? `${row.calories} kcal` : '-'
     }
@@ -122,6 +128,7 @@ const columns = [
   {
     title: 'Price',
     key: 'price',
+    width: 100,
     render(row) {
       return row.price ? `$${row.price}` : '-'
     }
@@ -129,6 +136,7 @@ const columns = [
   {
     title: 'Prep Time',
     key: 'preparation_time',
+    width: 120,
     render(row) {
       return row.preparation_time ? `${row.preparation_time} min` : '-'
     }
@@ -136,6 +144,7 @@ const columns = [
   {
     title: 'Status',
     key: 'is_active',
+    width: 100,
     render(row) {
       return h(NTag, {
         type: row.is_active ? 'success' : 'error',
@@ -146,8 +155,8 @@ const columns = [
   {
     title: 'Actions',
     key: 'actions',
-    fixed: 'right',
     width: 150,
+    fixed: 'right',
     render(row) {
       return h(NSpace, null, {
         default: () => [
@@ -163,7 +172,8 @@ const columns = [
                   NButton,
                   {
                     type: 'primary',
-                    size: 'small'
+                    size: 'small',
+                    class: 'bg-success text-white'
                   },
                   { default: () => 'Edit' }
                 )
@@ -181,7 +191,8 @@ const columns = [
                   NButton,
                   {
                     type: 'error',
-                    size: 'small'
+                    size: 'small',
+                    class: 'bg-danger text-white'
                   },
                   { default: () => 'Delete' }
                 )

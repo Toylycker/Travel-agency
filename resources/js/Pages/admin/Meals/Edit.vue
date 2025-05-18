@@ -73,7 +73,6 @@
 <script setup>
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
-import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 const props = defineProps({
   meal: {
