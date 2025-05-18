@@ -12,6 +12,10 @@ class Meal extends BaseModel
     protected $guarded = ['id'];
     public $timestamps = false;
 
+    protected $casts = [
+        'allergens' => 'array',
+    ];
+
     public function days(): BelongsToMany
     {
         return $this->belongsToMany(Day::class, 'day_meal')
