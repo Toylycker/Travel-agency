@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Guide;
 use App\Services\GuideService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class GuideController extends Controller
@@ -29,25 +30,21 @@ class GuideController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'name_cn' => 'nullable|string|max:255',
-            'email' => 'required|email|unique:guides,email',
-            'phone' => 'required|string|max:20',
-            'languages' => 'required|string',
+            'surname' => 'required|string|max:255',
+            'email' => 'nullable|email|unique:guides,email',
+            'phone' => 'nullable|string|max:20',
             'bio' => 'nullable|string',
-            'bio_cn' => 'nullable|string',
-            'certifications' => 'nullable|string',
-            'availability' => 'nullable|string',
+            'years_of_experience' => 'nullable|integer|min:0',
+            'languages' => 'nullable|array',
+            'license_number' => 'nullable|string|max:255',
+            'license_expiry' => 'nullable|date',
+            'is_active' => 'boolean'
         ]);
 
-        $guide = $this->guideService->create($validated);
+        $this->guideService->create($validated);
 
         return redirect()->back()
-            ->with('success', 'Guide created successfully.');
-    }
-
-    public function show(Guide $guide)
-    {
-        return Inertia::render('admin/Guides/Show', compact('guide'));
+        ->with('success', 'Guide created successfully.');
     }
 
     public function edit(Guide $guide)
@@ -59,14 +56,15 @@ class GuideController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'name_cn' => 'nullable|string|max:255',
-            'email' => 'required|email|unique:guides,email,' . $guide->id,
-            'phone' => 'required|string|max:20',
-            'languages' => 'required|string',
+            'surname' => 'required|string|max:255',
+            'email' => 'nullable|email|unique:guides,email,' . $guide->id,
+            'phone' => 'nullable|string|max:255',
             'bio' => 'nullable|string',
-            'bio_cn' => 'nullable|string',
-            'certifications' => 'nullable|string',
-            'availability' => 'nullable|string',
+            'years_of_experience' => 'nullable|integer|min:0',
+            'languages' => 'nullable|array',
+            'license_number' => 'nullable|string|max:255',
+            'license_expiry' => 'nullable|date',
+            'is_active' => 'boolean'
         ]);
 
         $this->guideService->update($guide->id, $validated);
