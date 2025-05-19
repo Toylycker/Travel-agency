@@ -141,7 +141,10 @@ const columns = [
           h(
             NPopconfirm,
             {
-              onPositiveClick: () => handleDelete(row.id)
+              onPositiveClick: () => handleDelete(row.id),
+              positiveButtonProps: {
+                class: 'bg-success'
+              }
             },
             {
               default: () => 'Are you sure?',
