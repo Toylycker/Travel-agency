@@ -9,6 +9,8 @@ class Cost extends BaseModel
     use HasFactory;
     protected $guarded = ['id'];
 
+    protected $with = ['days.tour'];
+
     protected $casts = [
         'cost' => 'decimal:2',
         'number_of_people' => 'integer',

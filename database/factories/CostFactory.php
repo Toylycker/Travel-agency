@@ -7,6 +7,7 @@ use App\Models\Transportation;
 use App\Models\Room;
 use App\Models\Guide;
 use App\Models\Meal;
+use App\Models\Day;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -37,6 +38,22 @@ class CostFactory extends Factory
             'description' => $this->faker->optional()->sentence(),
             'is_active' => $this->faker->boolean(80), // 80% chance of being active
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (Cost $cost) {
+            // Get first 2 days and attach this cost to them
+            $days = Day::inRandomOrder()->take(2)->get();
+            foreach ($days as $day) {
+                $day->costs()->attach($cost->id, [
+                    'notes' => $this->faker->optional()->sentence()
+                ]);
+            }
+        });
     }
 
     /**

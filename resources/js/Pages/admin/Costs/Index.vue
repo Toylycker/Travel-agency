@@ -108,6 +108,25 @@ const columns = [
     }
   },
   {
+    title: 'Days',
+    key: 'days',
+    width: 200,
+    render(row) {
+      if (!row.days || row.days.length === 0) {
+        return h(NText, { type: 'info' }, { default: () => 'Not assigned' })
+      }
+      return h(NSpace, { size: 'small' }, {
+        default: () => row.days.map(day => 
+          h(NTag, {
+            type: 'info',
+            size: 'small',
+            bordered: true
+          }, { default: () => `Day ${day.day_number} of ${day.tour.name}` })
+        )
+      })
+    }
+  },
+  {
     title: 'Status',
     key: 'is_active',
     width: 100,
