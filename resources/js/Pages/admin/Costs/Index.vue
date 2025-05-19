@@ -49,8 +49,8 @@ const formatCurrency = (amount, currency = 'CNY') => {
 const getCostableType = (type) => {
   const types = {
     'App\\Models\\Transportation': 'Transportation',
-    'App\\Models\\Accommodation': 'Accommodation',
-    'App\\Models\\Activity': 'Activity',
+    'App\\Models\\Room': 'Room',
+    'App\\Models\\Guide': 'Guide',
     'App\\Models\\Meal': 'Meal'
   }
   return types[type] || 'Custom'
