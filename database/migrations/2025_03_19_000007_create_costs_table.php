@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('cost', 10, 2);
-            $table->integer('number_of_people')->default(1);
+            $table->integer('number_of_people')->default(1);//number of people that item can be applies to for example car that can contain 3 people, meal that can feed 3 people
             $table->morphs('costable');
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);

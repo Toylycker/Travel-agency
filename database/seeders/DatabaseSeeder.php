@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->call([
             CountrySeeder::class,
@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             CurrencySeeder::class,
             ProcessSeeder::class,
             NoteSeeder::class,
+            CostDaySeeder::class,
         ]);
         \App\Models\Hotel::factory(10)->create();
         \App\Models\Place::factory(50)->create();
