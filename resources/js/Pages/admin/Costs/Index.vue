@@ -1,15 +1,13 @@
 <template>
   <div class="page-header">
-    <n-page-header>
-      <template #title>
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">
         Costs
-      </template>
-      <template #extra>
-        <n-button type="primary" @click="handleCreate">
-          Add Cost
-        </n-button>
-      </template>
-    </n-page-header>
+      </h2>
+      <n-button class="bg-success text-white" type="primary" @click="handleCreate">
+        Add Cost
+      </n-button>
+    </div>
   </div>
 
   <n-card>
@@ -18,6 +16,7 @@
       :data="costs"
       :pagination="pagination"
       :bordered="false"
+      :scroll-x="1200"
       striped
     />
   </n-card>
@@ -25,10 +24,9 @@
 
 <script setup>
 import { h, ref } from 'vue'
-import { NButton, NPopconfirm, NSpace, NTag } from 'naive-ui'
+import { NButton, NPopconfirm, NSpace, NTag, NText, NCard, NDataTable } from 'naive-ui'
 import { Link } from '@inertiajs/inertia-vue3'
 import { Inertia } from '@inertiajs/inertia'
-import AdminLayout from '@/Layouts/AdminLayout.vue'
 
 const props = defineProps({
   costs: {
@@ -48,50 +46,87 @@ const formatCurrency = (amount, currency = 'CNY') => {
   }).format(amount)
 }
 
+const getCostableType = (type) => {
+  const types = {
+    'App\\Models\\Transportation': 'Transportation',
+    'App\\Models\\Accommodation': 'Accommodation',
+    'App\\Models\\Activity': 'Activity',
+    'App\\Models\\Meal': 'Meal'
+  }
+  return types[type] || 'Custom'
+}
+
 const columns = [
   {
     title: 'ID',
-    key: 'id'
+    key: 'id',
+    width: 80
   },
   {
     title: 'Name',
-    key: 'name'
+    key: 'name',
+    width: 200
   },
   {
-    title: 'Chinese Name',
-    key: 'name_cn'
-  },
-  {
-    title: 'Type',
-    key: 'type',
+    title: 'Cost',
+    key: 'cost',
+    width: 120,
     render(row) {
+      return formatCurrency(row.cost)
+    }
+  },
+  {
+    title: 'Linked To',
+    key: 'costable',
+    width: 150,
+    render(row) {
+      if (!row.costable_type) {
+        return h(NText, { type: 'info' }, { default: () => 'None' })
+      }
       const typeColors = {
-        transportation: 'info',
-        accommodation: 'success',
-        activity: 'warning',
-        meal: 'error',
-        other: 'default'
+        'App\\Models\\Transportation': 'info',
+        'App\\Models\\Accommodation': 'success',
+        'App\\Models\\Activity': 'warning',
+        'App\\Models\\Meal': 'error'
       }
       return h(
         NTag,
         {
-          type: typeColors[row.type] || 'default',
+          type: typeColors[row.costable_type] || 'default',
           size: 'small'
         },
-        { default: () => row.type }
+        { default: () => getCostableType(row.costable_type) }
       )
     }
   },
   {
-    title: 'Amount',
-    key: 'amount',
+    title: 'Item ID',
+    key: 'costable_id',
+    width: 100,
     render(row) {
-      return formatCurrency(row.amount)
+      return row.costable_id || '-'
+    }
+  },
+  {
+    title: 'Status',
+    key: 'is_active',
+    width: 100,
+    render(row) {
+      return h(
+        NTag,
+        {
+          type: row.is_active ? 'success' : 'error',
+          size: 'small'
+        },
+        { default: () => row.is_active ? 'Active' : 'Inactive' }
+      )
     }
   },
   {
     title: 'Actions',
     key: 'actions',
+    width: 200,
+    fixed: 'right',
     render(row) {
       return h(NSpace, null, {
         default: () => [
@@ -107,7 +142,8 @@ const columns = [
                   NButton,
                   {
                     type: 'primary',
-                    size: 'small'
+                    size: 'small',
+                    class: 'bg-info text-white'
                   },
                   { default: () => 'Edit' }
                 )
@@ -119,13 +155,14 @@ const columns = [
               onPositiveClick: () => handleDelete(row.id)
             },
             {
-              default: () => 'Are you sure?',
+              default: () => 'Are you sure you want to delete this cost?',
               trigger: () =>
                 h(
                   NButton,
                   {
                     type: 'error',
-                    size: 'small'
+                    size: 'small',
+                    class: 'bg-danger text-white'
                   },
                   { default: () => 'Delete' }
                 )
@@ -147,6 +184,6 @@ const handleDelete = (id) => {
 </script>
 
 <script>
-import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue'
 export default { layout: AdminLayout }
 </script> 
