@@ -37,7 +37,17 @@ class CostController extends Controller
             'App\\Models\\Meal' => Meal::where('is_active', true)->get(['id', 'name'])
         ];
 
-        return Inertia::render('admin/Costs/Create', compact('costableItems'));
+        $costTypes = collect(Cost::getCostTypes())->map(fn($label, $value) => [
+            'label' => $label,
+            'value' => $value
+        ])->values();
+
+        $costableTypes = collect(Cost::getCostableTypes())->map(fn($label, $value) => [
+            'label' => $label,
+            'value' => $value
+        ])->values();
+
+        return Inertia::render('admin/Costs/Create', compact('costableItems', 'costTypes', 'costableTypes'));
     }
 
     public function store(Request $request)

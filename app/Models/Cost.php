@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasCostTypes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cost extends BaseModel
 {
-    use HasFactory;
+    use HasFactory, HasCostTypes;
+    
     protected $guarded = ['id'];
 
     protected $with = ['days.tour'];

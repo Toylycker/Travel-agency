@@ -30,7 +30,7 @@
           <n-form-item-gi label="Cost Type" path="cost_type">
             <n-select
               v-model:value="form.cost_type"
-              :options="costTypeOptions"
+              :options="costTypes"
               placeholder="Select cost type"
             />
           </n-form-item-gi>
@@ -68,7 +68,7 @@
           <n-form-item-gi label="Item Type" path="costable_type">
             <n-select
               v-model:value="form.costable_type"
-              :options="costableTypeOptions"
+              :options="costableTypes"
               placeholder="Select item type"
             />
           </n-form-item-gi>
@@ -122,23 +122,16 @@ const props = defineProps({
   costableItems: {
     type: Object,
     required: true
+  },
+  costTypes: {
+    type: Array,
+    required: true
+  },
+  costableTypes: {
+    type: Array,
+    required: true
   }
 })
-
-const costTypeOptions = [
-  { label: 'Transportation', value: 'transportation' },
-  { label: 'Accommodation', value: 'accommodation' },
-  { label: 'Activity', value: 'activity' },
-  { label: 'Meal', value: 'meal' },
-  { label: 'Other', value: 'other' }
-]
-
-const costableTypeOptions = [
-  { label: 'Transportation', value: 'App\\Models\\Transportation' },
-  { label: 'Hotel', value: 'App\\Models\\Hotel' },
-  { label: 'Guide', value: 'App\\Models\\Guide' },
-  { label: 'Meal', value: 'App\\Models\\Meal' }
-]
 
 const form = useForm({
   name: '',
