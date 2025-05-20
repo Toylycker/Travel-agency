@@ -9,7 +9,6 @@
       </n-button>
     </div>
   </div>
-
   <n-card>
     <n-data-table
       :columns="columns"

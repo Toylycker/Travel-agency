@@ -9,6 +9,7 @@
         </n-button>
       </div>
     </div>
+<p>{{preselectedCostableType}}</p>
 
     <n-card>
       <n-form
@@ -61,6 +62,7 @@
               v-model:value="form.costable_type"
               :options="costableTypes"
               placeholder="Select item type"
+              :disabled="props.preselectedCostableType"
             />
           </n-form-item-gi>
 
@@ -69,7 +71,7 @@
               v-model:value="form.costable_id"
               :options="costableOptions"
               placeholder="Select related item"
-              :disabled="!form.costable_type"
+              :disabled="!form.costable_type || props.preselectedCostableId"
             />
           </n-form-item-gi>
         </n-grid>
@@ -149,12 +151,6 @@ watch(() => form.costable_type, (newType) => {
     }))
   } else {
     costableOptions.value = []
-  }
-})
-
-onMounted(() => {
-  if (props.preselectedCostableType) {
-    const costableType = props.costableTypes.find(type => type.value === props.preselectedCostableType)
   }
 })
 
