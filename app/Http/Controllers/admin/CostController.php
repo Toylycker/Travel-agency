@@ -75,7 +75,25 @@ class CostController extends Controller
 
     public function edit(Cost $cost)
     {
-        return Inertia::render('admin/Costs/Edit', compact('cost'));
+        $costableItems = [
+            'App\\Models\\Transportation' => Transportation::where('is_active', true)->get(['id', 'license_plate as name']),
+            'App\\Models\\Hotel' => Hotel::get(['id', 'name']),
+            'App\\Models\\Room' => Room::get(['id', 'name']),
+            'App\\Models\\Guide' => Guide::where('is_active', true)->get(['id', 'name']),
+            'App\\Models\\Meal' => Meal::where('is_active', true)->get(['id', 'name'])
+        ];
+
+        $costTypes = collect(Cost::getCostTypes())->map(fn($label, $value) => [
+            'label' => $label,
+            'value' => $value
+        ])->values();
+
+        $costableTypes = collect(Cost::getCostableTypes())->map(fn($label, $value) => [
+            'label' => $label,
+            'value' => $value
+        ])->values();
+
+        return Inertia::render('admin/Costs/Edit', compact('cost', 'costableItems', 'costTypes', 'costableTypes'));
     }
 
     public function update(Request $request, Cost $cost)
