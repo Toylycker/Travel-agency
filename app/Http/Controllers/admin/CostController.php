@@ -27,7 +27,7 @@ class CostController extends Controller
         return Inertia::render('admin/Costs/Index', compact('costs'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $costableItems = Cost::getCostableItems();
 
@@ -41,7 +41,16 @@ class CostController extends Controller
             'value' => $value
         ])->values();
 
-        return Inertia::render('admin/Costs/Create', compact('costableItems', 'costTypes', 'costableTypes'));
+        $preselectedCostableType = $request->query('costable_type');
+        $preselectedCostableId = $request->query('costable_id');
+
+        return Inertia::render('admin/Costs/Create', compact(
+            'costableItems', 
+            'costTypes', 
+            'costableTypes',
+            'preselectedCostableType',
+            'preselectedCostableId'
+        ));
     }
 
     public function store(Request $request)
@@ -60,11 +69,6 @@ class CostController extends Controller
 
         return redirect()->back()
             ->with('success', 'Cost created successfully.');
-    }
-
-    public function show(Cost $cost)
-    {
-        return Inertia::render('admin/Costs/Show', compact('cost'));
     }
 
     public function edit(Cost $cost)

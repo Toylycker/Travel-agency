@@ -27,14 +27,6 @@
             <n-input v-model:value="form.name" placeholder="Enter cost name" />
           </n-form-item-gi>
 
-          <n-form-item-gi label="Cost Type" path="cost_type">
-            <n-select
-              v-model:value="form.cost_type"
-              :options="costTypes"
-              placeholder="Select cost type"
-            />
-          </n-form-item-gi>
-
           <n-form-item-gi label="Amount" path="cost">
             <n-input-number
               v-model:value="form.cost"
@@ -100,7 +92,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
 import ValidationErrorsShower from '@/Components/ValidationErrorsShower.vue'
 import {
@@ -130,18 +122,25 @@ const props = defineProps({
   costableTypes: {
     type: Array,
     required: true
+  },
+  preselectedCostableType: {
+    type: String,
+    default: null
+  },
+  preselectedCostableId: {
+    type: [Number, String],
+    default: null
   }
 })
 
 const form = useForm({
   name: '',
-  cost_type: null,
-  cost: null,
+  cost: 0,
   number_of_people: 1,
   description: '',
-  costable_type: null,
-  costable_id: null,
-  is_active: true
+  is_active: true,
+  costable_id: props.preselectedCostableId || null,
+  costable_type: props.preselectedCostableType || null,
 })
 
 const costableOptions = ref([])
@@ -158,15 +157,24 @@ watch(() => form.costable_type, (newType) => {
   }
 })
 
+onMounted(() => {
+  if (props.preselectedCostableType) {
+    const costableType = props.costableTypes.find(type => type.value === props.preselectedCostableType)
+    if (costableType) {
+      const costType = props.costTypes.find(type => 
+        type.label.toLowerCase() === costableType.label.toLowerCase()
+      )
+      if (costType) {
+        form.cost_type = costType.value
+      }
+    }
+  }
+})
+
 const rules = {
   name: {
     required: true,
     message: 'Please enter cost name',
-    trigger: ['blur', 'change']
-  },
-  cost_type: {
-    required: true,
-    message: 'Please select cost type',
     trigger: ['blur', 'change']
   },
   cost: {
