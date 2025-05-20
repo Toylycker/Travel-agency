@@ -114,10 +114,6 @@ const props = defineProps({
     type: Object,
     required: true
   },
-  costTypes: {
-    type: Array,
-    required: true
-  },
   costableTypes: {
     type: Array,
     required: true
@@ -159,14 +155,6 @@ watch(() => form.costable_type, (newType) => {
 onMounted(() => {
   if (props.preselectedCostableType) {
     const costableType = props.costableTypes.find(type => type.value === props.preselectedCostableType)
-    if (costableType) {
-      const costType = props.costTypes.find(type => 
-        type.label.toLowerCase() === costableType.label.toLowerCase()
-      )
-      if (costType) {
-        form.cost_type = costType.value
-      }
-    }
   }
 })
 

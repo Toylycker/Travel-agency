@@ -10,16 +10,6 @@ use App\Models\Meal;
 
 trait HasCostTypes
 {
-    public static function getCostTypes(): array
-    {
-        return [
-            'transportation' => 'Transportation',
-            'Hotel' => 'Hotel',
-            'Room' => 'Room',
-            'Guide' => 'Guide',
-            'Meal' => 'Meal'
-        ];
-    }
 
     public static function getCostableTypes(): array
     {

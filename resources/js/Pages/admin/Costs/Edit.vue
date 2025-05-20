@@ -27,20 +27,11 @@
           <n-input v-model:value="form.name" placeholder="Enter cost name" />
         </n-form-item-gi>
 
-        <n-form-item-gi label="Cost Type" path="cost_type">
-          <n-select
-            v-model:value="form.cost_type"
-            :options="costTypes"
-            placeholder="Select cost type"
-          />
-        </n-form-item-gi>
-
         <n-form-item-gi label="Amount" path="cost">
           <n-input-number
             v-model:value="form.cost"
             :min="0"
             :precision="2"
-            prefix="¥"
           />
         </n-form-item-gi>
 
@@ -68,17 +59,18 @@
         <n-form-item-gi label="Item Type" path="costable_type">
           <n-select
             v-model:value="form.costable_type"
+            :disabled="true"
             :options="costableTypes"
             placeholder="Select item type"
           />
         </n-form-item-gi>
 
-        <n-form-item-gi label="Related Item" path="costable_id">
+        <n-form-item-gi label="Related Item ID" path="costable_id">
           <n-select
             v-model:value="form.costable_id"
             :options="costableOptions"
             placeholder="Select related item"
-            :disabled="!form.costable_type"
+            :disabled="true"
           />
         </n-form-item-gi>
       </n-grid>
@@ -127,10 +119,6 @@ const props = defineProps({
     type: Object,
     required: true
   },
-  costTypes: {
-    type: Array,
-    required: true
-  },
   costableTypes: {
     type: Array,
     required: true
@@ -139,7 +127,6 @@ const props = defineProps({
 
 const form = useForm({
   name: props.cost.name,
-  cost_type: props.cost.cost_type,
   cost: props.cost.cost ? parseFloat(props.cost.cost) : null,
   number_of_people: props.cost.number_of_people || 1,
   description: props.cost.description || '',
@@ -165,11 +152,6 @@ const rules = {
   name: {
     required: true,
     message: 'Please enter cost name',
-    trigger: ['blur', 'change']
-  },
-  cost_type: {
-    required: true,
-    message: 'Please select cost type',
     trigger: ['blur', 'change']
   },
   cost: {
