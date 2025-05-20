@@ -135,8 +135,8 @@ const costTypeOptions = [
 
 const costableTypeOptions = [
   { label: 'Transportation', value: 'App\\Models\\Transportation' },
-  { label: 'Accommodation', value: 'App\\Models\\Accommodation' },
-  { label: 'Activity', value: 'App\\Models\\Activity' },
+  { label: 'Hotel', value: 'App\\Models\\Hotel' },
+  { label: 'Guide', value: 'App\\Models\\Guide' },
   { label: 'Meal', value: 'App\\Models\\Meal' }
 ]
 

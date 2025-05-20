@@ -4,6 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cost;
+use App\Models\Transportation;
+use App\Models\Accommodation;
+use App\Models\Activity;
+use App\Models\Meal;
+use App\Models\Hotel;
+use App\Models\Guide;
+use App\Models\Room;
 use App\Services\CostService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -22,7 +29,15 @@ class CostController extends Controller
 
     public function create()
     {
-        return Inertia::render('admin/Costs/Create');
+        $costableItems = [
+            'App\\Models\\Transportation' => \App\Models\Transportation::where('is_active', true)->get(['id', 'name']),
+            'App\\Models\\Hotel' => \App\Models\Hotel::where('is_active', true)->get(['id', 'name']),
+            'App\\Models\\Room' => \App\Models\Room::where('is_active', true)->get(['id', 'name']),
+            'App\\Models\\Guide' => \App\Models\Guide::where('is_active', true)->get(['id', 'name']),
+            'App\\Models\\Meal' => \App\Models\Meal::where('is_active', true)->get(['id', 'name'])
+        ];
+
+        return Inertia::render('admin/Costs/Create', compact('costableItems'));
     }
 
     public function store(Request $request)
