@@ -32,7 +32,6 @@
               v-model:value="form.cost"
               :min="0"
               :precision="2"
-              prefix="¥"
             />
           </n-form-item-gi>
 
