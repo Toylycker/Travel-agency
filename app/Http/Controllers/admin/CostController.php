@@ -30,11 +30,11 @@ class CostController extends Controller
     public function create()
     {
         $costableItems = [
-            'App\\Models\\Transportation' => \App\Models\Transportation::where('is_active', true)->get(['id', 'name']),
-            'App\\Models\\Hotel' => \App\Models\Hotel::where('is_active', true)->get(['id', 'name']),
-            'App\\Models\\Room' => \App\Models\Room::where('is_active', true)->get(['id', 'name']),
-            'App\\Models\\Guide' => \App\Models\Guide::where('is_active', true)->get(['id', 'name']),
-            'App\\Models\\Meal' => \App\Models\Meal::where('is_active', true)->get(['id', 'name'])
+            'App\\Models\\Transportation' => Transportation::where('is_active', true)->get(['id', 'license_plate as name']),
+            'App\\Models\\Hotel' => Hotel::get(['id', 'name']),
+            'App\\Models\\Room' => Room::get(['id', 'name']),
+            'App\\Models\\Guide' => Guide::where('is_active', true)->get(['id', 'name']),
+            'App\\Models\\Meal' => Meal::where('is_active', true)->get(['id', 'name'])
         ];
 
         return Inertia::render('admin/Costs/Create', compact('costableItems'));
