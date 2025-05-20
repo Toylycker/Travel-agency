@@ -29,7 +29,11 @@ class CostController extends Controller
 
     public function create(Request $request)
     {
-        $costableItems = Cost::getCostableItems();
+        $preselectedCostableType = $request->query('costable_type');
+        $preselectedCostableId = $request->query('costable_id');
+        
+        // Only load costable items if we don't have predefined ones
+        $costableItems = $preselectedCostableType && $preselectedCostableId ? [] : Cost::getCostableItems();
 
         $costTypes = collect(Cost::getCostTypes())->map(fn($label, $value) => [
             'label' => $label,
@@ -40,9 +44,6 @@ class CostController extends Controller
             'label' => $label,
             'value' => $value
         ])->values();
-
-        $preselectedCostableType = $request->query('costable_type');
-        $preselectedCostableId = $request->query('costable_id');
 
         return Inertia::render('admin/Costs/Create', compact(
             'costableItems', 
@@ -73,7 +74,8 @@ class CostController extends Controller
 
     public function edit(Cost $cost)
     {
-        $costableItems = Cost::getCostableItems();
+        // Only load costable items if we don't have predefined ones
+        $costableItems = $cost->costable_type && $cost->costable_id ? [] : Cost::getCostableItems();
 
         $costTypes = collect(Cost::getCostTypes())->map(fn($label, $value) => [
             'label' => $label,
