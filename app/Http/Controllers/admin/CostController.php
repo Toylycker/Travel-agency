@@ -29,13 +29,7 @@ class CostController extends Controller
 
     public function create()
     {
-        $costableItems = [
-            'App\\Models\\Transportation' => Transportation::where('is_active', true)->get(['id', 'license_plate as name']),
-            'App\\Models\\Hotel' => Hotel::get(['id', 'name']),
-            'App\\Models\\Room' => Room::get(['id', 'name']),
-            'App\\Models\\Guide' => Guide::where('is_active', true)->get(['id', 'name']),
-            'App\\Models\\Meal' => Meal::where('is_active', true)->get(['id', 'name'])
-        ];
+        $costableItems = Cost::getCostableItems();
 
         $costTypes = collect(Cost::getCostTypes())->map(fn($label, $value) => [
             'label' => $label,
@@ -75,13 +69,7 @@ class CostController extends Controller
 
     public function edit(Cost $cost)
     {
-        $costableItems = [
-            'App\\Models\\Transportation' => Transportation::where('is_active', true)->get(['id', 'license_plate as name']),
-            'App\\Models\\Hotel' => Hotel::get(['id', 'name']),
-            'App\\Models\\Room' => Room::get(['id', 'name']),
-            'App\\Models\\Guide' => Guide::where('is_active', true)->get(['id', 'name']),
-            'App\\Models\\Meal' => Meal::where('is_active', true)->get(['id', 'name'])
-        ];
+        $costableItems = Cost::getCostableItems();
 
         $costTypes = collect(Cost::getCostTypes())->map(fn($label, $value) => [
             'label' => $label,
