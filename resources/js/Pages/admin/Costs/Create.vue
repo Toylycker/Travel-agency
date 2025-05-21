@@ -9,7 +9,6 @@
         </n-button>
       </div>
     </div>
-<p>{{preselectedCostableType}}</p>
 
     <n-card>
       <n-form

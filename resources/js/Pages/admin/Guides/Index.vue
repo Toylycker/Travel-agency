@@ -126,6 +126,25 @@ const columns = [
             }
           ),
           h(
+            Link,
+            {
+              href: route('admin.costs.create', { costable_type: 'App\\Models\\Guide', costable_id: row.id }),
+              class: 'no-underline'
+            },
+            {
+              default: () =>
+                h(
+                  NButton,
+                  {
+                    type: 'primary',
+                    size: 'small',
+                    class: 'bg-info'
+                  },
+                  { default: () => 'add cost' }
+                )
+            }
+          ),
+          h(
             NPopconfirm,
             {
               onPositiveClick: () => handleDelete(row.id),
