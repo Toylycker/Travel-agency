@@ -17,6 +17,7 @@ use App\Http\Controllers\admin\TransportationController;
 use App\Http\Controllers\admin\CostController;
 use App\Http\Controllers\admin\GuideController;
 use App\Http\Controllers\admin\MealController;
+use App\Http\Controllers\Admin\CustomCostController;
 use App\Models\Text;
 use Illuminate\Support\Facades\Route;
 
@@ -76,4 +77,6 @@ Route::prefix('admin')
     Route::post('/notes/store', [NoteController::class, 'store'])->name('notes.store');
     Route::put('/notes/update/{note}', [NoteController::class, 'update'])->name('notes.update');
     Route::delete('/notes/destroy/{note}', [NoteController::class, 'destroy'])->name('notes.destroy');
+
+    Route::resource('custom-costs', CustomCostController::class);
 });

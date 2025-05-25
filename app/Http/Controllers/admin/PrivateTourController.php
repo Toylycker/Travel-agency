@@ -7,12 +7,17 @@ use App\Models\Tour;
 use App\Models\Day;
 use App\Models\Place;
 use App\Models\Room;
+use Illuminate\Support\Str;
 use App\Models\Hotel;
 use App\Models\Guide;
 use App\Models\Transportation;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Meal;
 use App\Models\Cost;
+use App\Models\Image;
 use App\Models\Note;
+use App\Models\Price;
+use Intervention\Image\ImageManagerStatic as Gallery;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
@@ -105,24 +110,44 @@ class PrivateTourController extends Controller
             $tour->sort_order = $validatedData['sort_order'] ?? null;
 
             if ($request->hasFile('main_image')) {
-                $tour->main_image = $request->file('main_image')->store('tour_images', 'public');
+                $newImage = $request->file('main_image');
+                $resized = Gallery::make($newImage)
+                    ->fit(1400, 800)
+                    ->encode('jpg', 100);
+                $newImageName = Str::random(10) . '.' . $newImage->getClientOriginalExtension();
+                Storage::put('public/tours/' . $newImageName, (string) $resized);
+                $tour->main_image = $newImageName;
             }
 
             $tour->save();
 
-            if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $file) {
-                    $path = $file->store('tour_images', 'public');
+            if ($request->has('images')) {
+                foreach ($request->images as $image) {
+                    $newImage = $image;
+                    $resized = Gallery::make($newImage)
+                        // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
+                        ->fit(1280, 1024)
+                        ->encode('jpg', 100);
+                    $newImageName = Str::random(10) . '-' . $tour->id . '.' . $newImage->getClientOriginalExtension();
+                    Storage::put('public/tours/' . $newImageName, (string) $resized);
+                    Image::create(['name' => $newImageName, 'imageable_id' => $tour->id, 'imageable_type' => 'App\Models\Tour']);
                 }
             }
             
             if (isset($validatedData['included'])) {
+                foreach ($request->included as $note) {
+                    $tour->notes()->attach($note, ['status' => 'included']);
+                }
             }
             if (isset($validatedData['non_included'])) {
+                foreach ($request->non_included as $note) {
+                    $tour->notes()->attach($note, ['status' => 'non included']);
+                }
             }
 
             if (isset($validatedData['detailedPrices'])) {
-                foreach ($validatedData['detailedPrices'] as $priceData) {
+                foreach ($request->detailedPrices as $price) {
+                    Price::create(['name' => $price['name'], 'price' => $price['price'], 'name_cn' => $price['name_cn'], 'price_cn' => $price['price_cn'],'priceable_id' => $tour->id, 'priceable_type' => 'App\Models\Tour']);
                 }
             }
 

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId('cost_id')->constrained()->onDelete('cascade');
             $table->foreignId('day_id')->constrained()->onDelete('cascade');
             $table->text('notes')->nullable();
+            $table->tinyInteger('quantity')->nullable()->comment('Number of people the cost covers');
             $table->timestamps();
 
             $table->unique(['cost_id', 'day_id']);
