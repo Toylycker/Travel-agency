@@ -50,9 +50,12 @@ const getCostableType = (type) => {
     'App\\Models\\Transportation': 'Transportation',
     'App\\Models\\Room': 'Room',
     'App\\Models\\Guide': 'Guide',
-    'App\\Models\\Meal': 'Meal'
+    'App\\Models\\Meal': 'Meal',
+    'App\\Models\\CustomCost': 'Custom Cost',
+    'App\\Models\\Hotel': 'Hotel',
+    'App\\Models\\Place': 'Place'
   }
-  return types[type] || 'Custom'
+  return types[type] || type.split('\\').pop() || 'Unknown'
 }
 
 const columns = [
@@ -84,9 +87,12 @@ const columns = [
       }
       const typeColors = {
         'App\\Models\\Transportation': 'info',
-        'App\\Models\\Accommodation': 'success',
-        'App\\Models\\Activity': 'warning',
-        'App\\Models\\Meal': 'error'
+        'App\\Models\\Room': 'success',
+        'App\\Models\\Guide': 'warning',
+        'App\\Models\\Meal': 'error',
+        'App\\Models\\CustomCost': 'default',
+        'App\\Models\\Hotel': 'primary',
+        'App\\Models\\Place': 'processing'
       }
       return h(
         NTag,

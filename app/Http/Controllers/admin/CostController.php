@@ -59,8 +59,6 @@ class CostController extends Controller
             'costable_id' => 'required|integer',
             'costable_type' => 'required|string',
         ]);
-        // Unescape double backslashes
-        // $validated['costable_type'] = str_replace('\\\\', '\\', $validated['costable_type']);
 
         $this->costService->create($validated);
 
