@@ -1,3 +1,13 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Use service classes for all business logic,
+Each Eloquent model must have a corresponding service in App\\Services where we shift controller logic,
+Keep controllers thin and only handle HTTP and Inertia responses,
+Use Vue 3 with Inertia.js on frontend for all interaction
+
 # 🧭 Cursor Architecture Guide for Travel Agency
 
 ## ✅ Overview
@@ -5,8 +15,7 @@ This is a Laravel + Vue 3 + Inertia.js travel agency platform. Every feature mus
 
 ---
 
-## 📐 Architectural Rules
-
+## Architectural Rules
 ### 1. Models
 - Located in `App\Models`
 - No business logic inside models

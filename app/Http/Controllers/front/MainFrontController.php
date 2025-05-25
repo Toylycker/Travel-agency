@@ -86,7 +86,7 @@ class MainFrontController extends Controller
     public function tours()
     {
         $tours = Cache::remember('tours', 3600, function () {
-        return Tour::with(['days'=> function($query){
+        return Tour::where('isPublic', true)->with(['days'=> function($query){
             $query->withCount('places');
         }, 'days.places'])->get();
         // ->paginate(4); 
