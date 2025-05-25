@@ -5,9 +5,12 @@
     </div>
     <div class="col-2 d-grid gap-2">
       <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Create Tour
       </button>
+      <Link :href="route('admin.private_tours.create')" as="button" class="btn btn-info">
+        Create Private Tour
+      </Link>
 
       <!-- Modal -->
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

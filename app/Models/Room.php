@@ -40,4 +40,9 @@ class Room extends BaseModel
     {
         return $this->morphMany(Price::class, 'priceable');
     }
+
+    public function costs()
+    {
+        return $this->morphMany(Cost::class, 'costable');
+    }
 }
