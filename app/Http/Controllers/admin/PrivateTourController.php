@@ -17,6 +17,7 @@ use App\Models\Cost;
 use App\Models\Image;
 use App\Models\Note;
 use App\Models\Price;
+use App\Models\CustomCost;
 use Intervention\Image\ImageManagerStatic as Gallery;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -39,6 +40,7 @@ class PrivateTourController extends Controller
         $transportations = Transportation::with('costs')->select(['id', 'model as name'])->get();
         $meals = Meal::with('costs')->select(['id', 'name'])->get();
         $notes = Note::select(['id', 'name'])->get();
+        $customCosts = CustomCost::with('costs')->select(['id', 'name'])->get();
 
         return Inertia::render('admin/PrivateTours/Create', [
             'places' => $places,
@@ -47,6 +49,7 @@ class PrivateTourController extends Controller
             'transportations' => $transportations,
             'meals' => $meals,
             'form_notes' => $notes,
+            'custom_costs' => $customCosts,
         ]);
     }
 

@@ -215,6 +215,7 @@ const props = defineProps({
     guides: Array, // Expected: [{id, name, costs: [...]}]
     transportations: Array, // Expected: [{id, name, costs: [...]}]
     meals: Array, // Expected: [{id, name, costs: [...]}]
+    custom_costs: Array, // Expected: [{id, name, costs: [...]}]
     form_notes: Array, // For tour general notes [{id, name}]
     errors: Object
 });
@@ -260,6 +261,7 @@ const resourceTypeOptions = [
     { label: 'Guide', value: 'Guide' },
     { label: 'Transportation', value: 'Transportation' },
     { label: 'Meal', value: 'Meal' },
+    { label: 'CustomCost', value: 'CustomCost' },
 ];
 
 // Initialize days array based on total_days
@@ -294,6 +296,7 @@ const getSpecificResourceOptions = (type) => {
         case 'Guide': return props.guides.map(g => ({ label: g.name, value: g.id, costs: g.costs }));
         case 'Transportation': return props.transportations.map(t => ({ label: t.name, value: t.id, costs: t.costs }));
         case 'Meal': return props.meals.map(m => ({ label: m.name, value: m.id, costs: m.costs }));
+        case 'CustomCost': return props.custom_costs.map(cc => ({ label: cc.name, value: cc.id, costs: cc.costs }));
         default: return [];
     }
 };

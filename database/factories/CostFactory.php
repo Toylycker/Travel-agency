@@ -7,7 +7,11 @@ use App\Models\Transportation;
 use App\Models\Room;
 use App\Models\Guide;
 use App\Models\Meal;
+use App\Models\Place;
+use App\Models\CustomCost;
+use App\Models\Hotel;
 use App\Models\Day;
+use App\Traits\HasCostTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,25 +19,25 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CostFactory extends Factory
 {
+    use HasCostTypes;
     protected $model = Cost::class;
 
     public function definition(): array
     {
-        $costableTypes = [
-            Transportation::class,
-            // Room::class,
-            Guide::class,
-            Meal::class
-        ];
+        // Get the map of FQCNs to simple names
+        $costableTypesMap = self::getCostableTypes(); 
+        // Get an array of the FQCNs (the keys of the map)
+        $costableClassNames = array_keys($costableTypesMap);
+        // Select a random FQCN
+        $selectedCostableClass = $this->faker->randomElement($costableClassNames);
 
-        $costableType = $this->faker->randomElement($costableTypes);
-        $costable = $costableType::factory()->create();
+        $costable = $selectedCostableClass::factory()->create();
 
         return [
             'name' => $this->faker->words(3, true),
             'cost' => $this->faker->randomFloat(2, 10, 1000),
             'number_of_people' => $this->faker->numberBetween(1, 10),
-            'costable_type' => $costableType,
+            'costable_type' => $selectedCostableClass, // Use the FQCN string
             'costable_id' => $costable->id,
             'description' => $this->faker->optional()->sentence(),
             'is_active' => $this->faker->boolean(80), // 80% chance of being active
@@ -50,7 +54,7 @@ class CostFactory extends Factory
             $days = Day::inRandomOrder()->take(2)->get();
             foreach ($days as $day) {
                 $day->costs()->attach($cost->id, [
-                    'notes' => $this->faker->optional()->sentence()
+                    'quantity' => $this->faker->numberBetween(1, 5) // Changed notes to quantity
                 ]);
             }
         });
