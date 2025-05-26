@@ -52,8 +52,8 @@ class TransportationFactory extends Factory
                 'Reading Lights',
                 'Reclining Seats'
             ], fake()->numberBetween(2, 5)),
-            'insurance_expiry' => fake()->dateTimeBetween('now', '+2 years'),
-            'technical_inspection_expiry' => fake()->dateTimeBetween('now', '+1 year'),
+            'insurance_expiry' => fake()->dateTimeBetween('now', '+2 years')->format('Y-m-d'),
+            'technical_inspection_expiry' => fake()->dateTimeBetween('now', '+1 year')->format('Y-m-d'),
             'is_active' => fake()->boolean(90),
         ];
     }
