@@ -86,7 +86,7 @@ class PrivateTourController extends Controller
             'days.*.body_cn' => 'nullable|string',
             'days.*.cost_entries' => 'nullable|array',
             'days.*.cost_entries.*.cost_id' => 'required|integer|exists:costs,id',
-            'days.*.cost_entries.*.notes' => 'nullable|string|max:1000',
+            'days.*.cost_entries.*.quantity' => 'nullable|integer|min:1',
         ])->validate();
 
         try {
@@ -122,13 +122,11 @@ class PrivateTourController extends Controller
             $tour->save();
 
             if ($request->has('images')) {
-                foreach ($request->images as $image) {
-                    $newImage = $image;
-                    $resized = Gallery::make($newImage)
-                        // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
+                foreach ($request->file('images') as $imageFile) {
+                    $resized = Gallery::make($imageFile)
                         ->fit(1280, 1024)
                         ->encode('jpg', 100);
-                    $newImageName = Str::random(10) . '-' . $tour->id . '.' . $newImage->getClientOriginalExtension();
+                    $newImageName = Str::random(10) . '-' . $tour->id . '.' . $imageFile->getClientOriginalExtension();
                     Storage::put('public/tours/' . $newImageName, (string) $resized);
                     Image::create(['name' => $newImageName, 'imageable_id' => $tour->id, 'imageable_type' => 'App\Models\Tour']);
                 }
@@ -162,7 +160,7 @@ class PrivateTourController extends Controller
 
                 if (!empty($dayData['cost_entries'])) {
                     foreach ($dayData['cost_entries'] as $costEntry) {
-                        $day->costs()->attach($costEntry['cost_id'], ['notes' => $costEntry['notes'] ?? null]);
+                        $day->costs()->attach($costEntry['cost_id'], ['quantity' => $costEntry['quantity'] ?? 1]);
                     }
                 }
             }

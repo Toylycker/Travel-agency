@@ -58,6 +58,13 @@
                         <div v-if="form.errors.main_image" class="text-red-500 text-xs mt-1">{{ form.errors.main_image }}</div>
                     </div>
                     <div>
+                        <label for="images" class="block text-sm font-medium text-gray-700">Additional Images</label>
+                        <input type="file" multiple @input="form.images = $event.target.files" class="mt-1 block w-full text-sm" />
+                        <div v-if="form.errors.images" class="text-red-500 text-xs mt-1">{{ form.errors.images }}</div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div>
                         <label for="map" class="block text-sm font-medium text-gray-700">Map Embed URL</label>
                         <n-input v-model:value="form.map" id="map" placeholder="Paste map embed URL" />
                         <div v-if="form.errors.map" class="text-red-500 text-xs mt-1">{{ form.errors.map }}</div>
@@ -134,7 +141,7 @@
                             <h3 class="text-md font-semibold mt-6 mb-2">Resources for Day {{ day.day_number }}</h3>
                             <n-dynamic-input 
                                 v-model:value="day.cost_entries" 
-                                :on-create="() => ({ resource_type: null, specific_resource_id: null, available_costs: [], cost_id: null, notes: '' }) "
+                                :on-create="() => ({ resource_type: null, specific_resource_id: null, available_costs: [], cost_id: null, quantity: 1 }) "
                                 #default="{ value: costEntry, index: costIndex }"
                             >
                                 <div class="flex flex-wrap items-start gap-4 w-full p-3 border rounded mb-2 bg-white">
@@ -174,9 +181,9 @@
                                         <div v-if="form.errors[`days.${dayIndex}.cost_entries.${costIndex}.cost_id`]">{{ form.errors[`days.${dayIndex}.cost_entries.${costIndex}.cost_id`] }}</div>
                                     </div>
                                     <div class="flex-1 min-w-[150px]">
-                                        <label class="block text-xs font-medium text-gray-600">Notes/Quantity</label>
-                                        <n-input v-model:value="costEntry.notes" placeholder="e.g., 2 adults, 1 van" />
-                                        <div v-if="form.errors[`days.${dayIndex}.cost_entries.${costIndex}.notes`]">{{ form.errors[`days.${dayIndex}.cost_entries.${costIndex}.notes`] }}</div>
+                                        <label class="block text-xs font-medium text-gray-600">Quantity</label>
+                                        <n-input-number v-model:value="costEntry.quantity" :min="1" placeholder="1" class="w-full"/>
+                                        <div v-if="form.errors[`days.${dayIndex}.cost_entries.${costIndex}.quantity`]">{{ form.errors[`days.${dayIndex}.cost_entries.${costIndex}.quantity`] }}</div>
                                     </div>
                                 </div>
                             </n-dynamic-input>
@@ -302,6 +309,7 @@ const handleSpecificResourceChange = (costEntry) => {
     const resourceOptions = getSpecificResourceOptions(costEntry.resource_type);
     const selectedResource = resourceOptions.find(r => r.value === costEntry.specific_resource_id);
     costEntry.available_costs = selectedResource && selectedResource.costs ? selectedResource.costs : [];
+    costEntry.quantity = costEntry.quantity || 1; // Default quantity to 1 if not set
 };
 
 function submit() {
