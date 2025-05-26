@@ -26,15 +26,16 @@ class DatabaseSeeder extends Seeder
             CostDaySeeder::class,
         ]);
         \App\Models\Hotel::factory(10)->create();
-        \App\Models\Place::factory(50)->create();
         \App\Models\Post::factory(20)->create();
+        \App\Models\Place::factory(50)->create();
         \App\Models\Tour::factory(10)->create();
         \App\Models\Application::factory(10)->create();
-        \App\Models\Room::factory(20)->create();
-        \App\Models\Meal::factory(20)->create();
-        \App\Models\Guide::factory(10)->create();
-        \App\Models\Transportation::factory(10)->create();
-        \App\Models\CustomCost::factory(5)->create();
+        // \App\Models\Room::factory(20)->create();
+        // \App\Models\Meal::factory(20)->create();
+        // \App\Models\Guide::factory(10)->create();
+        // \App\Models\Transportation::factory(10)->create();
+        // \App\Models\CustomCost::factory(5)->create();
+        \App\Models\Cost::factory(50)->create();
 
     }
 }

@@ -141,7 +141,7 @@
                             <h3 class="text-md font-semibold mt-6 mb-2">Resources for Day {{ day.day_number }}</h3>
                             <n-dynamic-input 
                                 v-model:value="day.cost_entries" 
-                                :on-create="() => ({ resource_type: null, specific_resource_id: null, available_costs: [], cost_id: null, quantity: 1 }) "
+                                :on-create="() => ({ resource_type: null, specific_resource_id: null, available_costs: [], cost_id: null, quantity: 1, max_quantity: undefined }) "
                                 #default="{ value: costEntry, index: costIndex }"
                             >
                                 <div class="flex flex-wrap items-start gap-4 w-full p-3 border rounded mb-2 bg-white">
@@ -177,12 +177,13 @@
                                             :disabled="!costEntry.specific_resource_id || costEntry.available_costs.length === 0"
                                             placeholder="Select Cost"
                                             clearable
+                                            @update:value="handleCostOptionChange(costEntry)"
                                         />
                                         <div v-if="form.errors[`days.${dayIndex}.cost_entries.${costIndex}.cost_id`]">{{ form.errors[`days.${dayIndex}.cost_entries.${costIndex}.cost_id`] }}</div>
                                     </div>
                                     <div class="flex-1 min-w-[150px]">
                                         <label class="block text-xs font-medium text-gray-600">Quantity</label>
-                                        <n-input-number v-model:value="costEntry.quantity" :min="1" placeholder="1" class="w-full"/>
+                                        <n-input-number v-model:value="costEntry.quantity" :min="1" placeholder="1" class="w-full" :max="costEntry.max_quantity"/>
                                         <div v-if="form.errors[`days.${dayIndex}.cost_entries.${costIndex}.quantity`]">{{ form.errors[`days.${dayIndex}.cost_entries.${costIndex}.quantity`] }}</div>
                                     </div>
                                 </div>
@@ -210,12 +211,12 @@ import {
 } from 'naive-ui';
 
 const props = defineProps({
-    places: Array, // Expected: [{id, name, costs: [{id, name, cost}]}]
-    rooms: Array,  // Expected: [{id, name (Hotel - Room), costs: [...]}]
-    guides: Array, // Expected: [{id, name, costs: [...]}]
-    transportations: Array, // Expected: [{id, name, costs: [...]}]
-    meals: Array, // Expected: [{id, name, costs: [...]}]
-    custom_costs: Array, // Expected: [{id, name, costs: [...]}]
+    places: Array, // Expected: [{id, name, costs: [{id, name, cost, number_of_people}]}]
+    rooms: Array,  // Expected: [{id, name (Hotel - Room), costs: [{id, name, cost, number_of_people}]}]
+    guides: Array, // Expected: [{id, name, costs: [{id, name, cost, number_of_people}]}]
+    transportations: Array, // Expected: [{id, name, costs: [{id, name, cost, number_of_people}]}]
+    meals: Array, // Expected: [{id, name, costs: [{id, name, cost, number_of_people}]}]
+    custom_costs: Array, // Expected: [{id, name, costs: [{id, name, cost, number_of_people}]}]
     form_notes: Array, // For tour general notes [{id, name}]
     errors: Object
 });
@@ -309,10 +310,27 @@ const handleResourceTypeChange = (costEntry) => {
 
 const handleSpecificResourceChange = (costEntry) => {
     costEntry.cost_id = null;
+    costEntry.max_quantity = undefined; // Reset max quantity when resource changes
     const resourceOptions = getSpecificResourceOptions(costEntry.resource_type);
     const selectedResource = resourceOptions.find(r => r.value === costEntry.specific_resource_id);
     costEntry.available_costs = selectedResource && selectedResource.costs ? selectedResource.costs : [];
     costEntry.quantity = costEntry.quantity || 1; // Default quantity to 1 if not set
+};
+
+const handleCostOptionChange = (costEntry) => {
+    if (costEntry.cost_id) {
+        const selectedCost = costEntry.available_costs.find(cost => cost.id === costEntry.cost_id);
+        if (selectedCost && typeof selectedCost.number_of_people === 'number') {
+            costEntry.max_quantity = selectedCost.number_of_people;
+            if (costEntry.quantity > costEntry.max_quantity) {
+                costEntry.quantity = costEntry.max_quantity;
+            }
+        } else {
+            costEntry.max_quantity = undefined; // No limit if number_of_people is not defined
+        }
+    } else {
+        costEntry.max_quantity = undefined; // No cost selected, so no limit
+    }
 };
 
 function submit() {
