@@ -200,12 +200,12 @@
                                     <li v-for="(entry, idx) in day.cost_entries.filter(e => e.cost_id && e.actual_cost_object_price !== null)" :key="`calc-${idx}`">
                                         Cost Entry {{ idx + 1 }}: 
                                         <span v-if="entry.actual_cost_object_capacity && entry.actual_cost_object_capacity > 0">
-                                            (${{ parseFloat(entry.actual_cost_object_price).toFixed(2) }} / {{ entry.actual_cost_object_capacity }} people)
+                                            ${{ parseFloat(entry.actual_cost_object_price).toFixed(2) }}
                                         </span>
                                         <span v-else>
                                             ${{ parseFloat(entry.actual_cost_object_price).toFixed(2) }}
                                         </span>
-                                        * {{ entry.quantity }} quantity = 
+                                        for {{ entry.quantity }} people, each paying 
                                         <span class="font-semibold">${{ calculateCostEntryTotal(entry).toFixed(2) }}</span>
                                     </li>
                                 </ul>
