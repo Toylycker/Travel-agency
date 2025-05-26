@@ -141,7 +141,7 @@
                             <h3 class="text-md font-semibold mt-6 mb-2">Resources for Day {{ day.day_number }}</h3>
                             <n-dynamic-input 
                                 v-model:value="day.cost_entries" 
-                                :on-create="() => ({ resource_type: null, specific_resource_id: null, available_costs: [], cost_id: null, quantity: 1, max_quantity: undefined }) "
+                                :on-create="() => ({ resource_type: null, specific_resource_id: null, available_costs: [], cost_id: null, quantity: 1, max_quantity: undefined, actual_cost_object_price: null, actual_cost_object_capacity: null }) "
                                 #default="{ value: costEntry, index: costIndex }"
                             >
                                 <div class="flex flex-wrap items-start gap-4 w-full p-3 border rounded mb-2 bg-white">
@@ -179,6 +179,10 @@
                                             clearable
                                             @update:value="handleCostOptionChange(costEntry)"
                                         />
+                                        <span v-if="costEntry.actual_cost_object_price !== null" class="ml-2 text-sm text-gray-600 self-center">
+                                            Price: ${{ costEntry.actual_cost_object_price.toFixed(2) }}
+                                            <span v-if="costEntry.actual_cost_object_capacity > 0"> (Max Qty: {{ costEntry.actual_cost_object_capacity }})</span>
+                                        </span>
                                         <div v-if="form.errors[`days.${dayIndex}.cost_entries.${costIndex}.cost_id`]">{{ form.errors[`days.${dayIndex}.cost_entries.${costIndex}.cost_id`] }}</div>
                                     </div>
                                     <div class="flex-1 min-w-[150px]">
@@ -188,6 +192,27 @@
                                     </div>
                                 </div>
                             </n-dynamic-input>
+
+                            <!-- Daily Cost Calculation -->
+                            <div class="mt-6 pt-4 border-t">
+                                <h4 class="text-md font-semibold">Day {{ day.day_number }} Cost Summary:</h4>
+                                <ul class="list-disc pl-5 mt-2 text-sm">
+                                    <li v-for="(entry, idx) in day.cost_entries.filter(e => e.cost_id && e.actual_cost_object_price !== null)" :key="`calc-${idx}`">
+                                        Cost Entry {{ idx + 1 }}: 
+                                        <span v-if="entry.actual_cost_object_capacity && entry.actual_cost_object_capacity > 0">
+                                            (${{ parseFloat(entry.actual_cost_object_price).toFixed(2) }} / {{ entry.actual_cost_object_capacity }} people)
+                                        </span>
+                                        <span v-else>
+                                            ${{ parseFloat(entry.actual_cost_object_price).toFixed(2) }}
+                                        </span>
+                                        * {{ entry.quantity }} quantity = 
+                                        <span class="font-semibold">${{ calculateCostEntryTotal(entry).toFixed(2) }}</span>
+                                    </li>
+                                </ul>
+                                <p class="mt-2 font-bold text-right">
+                                    Total for Day {{ day.day_number }}: ${{ calculateDayTotal(day).toFixed(2) }}
+                                </p>
+                            </div>
                         </div>
                     </n-step>
                 </n-steps>
@@ -310,7 +335,9 @@ const handleResourceTypeChange = (costEntry) => {
 
 const handleSpecificResourceChange = (costEntry) => {
     costEntry.cost_id = null;
-    costEntry.max_quantity = undefined; // Reset max quantity when resource changes
+    costEntry.max_quantity = undefined;
+    costEntry.actual_cost_object_price = null;
+    costEntry.actual_cost_object_capacity = null;
     const resourceOptions = getSpecificResourceOptions(costEntry.resource_type);
     const selectedResource = resourceOptions.find(r => r.value === costEntry.specific_resource_id);
     costEntry.available_costs = selectedResource && selectedResource.costs ? selectedResource.costs : [];
@@ -320,17 +347,46 @@ const handleSpecificResourceChange = (costEntry) => {
 const handleCostOptionChange = (costEntry) => {
     if (costEntry.cost_id) {
         const selectedCost = costEntry.available_costs.find(cost => cost.id === costEntry.cost_id);
-        if (selectedCost && typeof selectedCost.number_of_people === 'number') {
-            costEntry.max_quantity = selectedCost.number_of_people;
-            if (costEntry.quantity > costEntry.max_quantity) {
-                costEntry.quantity = costEntry.max_quantity;
+        if (selectedCost) {
+            costEntry.actual_cost_object_price = parseFloat(selectedCost.cost);
+            costEntry.actual_cost_object_capacity = selectedCost.number_of_people ? parseInt(selectedCost.number_of_people, 10) : null;
+
+            if (costEntry.actual_cost_object_capacity && costEntry.actual_cost_object_capacity > 0) {
+                costEntry.max_quantity = costEntry.actual_cost_object_capacity;
+                if (costEntry.quantity > costEntry.max_quantity) {
+                    costEntry.quantity = costEntry.max_quantity;
+                }
+            } else {
+                costEntry.max_quantity = undefined; // No specific capacity limit from cost item
             }
         } else {
-            costEntry.max_quantity = undefined; // No limit if number_of_people is not defined
+            costEntry.actual_cost_object_price = null;
+            costEntry.actual_cost_object_capacity = null;
+            costEntry.max_quantity = undefined;
         }
     } else {
-        costEntry.max_quantity = undefined; // No cost selected, so no limit
+        costEntry.actual_cost_object_price = null;
+        costEntry.actual_cost_object_capacity = null;
+        costEntry.max_quantity = undefined;
     }
+};
+
+const calculateCostEntryTotal = (costEntry) => {
+    if (!costEntry.cost_id || costEntry.actual_cost_object_price === null) return 0;
+    const money = parseFloat(costEntry.actual_cost_object_price);
+    const quantityForDayEntry = parseInt(costEntry.quantity, 10);
+
+    if (quantityForDayEntry === 0) {
+        return 0; // Or handle as Infinity, or prevent quantity from being 0
+    }
+    return money / quantityForDayEntry;
+};
+
+const calculateDayTotal = (day) => {
+    if (!day || !day.cost_entries) return 0;
+    return day.cost_entries.reduce((total, entry) => {
+        return total + calculateCostEntryTotal(entry);
+    }, 0);
 };
 
 function submit() {
