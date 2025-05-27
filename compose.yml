@@ -10,7 +10,7 @@ services:
     volumes:
       - ./:/var/www/html
     ports:
-      - "90:80"
+      - "80:80"
     depends_on:
       - db
     networks:
@@ -45,20 +45,6 @@ services:
       - jahankeshde_network
     depends_on:
       - app
-  
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: jahankeshde_phpmyadmin
-    restart: unless-stopped
-    environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: secret
-    ports:
-      - "8086:80"
-    depends_on:
-      - db
-    networks:
-      - jahankeshde_network
 
 volumes:
   db_data:
