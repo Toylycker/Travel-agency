@@ -73,11 +73,23 @@ class PrivateTourController extends Controller
 
     public function edit(Tour $tour)
     {
-        $tour->load(
-            'days.costs',
+        $tour->load([
+            'days.costs' => function ($query) {
+                // Ensure costable is loaded for each cost to get costable_type and costable_id easily
+                // and also number_of_people from the Cost model itself.
+                $query->with('costable'); // Adjust fields as needed for costable
+            },
             'notes',
             'images'
-        );
+        ]);
+
+        // Prepare main image URL
+        $tour->main_image_url = $tour->main_image ? Storage::url('public/tours/' . $tour->main_image) : null;
+
+        // Prepare additional images URLs
+        $tour->additional_images_urls = $tour->images->map(function ($image) {
+            return ['id' => $image->id, 'url' => Storage::url('public/tours/' . $image->name)];
+        });
 
         $places = Place::costsWithoutDays()->select(['id', 'name'])->get();
         $hotels_for_room_selection = Hotel::with(['rooms' => function ($query) {

@@ -13,6 +13,8 @@ class Transportation extends BaseModel
     protected $guarded = ['id'];
     public $timestamps = false;
 
+    protected $appends = ['name'];
+
     protected $casts = [
         'has_wifi' => 'boolean',
         'has_ac' => 'boolean',
@@ -36,6 +38,11 @@ class Transportation extends BaseModel
     public function videos()
     {
         return $this->morphMany(Video::class, 'videoable');
+    }
+
+    public function getNameAttribute(): ?string
+    {
+        return $this->model;
     }
 
     protected function setInsuranceExpiryAttribute($value)

@@ -207,7 +207,7 @@
             class="btn btn-danger btn-sm w-100 my-2">Delete</Link>
           
           <Link 
-            :href="tour.is_public === false ? route('admin.private_tours.edit', tour.id) : route('admin.tours.edit', tour.id)" 
+            :href="tour.isPublic === 0 ? route('admin.private_tours.edit', tour.id) : route('admin.tours.edit', tour.id)" 
             as="button"
             class="btn btn-warning btn-sm w-100 my-2">
             Edit
