@@ -8,5 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BaseModel extends Model
 {
-
+    public function scopeCostsWithoutDays($query)
+    {
+        return $query->with([
+            'costs' => fn($q) => $q->without(['days'])
+        ]);
+    }
 } 

@@ -266,7 +266,6 @@ const form = useForm({
     images: [],
     included: [],
     non_included: [],
-    detailedPrices: [], // Keeping this simple for now, can be expanded like days
     days: [
         {
             day_number: 1,

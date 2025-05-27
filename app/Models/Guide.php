@@ -16,13 +16,6 @@ class Guide extends BaseModel
             'languages' => 'array',
         ];
 
-    public function days(): BelongsToMany
-    {
-        return $this->belongsToMany(Day::class, 'day_guide')
-            ->withPivot(['start_time', 'end_time', 'notes'])
-            ->withTimestamps();
-    }
-
     public function costs()
     {
         return $this->morphMany(Cost::class, 'costable');

@@ -20,13 +20,6 @@ class Meal extends BaseModel
         'is_active' => 'boolean',
             ];
 
-    public function days(): BelongsToMany
-    {
-        return $this->belongsToMany(Day::class, 'day_meal')
-            ->withPivot(['serving_time', 'serving_location', 'special_requests'])
-            ->withTimestamps();
-    }
-
     public function costs()
     {
         return $this->morphMany(Cost::class, 'costable');

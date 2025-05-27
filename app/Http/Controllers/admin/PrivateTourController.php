@@ -28,11 +28,11 @@ class PrivateTourController extends Controller
 {
     public function create()
     {
-        $places = Place::with('costs')->select(['id', 'name'])->get();
+        $places = Place::costsWithoutDays()->select(['id', 'name'])->get();
 
         // New logic for rooms grouped by hotel
         $hotels_for_room_selection = Hotel::with(['rooms' => function ($query) {
-            $query->with('costs')->select(['id', 'hotel_id', 'name']); // Ensure room.costs is loaded
+            $query->costsWithoutDays()->select(['id', 'hotel_id', 'name']); // Ensure room.costs is loaded
         }])
         ->select(['id', 'name']) // Hotel fields
         ->get()
@@ -54,11 +54,11 @@ class PrivateTourController extends Controller
         ->filter(fn($hotel_group) => $hotel_group['children']->isNotEmpty()) // Only hotels with rooms
         ->values();
 
-        $guides = Guide::with('costs')->select(['id', 'name'])->get();
-        $transportations = Transportation::with('costs')->select(['id', 'model as name'])->get();
-        $meals = Meal::with('costs')->select(['id', 'name'])->get();
+        $guides = Guide::costsWithoutDays()->select(['id', 'name'])->get();
+        $transportations = Transportation::costsWithoutDays()->select(['id', 'model as name'])->get();
+        $meals = Meal::costsWithoutDays()->select(['id', 'name'])->get();
         $notes = Note::select(['id', 'name'])->get();
-        $customCosts = CustomCost::with('costs')->select(['id', 'name'])->get();
+        $customCosts = CustomCost::costsWithoutDays()->select(['id', 'name'])->get();
 
         return Inertia::render('admin/PrivateTours/Create', [
             'places' => $places,
@@ -95,11 +95,11 @@ class PrivateTourController extends Controller
             'included.*' => 'integer|exists:notes,id',
             'non_included' => 'nullable|array',
             'non_included.*' => 'integer|exists:notes,id',
-            'detailedPrices' => 'nullable|array',
-            'detailedPrices.*.name' => 'required_with:detailedPrices|string|max:255',
-            'detailedPrices.*.price' => 'required_with:detailedPrices|numeric|min:0',
-            'detailedPrices.*.name_cn' => 'nullable|string|max:255',
-            'detailedPrices.*.price_cn' => 'nullable|numeric|min:0',
+            // 'detailedPrices' => 'nullable|array',
+            // 'detailedPrices.*.name' => 'required_with:detailedPrices|string|max:255',
+            // 'detailedPrices.*.price' => 'required_with:detailedPrices|numeric|min:0',
+            // 'detailedPrices.*.name_cn' => 'nullable|string|max:255',
+            // 'detailedPrices.*.price_cn' => 'nullable|numeric|min:0',
             'days' => 'required|array|min:1',
             'days.*.day_number' => 'required|integer|min:1',
             'days.*.title' => 'required|string|max:255',
@@ -108,7 +108,10 @@ class PrivateTourController extends Controller
             'days.*.cost_entries' => 'nullable|array',
             'days.*.cost_entries.*.cost_id' => 'required|integer|exists:costs,id',
             'days.*.cost_entries.*.quantity' => 'nullable|integer|min:1',
+            'days.*.cost_entries.*.notes' => 'nullable|text',
         ])->validate();
+
+
 
         try {
             DB::beginTransaction();
@@ -164,11 +167,11 @@ class PrivateTourController extends Controller
                 }
             }
 
-            if (isset($validatedData['detailedPrices'])) {
-                foreach ($request->detailedPrices as $price) {
-                    Price::create(['name' => $price['name'], 'price' => $price['price'], 'name_cn' => $price['name_cn'], 'price_cn' => $price['price_cn'],'priceable_id' => $tour->id, 'priceable_type' => 'App\Models\Tour']);
-                }
-            }
+            // if (isset($validatedData['detailedPrices'])) {
+            //     foreach ($request->detailedPrices as $price) {
+            //         Price::create(['name' => $price['name'], 'price' => $price['price'], 'name_cn' => $price['name_cn'], 'price_cn' => $price['price_cn'],'priceable_id' => $tour->id, 'priceable_type' => 'App\Models\Tour']);
+            //     }
+            // }
 
             foreach ($validatedData['days'] as $dayData) {
                 $day = new Day();
@@ -181,7 +184,7 @@ class PrivateTourController extends Controller
 
                 if (!empty($dayData['cost_entries'])) {
                     foreach ($dayData['cost_entries'] as $costEntry) {
-                        $day->costs()->attach($costEntry['cost_id'], ['quantity' => $costEntry['quantity'] ?? 1]);
+                        $day->costs()->attach($costEntry['cost_id'], ['quantity' => $costEntry['quantity'] ?? 1, 'notes' => $costEntry['notes'] ?? null]);
                     }
                 }
             }

@@ -23,13 +23,6 @@ class Transportation extends BaseModel
         'technical_inspection_expiry' => 'date'
     ];
 
-    public function days(): BelongsToMany
-    {
-        return $this->belongsToMany(Day::class, 'day_transportation')
-            ->withPivot(['pickup_time', 'dropoff_time', 'pickup_location', 'dropoff_location', 'estimated_duration', 'route_notes'])
-            ->withTimestamps();
-    }
-
     public function costs()
     {
         return $this->morphMany(Cost::class, 'costable');
