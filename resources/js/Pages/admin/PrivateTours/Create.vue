@@ -385,7 +385,10 @@ const calculateCostEntryTotal = (costEntry) => {
 const calculateDayTotal = (day) => {
     if (!day || !day.cost_entries) return 0;
     return day.cost_entries.reduce((total, entry) => {
-        return total + calculateCostEntryTotal(entry);
+        if (entry.cost_id && entry.actual_cost_object_price !== null) {
+            return total + parseFloat(entry.actual_cost_object_price);
+        }
+        return total;
     }, 0);
 };
 
