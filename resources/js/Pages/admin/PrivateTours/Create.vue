@@ -111,12 +111,14 @@
             <!-- Days Setup Section -->
             <div class="p-6 bg-white shadow rounded-lg mt-6">
                 <h2 class="text-xl font-semibold mb-4">Days Setup</h2>
-                <n-steps vertical :current="currentStep" :status="stepStatus">
+                <n-steps vertical :current="currentStep" >
                     <n-step 
                         v-for="(day, dayIndex) in form.days" 
                         :key="dayIndex" 
                         :title="`Day ${day.day_number}` + (day.title ? ' - ' + day.title : '')" 
                         :description="day.body ? day.body.substring(0, 50) + '...' : 'Add details'"
+                        :status="'process'" 
+                        @click="currentStep = dayIndex + 1"                        
                     >
                         <div class="mt-4 p-4 border rounded-md bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -141,7 +143,7 @@
                             <h3 class="text-md font-semibold mt-6 mb-2">Resources for Day {{ day.day_number }}</h3>
                             <n-dynamic-input 
                                 v-model:value="day.cost_entries" 
-                                :on-create="() => ({ resource_type: null, specific_resource_id: null, available_costs: [], cost_id: null, quantity: 1, max_quantity: undefined, actual_cost_object_price: null, actual_cost_object_capacity: null }) "
+                                :on-create="() => ({ resource_type: null, specific_resource_id: null, available_costs: [], cost_id: null, quantity: 1, max_quantity: undefined, actual_cost_object_price: null, actual_cost_object_capacity: null, notes: '' }) "
                                 #default="{ value: costEntry, index: costIndex }"
                             >
                                 <div class="flex flex-wrap items-start gap-4 w-full p-3 border rounded mb-2 bg-white">
@@ -190,6 +192,11 @@
                                         <n-input-number v-model:value="costEntry.quantity" :min="1" placeholder="1" class="w-full" :max="costEntry.max_quantity"/>
                                         <div v-if="form.errors[`days.${dayIndex}.cost_entries.${costIndex}.quantity`]">{{ form.errors[`days.${dayIndex}.cost_entries.${costIndex}.quantity`] }}</div>
                                     </div>
+                                    <div class="flex-1 min-w-[200px]">
+                                        <label class="block text-xs font-medium text-gray-600">Notes for this Cost</label>
+                                        <n-input type="textarea" v-model:value="costEntry.notes" placeholder="Enter notes for this cost entry" :autosize="{ minRows: 1 }" />
+                                        <div v-if="form.errors[`days.${dayIndex}.cost_entries.${costIndex}.notes`]">{{ form.errors[`days.${dayIndex}.cost_entries.${costIndex}.notes`] }}</div>
+                                    </div>
                                 </div>
                             </n-dynamic-input>
 
@@ -216,6 +223,14 @@
                         </div>
                     </n-step>
                 </n-steps>
+            </div>
+
+            <!-- Grand Total Calculation -->
+            <div class="p-6 bg-white shadow rounded-lg mt-6">
+                <h2 class="text-xl font-semibold mb-2">Tour Cost Summary</h2>
+                <p class="text-lg font-bold text-right">
+                    Grand Total for Tour: ${{ calculateGrandTotal().toFixed(2) }}
+                </p>
             </div>
 
             <div class="mt-8 flex justify-end">
@@ -278,7 +293,6 @@ const form = useForm({
 });
 
 const currentStep = ref(1);
-const stepStatus = ref('process');
 
 const resourceTypeOptions = [
     { label: 'Place', value: 'Place' },
@@ -408,11 +422,17 @@ const calculateDayTotal = (day) => {
     }, 0);
 };
 
+const calculateGrandTotal = () => {
+    if (!form.days || form.days.length === 0) return 0;
+    return form.days.reduce((grandTotal, day) => {
+        return grandTotal + calculateDayTotal(day);
+    }, 0);
+};
+
 function submit() {
     form.post(route('admin.private_tours.store'), {
         onError: (pageErrors) => {
             console.error('Form submission error:', pageErrors);
-            stepStatus.value = 'error';
             // Find the first day with an error to focus the step
             if (form.errors) {
                 for (let i = 0; i < form.days.length; i++) {
@@ -428,8 +448,7 @@ function submit() {
             // Could redirect or show a persistent success message outside of flash
             // For now, flash message handled at the top
             currentStep.value = 1;
-            stepStatus.value = 'finish';
-            setTimeout(() => stepStatus.value = 'process', 3000); // Reset status
+            setTimeout(() => currentStep.value = 1, 3000); // Reset currentStep
         }
     });
 }
