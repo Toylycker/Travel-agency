@@ -71,6 +71,55 @@ class PrivateTourController extends Controller
         ]);
     }
 
+    public function edit(Tour $tour)
+    {
+        $tour->load(
+            'days.costs',
+            'notes',
+            'images'
+        );
+
+        $places = Place::costsWithoutDays()->select(['id', 'name'])->get();
+        $hotels_for_room_selection = Hotel::with(['rooms' => function ($query) {
+            $query->costsWithoutDays()->select(['id', 'hotel_id', 'name']);
+        }])
+        ->select(['id', 'name'])
+        ->get()
+        ->map(function ($hotel) {
+            return [
+                'type' => 'group',
+                'label' => $hotel->name,
+                'key' => 'hotel_group_' . $hotel->id,
+                'children' => $hotel->rooms->map(function ($room) use ($hotel) {
+                    return [
+                        'label' => $room->name,
+                        'value' => $room->id,
+                        'costs' => $room->costs,
+                    ];
+                })->filter(fn($room) => !empty($room['value']))
+                ->values()
+            ];
+        })
+        ->filter(fn($hotel_group) => $hotel_group['children']->isNotEmpty())
+        ->values();
+        $guides = Guide::costsWithoutDays()->select(['id', 'name'])->get();
+        $transportations = Transportation::costsWithoutDays()->select(['id', 'model as name'])->get();
+        $meals = Meal::costsWithoutDays()->select(['id', 'name'])->get();
+        $notes = Note::select(['id', 'name'])->get();
+        $customCosts = CustomCost::costsWithoutDays()->select(['id', 'name'])->get();
+
+        return Inertia::render('admin/PrivateTours/Edit', [
+            'tour' => $tour,
+            'places' => $places,
+            'roomOptions' => $hotels_for_room_selection,
+            'guides' => $guides,
+            'transportations' => $transportations,
+            'meals' => $meals,
+            'form_notes' => $notes,
+            'custom_costs' => $customCosts,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validatedData = Validator::make($request->all(), [
@@ -95,11 +144,6 @@ class PrivateTourController extends Controller
             'included.*' => 'integer|exists:notes,id',
             'non_included' => 'nullable|array',
             'non_included.*' => 'integer|exists:notes,id',
-            // 'detailedPrices' => 'nullable|array',
-            // 'detailedPrices.*.name' => 'required_with:detailedPrices|string|max:255',
-            // 'detailedPrices.*.price' => 'required_with:detailedPrices|numeric|min:0',
-            // 'detailedPrices.*.name_cn' => 'nullable|string|max:255',
-            // 'detailedPrices.*.price_cn' => 'nullable|numeric|min:0',
             'days' => 'required|array|min:1',
             'days.*.day_number' => 'required|integer|min:1',
             'days.*.title' => 'required|string|max:255',
@@ -108,10 +152,8 @@ class PrivateTourController extends Controller
             'days.*.cost_entries' => 'nullable|array',
             'days.*.cost_entries.*.cost_id' => 'required|integer|exists:costs,id',
             'days.*.cost_entries.*.quantity' => 'nullable|integer|min:1',
-            'days.*.cost_entries.*.notes' => 'nullable|text',
+            'days.*.cost_entries.*.notes' => 'nullable|string',
         ])->validate();
-
-
 
         try {
             DB::beginTransaction();
@@ -144,34 +186,34 @@ class PrivateTourController extends Controller
             }
 
             $tour->save();
+            
+            $images = $request->file('images');
 
-            if ($request->has('images')) {
-                foreach ($request->file('images') as $imageFile) {
+            if (is_array($images)) {
+                foreach ($images as $imageFile) {
                     $resized = Gallery::make($imageFile)
                         ->fit(1280, 1024)
                         ->encode('jpg', 100);
                     $newImageName = Str::random(10) . '-' . $tour->id . '.' . $imageFile->getClientOriginalExtension();
                     Storage::put('public/tours/' . $newImageName, (string) $resized);
-                    Image::create(['name' => $newImageName, 'imageable_id' => $tour->id, 'imageable_type' => 'App\Models\Tour']);
+                    Image::create([
+                        'name' => $newImageName,
+                        'imageable_id' => $tour->id,
+                        'imageable_type' => 'App\Models\Tour'
+                    ]);
                 }
             }
             
             if (isset($validatedData['included'])) {
-                foreach ($request->included as $note) {
+                foreach ($validatedData['included'] as $note) {
                     $tour->notes()->attach($note, ['status' => 'included']);
                 }
             }
             if (isset($validatedData['non_included'])) {
-                foreach ($request->non_included as $note) {
+                foreach ($validatedData['non_included'] as $note) {
                     $tour->notes()->attach($note, ['status' => 'non included']);
                 }
             }
-
-            // if (isset($validatedData['detailedPrices'])) {
-            //     foreach ($request->detailedPrices as $price) {
-            //         Price::create(['name' => $price['name'], 'price' => $price['price'], 'name_cn' => $price['name_cn'], 'price_cn' => $price['price_cn'],'priceable_id' => $tour->id, 'priceable_type' => 'App\Models\Tour']);
-            //     }
-            // }
 
             foreach ($validatedData['days'] as $dayData) {
                 $day = new Day();

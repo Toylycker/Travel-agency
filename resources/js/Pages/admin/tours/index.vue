@@ -205,8 +205,13 @@
         <td>
           <Link @click="$inertia.delete(route('admin.tours.destroy', tour.id))" as="button"
             class="btn btn-danger btn-sm w-100 my-2">Delete</Link>
-            <Link @click="$inertia.get(route('admin.tours.edit', tour.id))" as="button"
-            class="btn btn-warning btn-sm w-100 my-2">Edit</Link>
+          
+          <Link 
+            :href="tour.is_public === false ? route('admin.private_tours.edit', tour.id) : route('admin.tours.edit', tour.id)" 
+            as="button"
+            class="btn btn-warning btn-sm w-100 my-2">
+            Edit
+          </Link>
         </td>
       </tr>
     </tbody>
