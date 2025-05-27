@@ -237,7 +237,7 @@ import {
 
 const props = defineProps({
     places: Array, // Expected: [{id, name, costs: [{id, name, cost, number_of_people}]}]
-    rooms: Array,  // Expected: [{id, name (Hotel - Room), costs: [{id, name, cost, number_of_people}]}]
+    roomOptions: Array, // Expected: [{type: 'group', label: 'Hotel Name', children: [{label: 'Room Name', value: roomId, costs: [...]}]}]
     guides: Array, // Expected: [{id, name, costs: [{id, name, cost, number_of_people}]}]
     transportations: Array, // Expected: [{id, name, costs: [{id, name, cost, number_of_people}]}]
     meals: Array, // Expected: [{id, name, costs: [{id, name, cost, number_of_people}]}]
@@ -318,7 +318,7 @@ const getSpecificResourceOptions = (type) => {
     if (!type) return [];
     switch (type) {
         case 'Place': return props.places.map(p => ({ label: p.name, value: p.id, costs: p.costs }));
-        case 'Room': return props.rooms.map(r => ({ label: r.name, value: r.id, costs: r.costs })); // Name is already Hotel - Room
+        case 'Room': return props.roomOptions; // Already in correct format for n-select with groups
         case 'Guide': return props.guides.map(g => ({ label: g.name, value: g.id, costs: g.costs }));
         case 'Transportation': return props.transportations.map(t => ({ label: t.name, value: t.id, costs: t.costs }));
         case 'Meal': return props.meals.map(m => ({ label: m.name, value: m.id, costs: m.costs }));
@@ -338,9 +338,26 @@ const handleSpecificResourceChange = (costEntry) => {
     costEntry.max_quantity = undefined;
     costEntry.actual_cost_object_price = null;
     costEntry.actual_cost_object_capacity = null;
+
     const resourceOptions = getSpecificResourceOptions(costEntry.resource_type);
-    const selectedResource = resourceOptions.find(r => r.value === costEntry.specific_resource_id);
-    costEntry.available_costs = selectedResource && selectedResource.costs ? selectedResource.costs : [];
+
+    if (costEntry.resource_type === 'Room') {
+        // For rooms, resourceOptions is an array of hotel groups.
+        // We need to find the selected room within these groups to get its costs.
+        let selectedRoomOption = null;
+        for (const hotelGroup of resourceOptions) {
+            if (hotelGroup.children) {
+                selectedRoomOption = hotelGroup.children.find(room => room.value === costEntry.specific_resource_id);
+                if (selectedRoomOption) break;
+            }
+        }
+        costEntry.available_costs = selectedRoomOption && selectedRoomOption.costs ? selectedRoomOption.costs : [];
+    } else {
+        // For other resource types, the structure is simpler
+        const selectedResource = resourceOptions.find(r => r.value === costEntry.specific_resource_id);
+        costEntry.available_costs = selectedResource && selectedResource.costs ? selectedResource.costs : [];
+    }
+
     costEntry.quantity = costEntry.quantity || 1; // Default quantity to 1 if not set
 };
 

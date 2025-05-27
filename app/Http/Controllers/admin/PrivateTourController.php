@@ -29,13 +29,31 @@ class PrivateTourController extends Controller
     public function create()
     {
         $places = Place::with('costs')->select(['id', 'name'])->get();
-        $rooms = Room::with(['costs', 'hotel:id,name'])->select(['id', 'name', 'hotel_id'])->get()->map(function($room){
+
+        // New logic for rooms grouped by hotel
+        $hotels_for_room_selection = Hotel::with(['rooms' => function ($query) {
+            $query->with('costs')->select(['id', 'hotel_id', 'name']); // Ensure room.costs is loaded
+        }])
+        ->select(['id', 'name']) // Hotel fields
+        ->get()
+        ->map(function ($hotel) {
             return [
-                'id' => $room->id,
-                'name' => ($room->hotel ? $room->hotel->name . ' - ' : '') . $room->name,
-                'costs' => $room->costs
+                'type' => 'group', // For n-select to render as a non-selectable group label
+                'label' => $hotel->name,
+                'key' => 'hotel_group_' . $hotel->id, // Unique key for the group
+                'children' => $hotel->rooms->map(function ($room) use ($hotel) { // Added 'use ($hotel)'
+                    return [
+                        'label' => $room->name, // Room name (hotel name is group label)
+                        'value' => $room->id,    // Actual Room ID to be used as value
+                        'costs' => $room->costs, // Attach room's costs here
+                    ];
+                })->filter(fn($room) => !empty($room['value']))
+                ->values()
             ];
-        });
+        })
+        ->filter(fn($hotel_group) => $hotel_group['children']->isNotEmpty()) // Only hotels with rooms
+        ->values();
+
         $guides = Guide::with('costs')->select(['id', 'name'])->get();
         $transportations = Transportation::with('costs')->select(['id', 'model as name'])->get();
         $meals = Meal::with('costs')->select(['id', 'name'])->get();
@@ -44,7 +62,7 @@ class PrivateTourController extends Controller
 
         return Inertia::render('admin/PrivateTours/Create', [
             'places' => $places,
-            'rooms' => $rooms,
+            'roomOptions' => $hotels_for_room_selection,
             'guides' => $guides,
             'transportations' => $transportations,
             'meals' => $meals,
