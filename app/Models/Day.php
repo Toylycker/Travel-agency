@@ -36,7 +36,7 @@ class Day extends BaseModel
     public function costs(): BelongsToMany
     {
         return $this->belongsToMany(Cost::class, 'cost_day')
-            ->withPivot(['notes'])
+            ->withPivot(['notes', 'quantity'])
             ->withTimestamps();
     }
 

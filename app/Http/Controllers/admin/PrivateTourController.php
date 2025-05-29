@@ -6,17 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Tour;
 use App\Models\Day;
 use App\Models\Place;
-use App\Models\Room;
 use Illuminate\Support\Str;
 use App\Models\Hotel;
 use App\Models\Guide;
 use App\Models\Transportation;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Meal;
-use App\Models\Cost;
 use App\Models\Image;
 use App\Models\Note;
-use App\Models\Price;
 use App\Models\CustomCost;
 use Intervention\Image\ImageManagerStatic as Gallery;
 use Illuminate\Http\Request;
@@ -55,7 +52,7 @@ class PrivateTourController extends Controller
         ->values();
 
         $guides = Guide::costsWithoutDays()->select(['id', 'name'])->get();
-        $transportations = Transportation::costsWithoutDays()->select(['id', 'model as name'])->get();
+        $transportations = Transportation::costsWithoutDays()->get();
         $meals = Meal::costsWithoutDays()->select(['id', 'name'])->get();
         $notes = Note::select(['id', 'name'])->get();
         $customCosts = CustomCost::costsWithoutDays()->select(['id', 'name'])->get();
@@ -75,9 +72,7 @@ class PrivateTourController extends Controller
     {
         $tour->load([
             'days.costs' => function ($query) {
-                // Ensure costable is loaded for each cost to get costable_type and costable_id easily
-                // and also number_of_people from the Cost model itself.
-                $query->with('costable'); // Adjust fields as needed for costable
+                $query->with('costable')->without('days');
             },
             'notes',
             'images'
@@ -115,7 +110,7 @@ class PrivateTourController extends Controller
         ->filter(fn($hotel_group) => $hotel_group['children']->isNotEmpty())
         ->values();
         $guides = Guide::costsWithoutDays()->select(['id', 'name'])->get();
-        $transportations = Transportation::costsWithoutDays()->select(['id', 'model as name'])->get();
+        $transportations = Transportation::costsWithoutDays()->get();
         $meals = Meal::costsWithoutDays()->select(['id', 'name'])->get();
         $notes = Note::select(['id', 'name'])->get();
         $customCosts = CustomCost::costsWithoutDays()->select(['id', 'name'])->get();
