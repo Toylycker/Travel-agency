@@ -31,7 +31,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
             <div class="flex items-center space-x-2">
               <n-input v-model:value="formname.name" placeholder="Tour name" />
-              <n-button @click="formname.put(route('admin.tours.edit.name', [tour.id]))" type="primary" :loading="formname.processing">Save</n-button>
+              <n-button @click="formname.put(route('admin.tours.edit.name', [tour.id]))" type="primary" :loading="formname.processing" class="bg-blue-500 hover:bg-blue-600">Save</n-button>
             </div>
             <div v-if="formname.errors.name" class="text-red-500 text-xs mt-1">{{ formname.errors.name }}</div>
           </n-gi>
@@ -39,7 +39,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Name (Chinese)</label>
             <div class="flex items-center space-x-2">
               <n-input v-model:value="formname_cn.name_cn" placeholder="Tour name in Chinese" />
-              <n-button @click="formname_cn.put(route('admin.tours.edit.name_cn', [tour.id]))" type="primary" :loading="formname_cn.processing">Save</n-button>
+              <n-button @click="formname_cn.put(route('admin.tours.edit.name_cn', [tour.id]))" type="primary" :loading="formname_cn.processing" class="bg-blue-500 hover:bg-blue-600">Save</n-button>
             </div>
             <div v-if="formname_cn.errors.name_cn" class="text-red-500 text-xs mt-1">{{ formname_cn.errors.name_cn }}</div>
           </n-gi>
@@ -64,13 +64,14 @@
                 @change="handleMainImageChange"
                 list-type="image"
               >
-                <n-button>Select Image</n-button>
+                <n-button class="bg-gray-200 hover:bg-gray-300">Select Image</n-button>
               </n-upload>
               <n-button 
                 @click="formmain_image.post(route('admin.tours.edit.main_image', tour.id), { _method: 'put' })" 
                 type="primary" 
                 :loading="formmain_image.processing"
                 :disabled="!formmain_image.main_image"
+                class="bg-blue-500 hover:bg-blue-600"
               >Save Main Image</n-button>
             </div>
             <div v-if="formmain_image.progress" class="mt-1">
@@ -99,13 +100,14 @@
               @change="handleAdditionalImagesChange"
               list-type="image-card"
             >
-               <n-button>Select Images</n-button>
+               <n-button class="bg-gray-200 hover:bg-gray-300">Select Images</n-button>
             </n-upload>
             <n-button 
               @click="formimages.post(route('admin.tours.edit.images', [tour.id]), { _method: 'put' })" 
               type="primary" 
               :loading="formimages.processing"
               :disabled="!formimages.images || formimages.images.length === 0"
+              class="bg-blue-500 hover:bg-blue-600"
             >Save Additional Images</n-button>
           </div>
           <div v-if="formimages.progress" class="mt-1">
@@ -121,7 +123,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">Body</label>
               <div class="flex items-center space-x-2">
                 <n-input type="textarea" v-model:value="formbody.body" placeholder="Tour description" :autosize="{minRows: 3}"/>
-                <n-button @click="formbody.put(route('admin.tours.edit.body', [tour.id]))" type="primary" :loading="formbody.processing">Save</n-button>
+                <n-button @click="formbody.put(route('admin.tours.edit.body', [tour.id]))" type="primary" :loading="formbody.processing" class="bg-blue-500 hover:bg-blue-600">Save</n-button>
               </div>
               <div v-if="formbody.errors.body" class="text-red-500 text-xs mt-1">{{ formbody.errors.body }}</div>
             </n-gi>
@@ -129,7 +131,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">Body (Chinese)</label>
               <div class="flex items-center space-x-2">
                 <n-input type="textarea" v-model:value="formbody_cn.body_cn" placeholder="Tour description in Chinese" :autosize="{minRows: 3}"/>
-                <n-button @click="formbody_cn.put(route('admin.tours.edit.body_cn', [tour.id]))" type="primary" :loading="formbody_cn.processing">Save</n-button>
+                <n-button @click="formbody_cn.put(route('admin.tours.edit.body_cn', [tour.id]))" type="primary" :loading="formbody_cn.processing" class="bg-blue-500 hover:bg-blue-600">Save</n-button>
               </div>
               <div v-if="formbody_cn.errors.body_cn" class="text-red-500 text-xs mt-1">{{ formbody_cn.errors.body_cn }}</div>
             </n-gi>
@@ -137,7 +139,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">Map Embed URL</label>
               <div class="flex items-center space-x-2">
                 <n-input type="textarea" v-model:value="formmap.map" placeholder="Paste map embed URL" :autosize="{minRows: 2}"/>
-                <n-button @click="formmap.put(route('admin.tours.edit.map', [tour.id]))" type="primary" :loading="formmap.processing">Save</n-button>
+                <n-button @click="formmap.put(route('admin.tours.edit.map', [tour.id]))" type="primary" :loading="formmap.processing" class="bg-blue-500 hover:bg-blue-600">Save</n-button>
               </div>
               <div v-if="formmap.errors.map" class="text-red-500 text-xs mt-1">{{ formmap.errors.map }}</div>
             </n-gi>
@@ -151,7 +153,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Total Days</label>
             <div class="flex items-center space-x-2">
               <n-input-number v-model:value="formtotal_days.total_days" :min="1" class="w-full"/>
-              <n-button @click="formtotal_days.put(route('admin.tours.edit.total_days', [tour.id]))" type="primary" :loading="formtotal_days.processing">Save</n-button>
+              <n-button @click="formtotal_days.put(route('admin.tours.edit.total_days', [tour.id]))" type="primary" :loading="formtotal_days.processing" class="bg-blue-500 hover:bg-blue-600">Save</n-button>
             </div>
             <div v-if="formtotal_days.errors.total_days" class="text-red-500 text-xs mt-1">{{ formtotal_days.errors.total_days }}</div>
           </n-gi>
@@ -159,7 +161,7 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Base Price (Text)</label>
             <div class="flex items-center space-x-2">
               <n-input v-model:value="formtour_prices.tour_prices" placeholder="e.g., $500 per person"/>
-              <n-button @click="formtour_prices.put(route('admin.tours.edit.tour_prices', [tour.id]))" type="primary" :loading="formtour_prices.processing">Save</n-button>
+              <n-button @click="formtour_prices.put(route('admin.tours.edit.tour_prices', [tour.id]))" type="primary" :loading="formtour_prices.processing" class="bg-blue-500 hover:bg-blue-600">Save</n-button>
             </div>
             <div v-if="formtour_prices.errors.tour_prices" class="text-red-500 text-xs mt-1">{{ formtour_prices.errors.tour_prices }}</div>
           </n-gi>
@@ -167,14 +169,14 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Viewed Count</label>
             <div class="flex items-center space-x-2">
               <n-input-number v-model:value="formviewed.viewed" :min="0" class="w-full"/>
-              <n-button @click="formviewed.put(route('admin.tours.edit.viewed', [tour.id]))" type="primary" :loading="formviewed.processing">Save</n-button>
+              <n-button @click="formviewed.put(route('admin.tours.edit.viewed', [tour.id]))" type="primary" :loading="formviewed.processing" class="bg-blue-500 hover:bg-blue-600">Save</n-button>
             </div>
             <div v-if="formviewed.errors.viewed" class="text-red-500 text-xs mt-1">{{ formviewed.errors.viewed }}</div>
           </n-gi>
            <n-gi class="flex items-end"> <!-- Aligns checkbox with button line -->
             <div class="flex items-center space-x-2">
               <n-checkbox v-model:checked="formrecommended.recommended">Recommended</n-checkbox>
-              <n-button @click="formrecommended.put(route('admin.tours.edit.recommended', [tour.id]))" type="primary" :loading="formrecommended.processing">Update Recommendation</n-button>
+              <n-button @click="formrecommended.put(route('admin.tours.edit.recommended', [tour.id]))" type="primary" :loading="formrecommended.processing" class="bg-orange-500 hover:bg-orange-600">Update Recommendation</n-button>
             </div>
             <div v-if="formrecommended.errors.recommended" class="text-red-500 text-xs mt-1 w-full">{{ formrecommended.errors.recommended }}</div>
           </n-gi>
@@ -189,7 +191,7 @@
             <n-select 
               multiple 
               filterable 
-              :options="notes" 
+              :options="props.notes" 
               label-field="name" 
               value-field="id" 
               v-model:value="formnotes.included" 
@@ -202,7 +204,7 @@
             <n-select 
               multiple 
               filterable 
-              :options="notes" 
+              :options="props.notes" 
               label-field="name" 
               value-field="id" 
               v-model:value="formnotes.non_included" 
@@ -212,7 +214,7 @@
           </n-gi>
         </n-grid>
         <div class="mt-4 flex justify-end">
-           <n-button @click="formnotes.put(route('admin.tours.edit.notes', [tour.id]))" type="primary" :loading="formnotes.processing">Save Notes</n-button>
+           <n-button @click="formnotes.put(route('admin.tours.edit.notes', [tour.id]))" type="primary" :loading="formnotes.processing" class="bg-blue-500 hover:bg-blue-600">Save Notes</n-button>
         </div>
       </n-card>
 
@@ -221,8 +223,8 @@
         <div class="flex justify-between items-center mb-2">
           <span class="text-sm font-medium text-gray-700">Manage individual days</span>
           <div>
-            <n-button @click="add_day" type="info" size="small" class="mr-2">Add Day</n-button>
-            <n-button @click="formdays.put(route('admin.tours.edit.days', [tour.id]))" type="primary" size="small" :loading="formdays.processing">Save All Day Changes</n-button>
+            <n-button @click="add_day" type="info" size="small" class="mr-2 bg-green-500 hover:bg-green-600">Add Day</n-button>
+            <n-button @click="formdays.put(route('admin.tours.edit.days', [tour.id]))" type="primary" size="small" :loading="formdays.processing" class="bg-blue-500 hover:bg-blue-600">Save All Day Changes</n-button>
           </div>
         </div>
          <div v-if="formdays.errors.days && typeof formdays.errors.days === 'string'" class="text-red-500 text-xs mb-2">{{ formdays.errors.days }}</div>
@@ -231,7 +233,7 @@
           <div v-for="(day, index) in formdays.days" :key="index" class="p-4 border rounded-md bg-gray-50">
             <div class="flex justify-between items-center mb-3">
                <h3 class="text-lg font-semibold">Day {{ day.day_number || (index + 1) }}</h3>
-               <n-button @click="remove_day(index)" type="error" size="small" ghost>Remove Day</n-button>
+               <n-button @click="remove_day(index)" type="error" size="small" ghost class="border-red-500 text-red-500 hover:bg-red-100">Remove Day</n-button>
             </div>
             <n-grid cols="1" :y-gap="8">
               <n-gi>
@@ -274,8 +276,8 @@
         <div class="flex justify-between items-center mb-2">
           <span class="text-sm font-medium text-gray-700">Manage individual price entries</span>
           <div>
-            <n-button @click="add_price" type="info" size="small" class="mr-2">Add Price</n-button>
-            <n-button @click="formprices.put(route('admin.tours.edit.prices', [tour.id]))" type="primary" size="small" :loading="formprices.processing">Save All Price Changes</n-button>
+            <n-button @click="add_price" type="info" size="small" class="mr-2 bg-green-500 hover:bg-green-600">Add Price</n-button>
+            <n-button @click="formprices.put(route('admin.tours.edit.prices', [tour.id]))" type="primary" size="small" :loading="formprices.processing" class="bg-blue-500 hover:bg-blue-600">Save All Price Changes</n-button>
           </div>
         </div>
         <div v-if="formprices.errors.detailedPrices && typeof formprices.errors.detailedPrices === 'string'" class="text-red-500 text-xs mb-2">{{ formprices.errors.detailedPrices }}</div>
@@ -283,7 +285,7 @@
         <div class="space-y-3">
           <div v-for="(price, index) in formprices.detailedPrices" :key="index" class="p-3 border rounded-md bg-gray-50">
              <div class="flex justify-end items-center mb-2">
-                <n-button @click="remove_price(index)" type="error" size="small" ghost>Remove Price</n-button>
+                <n-button @click="remove_price(index)" type="error" size="small" ghost class="border-red-500 text-red-500 hover:bg-red-100">Remove Price</n-button>
               </div>
               <n-grid cols="1 md:2" :x-gap="12" :y-gap="8">
                 <n-gi>

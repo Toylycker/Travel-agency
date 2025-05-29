@@ -120,7 +120,7 @@ class TourController extends Controller
     {
         $places = Place::all('name', 'id');
         $hotels = Hotel::all('name', 'id');
-        $notes = Note::all('name', 'id');
+        $notesData = Note::all('name', 'id');
         $days = $tour->days()->with(['places:id,name', 'hotels:id,name'])->orderBy('day_number')->get();
         $tour->load(['notes', 'prices', 'images']);
 
@@ -134,7 +134,7 @@ class TourController extends Controller
             'tour' => $tourData,
             'places' => $places,
             'hotels' => $hotels,
-            'form_notes' => $notes,
+            'notes' => $notesData,
             'days' => DayResource::collection($days),
             'included' => $tour->notes()->wherePivot('status', 'included')->pluck('notes.id'),
             'non_included' => $tour->notes()->wherePivot('status', 'non included')->pluck('notes.id'),
