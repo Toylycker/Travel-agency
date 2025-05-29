@@ -184,19 +184,44 @@ const columns = ref([
   },
 ]);
 
-const getQueryParams = (page, pageSize, sortBy, sortOrder, filters) => {
-    let params = { page, perPage: pageSize };
+const getQueryParams = (page, pageSize, sortBy, sortOrder, activeFiltersFromProps) => {
+    // Initialize with explicitly passed page and pageSize
+    let params = {
+        page: page,
+        perPage: pageSize
+    };
+
+    // Add sort parameters if provided
     if (sortBy) {
         params.sort_by = sortBy;
-        params.sort_order = sortOrder === 'ascend' ? 'asc' : (sortOrder === 'descend' ? 'desc' : null);
+        // Naive UI sortOrder can be 'ascend', 'descend', or false (for unsorted)
+        if (sortOrder === 'ascend' || sortOrder === 'asc') {
+            params.sort_order = 'asc';
+        } else if (sortOrder === 'descend' || sortOrder === 'desc') {
+            params.sort_order = 'desc';
+        } else if (params.sort_by) {
+            // If sort_by is present but sortOrder is false (or unrecognized), default to 'asc'
+            // This aligns with backend defaulting if sort_order isn't 'asc' or 'desc'
+            params.sort_order = 'asc'; 
+        }
+        // If sortOrder is false and sortBy is also false/null, no sort params are added beyond page/perPage
     }
-    if (filters) {
-        for (const key in filters) {
-            if (filters[key] !== null && filters[key] !== undefined) {
-                 if (['isPublic', 'active', 'recommended'].includes(key)) {
-                    params[key] = filters[key] === null ? null : Number(filters[key]);
+
+    // Add other filters from activeFiltersFromProps, excluding those already set or not actual filters
+    if (activeFiltersFromProps) {
+        for (const key in activeFiltersFromProps) {
+            // Skip keys that are primary pagination/sort controls or not relevant as query filters
+            if (key === 'page' || key === 'perPage' || key === 'sort_by' || key === 'sort_order') {
+                continue;
+            }
+
+            const value = activeFiltersFromProps[key];
+            // Only add if the filter value is truly set (not null or undefined)
+            if (value !== null && value !== undefined && String(value).length > 0) { // Ensure value is not empty string either
+                if (['isPublic', 'active', 'recommended'].includes(key)) {
+                    params[key] = Number(value);
                 } else {
-                    params[key] = filters[key];
+                    params[key] = value;
                 }
             }
         }
