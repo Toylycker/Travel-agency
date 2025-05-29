@@ -322,13 +322,20 @@ const form = useForm({
                                 tempOptions.push(...hotelGroup.children);
                             }
                         });
+                        // For rooms, the value is room.id, and costs are on the room object.
+                        // The `cost.costable_id` will be a room's ID.
+                        // So, when finding the specificResource, we search tempOptions (which are room objects)
+                        // using room.value (which is room.id) or directly room.id if structure is flat.
+                        // Given `roomOptions` structure, specificResource.value is the room ID.
                         break;
                     case 'Guide': tempOptions = props.guides; break;
                     case 'Transportation': tempOptions = props.transportations; break;
                     case 'Meal': tempOptions = props.meals; break;
                     case 'CustomCost': tempOptions = props.custom_costs; break;
                 }
-                const specificResource = tempOptions.find(r => r.value === cost.costable_id || r.id === cost.costable_id);
+                const specificResource = tempOptions.find(r => 
+                    resourceType === 'Room' ? r.value === cost.costable_id : r.id === cost.costable_id
+                );
                 specificResourceOptions = specificResource?.costs || [];
             }
 
@@ -418,7 +425,9 @@ onMounted(() => {
                     case 'Meal': options = props.meals; break;
                     case 'CustomCost': options = props.custom_costs; break;
                 }
-                const specificResource = options.find(r => r.value === costEntry.specific_resource_id || r.id === costEntry.specific_resource_id);
+                const specificResource = options.find(r => 
+                    costEntry.resource_type === 'Room' ? r.value === costEntry.specific_resource_id : r.id === costEntry.specific_resource_id
+                );
                 costEntry.available_costs = specificResource?.costs || [];
 
                 // Also, re-trigger handleCostOptionChange to set price and max_quantity correctly if a cost_id is present
@@ -539,13 +548,12 @@ function submit() {
     // and ensure files are correctly appended.
     // Inertia automatically handles this if main_image or images are File objects.
     form.post(route('admin.private_tours.update', props.tour.id), {
-        _method: 'PUT', // Important for Laravel to route to update method
+        //_method: 'put', // Important for Laravel to route to update method
         forceFormData: true, // Ensures a FormData request is made, good for files
         onError: (pageErrors) => {
             console.error('Form submission error:', pageErrors);
         },
         onSuccess: () => {
-            // form.reset(); // Don't reset on edit, user might want to make further changes
             currentStep.value = 1;
         }
     });
@@ -554,10 +562,5 @@ function submit() {
 </script>
 
 <script>
-// import AdminLayout from '@/Layouts/AdminLayout.vue'; // Already imported in setup
 export default { layout: AdminLayout }
 </script> 
-
-<style scoped>
-/* Add any component-specific styles here if needed */
-</style> 
