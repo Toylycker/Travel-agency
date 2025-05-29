@@ -27,18 +27,54 @@ class TourController extends Controller
 
     public function __construct(protected TourService $tourService)
     {
-        Cache::forget('tours');
+        // Cache::forget('tours'); // It's often better to invalidate cache on write operations (store, update, delete)
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $tours = Tour::with(['days' => function ($query) {
-            $query->orderBy('id');
-        }])->orderBy('id')->paginate(5)->withQueryString();
-        $places = Place::all('name', 'id');
-        $hotels = Hotel::all('name', 'id');
-        $notes = Note::all('name', 'id');
-        return Inertia::render('admin/Tours/index', ['tours' => $tours, 'places' => $places, 'hotels' => $hotels, 'notes' => $notes]);
+        $query = Tour::query();
+
+        // Filtering
+        if ($request->filled('isPublic') && $request->input('isPublic') !== null) {
+            $query->where('isPublic', filter_var($request->input('isPublic'), FILTER_VALIDATE_BOOLEAN));
+        }
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+        if ($request->filled('active') && $request->input('active') !== null) {
+            $query->where('active', filter_var($request->input('active'), FILTER_VALIDATE_BOOLEAN));
+        }
+        if ($request->filled('recommended') && $request->input('recommended') !== null) {
+            $query->where('recommended', filter_var($request->input('recommended'), FILTER_VALIDATE_BOOLEAN));
+        }
+
+        // Sorting
+        if ($request->filled('sort_by')) {
+            $sortBy = $request->input('sort_by');
+            $sortOrderInput = strtolower((string) $request->input('sort_order'));
+            $sortOrder = in_array($sortOrderInput, ['asc', 'desc']) ? $sortOrderInput : 'asc';
+            
+            $allowedSorts = ['id', 'name', 'total_days', 'viewed', 'isPublic', 'active', 'recommended', 'sort_order', 'created_at', 'updated_at'];
+            if (in_array($sortBy, $allowedSorts)) {
+                $query->orderBy($sortBy, $sortOrder);
+            } else {
+                $query->orderBy('id', 'desc');
+            }
+        } else {
+            $query->orderBy('id', 'desc');
+        }
+
+        $query->with(['days' => function ($q) {
+            $q->orderBy('id');
+        }]);
+
+        $perPage = $request->input('perPage', 10);
+        $tours = $query->paginate($perPage)->withQueryString();
+
+        return Inertia::render('admin/Tours/index', [
+            'tours' => $tours,
+            'filters' => $request->only(['isPublic', 'name', 'active', 'recommended', 'sort_by', 'sort_order', 'perPage'])
+        ]);
     }
 
     public function create()
