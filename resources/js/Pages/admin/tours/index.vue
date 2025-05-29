@@ -185,45 +185,34 @@ const columns = ref([
 ]);
 
 const getQueryParams = (page, pageSize, sortBy, sortOrder, activeFiltersFromProps) => {
-    // Initialize with explicitly passed page and pageSize
-    let params = {
-        page: page,
-        perPage: pageSize
-    };
+    let params = { page: page, perPage: pageSize };
 
-    // Add sort parameters if provided
     if (sortBy) {
         params.sort_by = sortBy;
-        // Naive UI sortOrder can be 'ascend', 'descend', or false (for unsorted)
-        if (sortOrder === 'ascend' || sortOrder === 'asc') {
-            params.sort_order = 'asc';
-        } else if (sortOrder === 'descend' || sortOrder === 'desc') {
-            params.sort_order = 'desc';
-        } else if (params.sort_by) {
-            // If sort_by is present but sortOrder is false (or unrecognized), default to 'asc'
-            // This aligns with backend defaulting if sort_order isn't 'asc' or 'desc'
-            params.sort_order = 'asc'; 
-        }
-        // If sortOrder is false and sortBy is also false/null, no sort params are added beyond page/perPage
+        if (sortOrder === 'ascend' || sortOrder === 'asc') params.sort_order = 'asc';
+        else if (sortOrder === 'descend' || sortOrder === 'desc') params.sort_order = 'desc';
+        else if (params.sort_by) params.sort_order = 'asc';
     }
 
-    // Add other filters from activeFiltersFromProps, excluding those already set or not actual filters
     if (activeFiltersFromProps) {
         for (const key in activeFiltersFromProps) {
-            // Skip keys that are primary pagination/sort controls or not relevant as query filters
-            if (key === 'page' || key === 'perPage' || key === 'sort_by' || key === 'sort_order') {
-                continue;
-            }
+            if (key === 'page' || key === 'perPage' || key === 'sort_by' || key === 'sort_order') continue;
 
             const value = activeFiltersFromProps[key];
-            // Only add if the filter value is truly set (not null or undefined)
-            if (value !== null && value !== undefined && String(value).length > 0) { // Ensure value is not empty string either
-                if (['isPublic', 'active', 'recommended'].includes(key)) {
-                    params[key] = Number(value);
-                } else {
+            const isBooleanLikeFilter = ['isPublic', 'active', 'recommended'].includes(key);
+
+            // Add filter if value is not null/undefined.
+            // For boolean-like filters, 0 is a valid value.
+            // For other filters, ensure it's not an empty string.
+            if (value !== null && value !== undefined) {
+                if (isBooleanLikeFilter) {
+                    params[key] = Number(value); // Ensure 0 is passed as a number
+                } else if (String(value).length > 0) {
                     params[key] = value;
                 }
-            }
+            } 
+            // If value is null (filter cleared), it won't be added to params, 
+            // which means backend won't filter by it.
         }
     }
     return params;
@@ -231,7 +220,11 @@ const getQueryParams = (page, pageSize, sortBy, sortOrder, activeFiltersFromProp
 
 const fetchData = (page, pageSize, sortBy, sortOrder, activeFilters) => {
     const queryParams = getQueryParams(page, pageSize, sortBy, sortOrder, activeFilters);
-    Inertia.get(route('admin.tours.index'), queryParams, { preserveState: true, replace: true });
+    Inertia.get(route('admin.tours.index'), queryParams, {
+        preserveState: true, 
+        replace: true, 
+        preserveScroll: true
+    });
 };
 
 const handlePageChange = (page) => {
@@ -276,19 +269,21 @@ watch(() => props.filters, (newFilters) => {
     currentSortBy.value = newFilters?.sort_by || 'id';
     currentSortOrder.value = newFilters?.sort_order || 'desc';
     columns.value = columns.value.map(col => {
-        if (col.key === currentSortBy.value) {
-            return { ...col, sortOrder: currentSortOrder.value };
-        } else if (col.sorter) {
-             return { ...col, sortOrder: false };
+        let updatedCol = { ...col };
+        if (updatedCol.sorter) {
+            updatedCol.sortOrder = updatedCol.key === currentSortBy.value ? currentSortOrder.value : false;
         }
-        return col;
-    });
-    
-    columns.value = columns.value.map(col => {
-        if (col.filter && newFilters && newFilters[col.key] !== undefined) {
-            return { ...col, filterOptionValue: newFilters[col.key] === null ? null : Number(newFilters[col.key]) };
+        
+        if (updatedCol.filter && newFilters) {
+            const filterValue = newFilters[updatedCol.key];
+            if (filterValue === null || filterValue === undefined || filterValue === '') { // Consider empty string as null for filter tick
+                updatedCol.filterOptionValue = null;
+            } else {
+                updatedCol.filterOptionValue = Number(filterValue); // For boolean-like, this gets 0 or 1
+                 // For other filter types if they were numeric. If not, this might need adjustment based on filter type
+            }
         }
-        return col;
+        return updatedCol;
     });
 }, { deep: true, immediate: true });
 
