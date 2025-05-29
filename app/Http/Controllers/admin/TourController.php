@@ -19,16 +19,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use App\Services\TourService;
+use Illuminate\Support\Facades\Validator;
 
 class TourController extends Controller
 {
-    
 
-    public function __construct()
+    public function __construct(protected TourService $tourService)
     {
         Cache::forget('tours');
     }
-
 
     public function index()
     {
@@ -41,334 +41,226 @@ class TourController extends Controller
         return Inertia::render('admin/Tours/index', ['tours' => $tours, 'places' => $places, 'hotels' => $hotels, 'notes' => $notes]);
     }
 
-    
-    public function store(Request $request)
+    private function getPublicTourValidationRules(bool $isUpdate = false): array
     {
-        $request->validate(
-            [
-                'name' => 'string|required',
-                'name_cn' => 'string|nullable',
-                'main_image' => 'image|required',
-                'body' => 'string|required',
-                'body_cn' => 'string|nullable',
-                'map' => 'string|nullable',
-                'total_days' => 'numeric|required',
-                'prices' => 'string|required',
-                'discount_percent' => 'numeric|nullable',
-                'discount_datetime_start' => 'numeric|nullable|date_format',
-                'discount_datetime_end' => 'numeric|nullable|date_format',
-                'viewed' => 'numeric|nullable',
-                'recommended' => 'nullable',
-                'days' => 'array|required',
-                'detailedPrices' => 'array|required',
-                'images' => 'array|required',
-                'images.*' => 'Image',
-                'included' => 'array|nullable',
-                'non_included' => 'array|nullable'
-            ]
-        );
-
-        DB::transaction(function () use ($request) {
-            $tour = Tour::create([
-                'name' => $request->name,
-                'name_cn' => $request->name_cn,
-                'main_image' => 'null',
-                'body' => $request->body,
-                'body_cn' => $request->body_cn,
-                'map' => $request->map,
-                'total_days' => $request->total_days,
-                'tour_prices' => $request->prices,
-                'discount_percent' => $request->discount_percent ?: 0,
-                'discount_datetime_start' => $request->discount_datetime_start,
-                'discount_datetime_end' => $request->discount_datetime_end,
-                'viewed' => $request->viewed ?: 0,
-                'recommended' => $request->recommended,
-            ]);
-    
-            if ($request->has('main_image')) {
-                $newImage = $request->file('main_image');
-                $resized = Gallery::make($newImage)
-                    // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
-                    ->fit(1400, 800)
-                    ->encode('jpg', 100);
-                $newImageName = Str::random(10) . '-' . $tour->id . '.' . $newImage->getClientOriginalExtension();
-                Storage::put('public/tours/' . $newImageName, (string) $resized);
-                // $resized->storeAs('public/tours/', $newImageName);
-    
-                $tour->main_image = $newImageName;
-                $tour->update();
-            }
-    
-    
-            if ($request->has('included')) {
-                foreach ($request->included as $note) {
-                    $tour->notes()->attach($note, ['status' => 'included']);
-                }
-            }
-    
-            if ($request->has('non_included')) {
-                foreach ($request->non_included as $note) {
-                    $tour->notes()->attach($note, ['status' => 'non included']);
-                }
-            }
-    
-            foreach ($request->days as $day) {
-                $newDay = new Day();
-                $newDay->day_number = $day['day_number'];
-                $newDay->title = $day['title'];
-                $newDay->body = $day['body'];
-                $newDay->body_cn = $day['body_cn'];
-                $newDay->tour_id = $tour->id;
-                $newDay->save();
-                if (collect($day['places'])->count()>=1) {
-                    $newDay->places()->attach($day['places']);
-                }
-                // if (collect($day['hotels'])->count()>=1) {
-    
-                //     $newDay->hotels()->attach($day['hotels']);
-                // }
-            }
-    
-            if ($request->has('images')) {
-                foreach ($request->images as $image) {
-                    $newImage = $image;
-                    $resized = Gallery::make($newImage)
-                        // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
-                        ->fit(1280, 1024)
-                        ->encode('jpg', 100);
-                    $newImageName = Str::random(10) . '-' . $tour->id . '.' . $newImage->getClientOriginalExtension();
-                    Storage::put('public/tours/' . $newImageName, (string) $resized);
-                    Image::create(['name' => $newImageName, 'imageable_id' => $tour->id, 'imageable_type' => 'App\Models\Tour']);
-                }
-            }
-    
-            if ($request->has('detailedPrices')) {
-                foreach ($request->detailedPrices as $price) {
-                    Price::create(['name' => $price['name'], 'price' => $price['price'], 'name_cn' => $price['name_cn'], 'price_cn' => $price['price_cn'],'priceable_id' => $tour->id, 'priceable_type' => 'App\Models\Tour']);
-                }
-            }
-        });
-
-        return Redirect()->back();
+        $rules = [
+            'name' => 'required|string|max:255',
+            'name_cn' => 'nullable|string|max:255',
+            'main_image' => ($isUpdate ? 'nullable' : 'required') . '|image|max:2048',
+            'body' => 'required|string',
+            'body_cn' => 'nullable|string',
+            'map' => 'nullable|string',
+            'total_days' => 'required|numeric|min:1',
+            'prices' => 'required|string',
+            'discount_percent' => 'nullable|numeric|min:0|max:100',
+            'discount_datetime_start' => 'nullable|date',
+            'discount_datetime_end' => 'nullable|date|after_or_equal:discount_datetime_start',
+            'viewed' => 'nullable|numeric|min:0',
+            'recommended' => 'boolean',
+            'active' => 'boolean',
+            'sort_order' => 'nullable|integer',
+            'days' => 'required|array|min:1',
+            'days.*.day_number' => 'required|integer|min:1',
+            'days.*.title' => 'required|string|max:255',
+            'days.*.body' => 'required|string',
+            'days.*.body_cn' => 'nullable|string',
+            'days.*.places' => 'nullable|array',
+            'days.*.places.*' => 'integer|exists:places,id',
+            'days.*.hotels' => 'nullable|array',
+            'days.*.hotels.*' => 'integer|exists:hotels,id',
+            'detailedPrices' => 'required|array',
+            'detailedPrices.*.name' => 'required|string',
+            'detailedPrices.*.price' => 'required|numeric',
+            'detailedPrices.*.name_cn' => 'nullable|string',
+            'detailedPrices.*.price_cn' => 'nullable|numeric',
+            'images' => ($isUpdate ? 'nullable' : 'required') . '|array',
+            'images.*' => 'image|max:2048',
+            'included' => 'nullable|array',
+            'included.*' => 'integer|exists:notes,id',
+            'non_included' => 'nullable|array',
+            'non_included.*' => 'integer|exists:notes,id',
+        ];
+        return $rules;
     }
 
-    
+    public function store(Request $request)
+    {
+        $validatedData = Validator::make($request->all(), $this->getPublicTourValidationRules())->validate();
 
-    
+        $serviceData = array_merge($validatedData, [
+            'main_image_file' => $request->file('main_image'),
+            'additional_images_files' => $request->file('images'),
+            'isPublic' => true,
+            'recommended' => $request->boolean('recommended'),
+            'active' => $request->boolean('active', true),
+        ]);
+
+        try {
+            $this->tourService->createNewTour($serviceData);
+            return Redirect::back()->with('success', 'Public tour created successfully!');
+        } catch (\Exception $e) {
+            return Redirect::back()->withInput()->withErrors(['error' => 'Failed to create public tour: ' . $e->getMessage()]);
+        }
+    }
+
     public function edit(Tour $tour)
     {
         $places = Place::all('name', 'id');
         $hotels = Hotel::all('name', 'id');
         $notes = Note::all('name', 'id');
-        $days = Day::where('tour_id', $tour->id)->with(['places:id', 'hotels'])->get();
-        $tour->load(['notes', 'prices', 'days.hotels', 'included', 'non_included', 'images']);
+        $days = $tour->days()->with(['places:id', 'hotels:id'])->get();
+        $tour->load(['notes', 'prices', 'images']);
+        
         return Inertia::render('admin/Tours/edit', [
             'tour' => $tour,
             'places' => $places,
             'hotels' => $hotels,
             'notes' => $notes,
             'days' => DayResource::collection($days),
-            'included' => $tour->included->pluck('id'),
-            'non_included' => $tour->non_included->pluck('id'),
+            'included' => $tour->notes()->wherePivot('status', 'included')->pluck('notes.id'),
+            'non_included' => $tour->notes()->wherePivot('status', 'non included')->pluck('notes.id'),
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Tour  $tour
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Tour $tour)
     {
-        dd($request->collect());
+        $validatedData = Validator::make($request->all(), $this->getPublicTourValidationRules(true))->validate();
+
+        $serviceData = array_merge($validatedData, [
+            'main_image_file' => $request->file('main_image'),
+            'additional_images_files' => $request->file('images'),
+            'isPublic' => true,
+            'recommended' => $request->boolean('recommended'),
+            'active' => $request->boolean('active'),
+            'additional_images_sync_strategy' => 'sync'
+        ]);
+
+        try {
+            $this->tourService->updateExistingTour($tour, $serviceData);
+            return Redirect::back()->with('success', 'Public tour updated successfully!');
+        } catch (\Exception $e) {
+            return Redirect::back()->withInput()->withErrors(['error' => 'Failed to update public tour: ' . $e->getMessage()]);
+        }
     }
 
     public function destroy(Tour $tour)
     {
+        if ($tour->main_image && Storage::exists('public/tours/' . $tour->main_image)) {
+            Storage::delete('public/tours/' . $tour->main_image);
+        }
+        foreach ($tour->images as $img) {
+            if (Storage::exists('public/tours/' . $img->name)) {
+                Storage::delete('public/tours/' . $img->name);
+            }
+        }
         $tour->delete();
-
-        return Redirect()->back();
+        return Redirect::back()->with('success', 'Tour deleted successfully!');
     }
 
     public function putName($tour_id, Request $request)
     {
         $tour = Tour::findOrFail($tour_id);
-        $tour->name = $request->name;
-        $tour->update();
-        return redirect()->back();
+        $this->tourService->updateAttribute($tour, 'name', $request->name);
+        return redirect()->back()->with('success', 'Name updated.');
     }
 
     public function putName_cn($tour_id, Request $request)
     {
         $tour = Tour::findOrFail($tour_id);
-        $tour->name_cn = $request->name_cn;
-        $tour->update();
-        return redirect()->back();
+        $this->tourService->updateAttribute($tour, 'name_cn', $request->name_cn);
+        return redirect()->back()->with('success', 'Chinese name updated.');
     }
 
     public function putMainImage($tour_id, Request $request)
     {
+        $request->validate(['main_image' => ['required', 'image']]);
         $tour = Tour::findOrFail($tour_id);
-        $request->validate([
-            'main_image' => ['required', 'image'],
-        ]);
-
-        if ($request->main_image) {
-            Storage::delete('public/tours/' . $tour->main_image);
-            $newImage = $request->file('main_image');
-            $resized = Gallery::make($newImage)
-                // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
-                ->fit(1400, 800)
-                ->encode('jpg', 100);
-            $newImageName = Str::random(10) . '-' . $tour->id . '.' . $newImage->getClientOriginalExtension();
-            Storage::put('public/tours/' . $newImageName, (string) $resized);
-            // $resized->storeAs('public/tours/', $newImageName);
-
-            $tour->main_image = $newImageName;
-            $tour->update();
-        } else {
-            return 'false';
+        if ($request->hasFile('main_image')) {
+            $this->tourService->updateMainImage($tour, $request->file('main_image'));
+            return redirect()->back()->with('success', 'Main image updated.');
         }
-        return redirect()->back();
+        return redirect()->back()->withErrors(['error' => 'No image provided.']);
     }
 
     public function putbody(Request $request, $tour_id)
     {
-
         $tour = Tour::findOrFail($tour_id);
-        $tour->body = $request->body;
-        $tour->update();
-        return redirect()->back();
+        $this->tourService->updateAttribute($tour, 'body', $request->body);
+        return redirect()->back()->with('success', 'Body updated.');
     }
 
     public function putbody_cn(Request $request, $tour_id)
     {
-
         $tour = Tour::findOrFail($tour_id);
-        $tour->body_cn = $request->body_cn;
-        $tour->update();
-        return redirect()->back();
+        $this->tourService->updateAttribute($tour, 'body_cn', $request->body_cn);
+        return redirect()->back()->with('success', 'Chinese body updated.');
     }
 
     public function putTourPrices(Request $request, $tour_id)
     {
         $tour = Tour::findOrFail($tour_id);
-        $tour->tour_prices = $request->tour_prices;
-        $tour->update();
-        return redirect()->back();
+        $this->tourService->updateAttribute($tour, 'tour_prices', $request->tour_prices);
+        return redirect()->back()->with('success', 'Tour prices text updated.');
     }
 
     public function putTotalDays(Request $request, $tour_id)
     {
         $tour = Tour::findOrFail($tour_id);
-
-        $tour->total_days = $request->total_days;
-        $tour->update();
-        return redirect()->back();
+        $this->tourService->updateAttribute($tour, 'total_days', $request->total_days);
+        return redirect()->back()->with('success', 'Total days updated.');
     }
 
     public function putViewed(Request $request, $tour_id)
     {
         $tour = Tour::findOrFail($tour_id);
-        $tour->viewed = $request->viewed;
-        $tour->update();
-        return redirect()->back();
+        $this->tourService->updateAttribute($tour, 'viewed', $request->viewed);
+        return redirect()->back()->with('success', 'View count updated.');
     }
 
     public function putRecommended(Request $request, $tour_id)
     {
         $tour = Tour::findOrFail($tour_id);
-        // return $tour->recommended;
-        $tour->recommended = $request->recommended;
-        $tour->update();
-        return redirect()->back();
+        $this->tourService->updateAttribute($tour, 'recommended', $request->boolean('recommended'));
+        return redirect()->back()->with('success', 'Recommendation status updated.');
     }
 
     public function putImages(Request $request, $tour_id)
     {
+        $request->validate(['images' => 'required|array', 'images.*' => 'image']);
         $tour = Tour::findOrFail($tour_id);
-
-        if ($request->has('images')) {
-            $files =  $tour->images->pluck('name');
-            foreach ($files as $file_name) {
-                Storage::delete('public/tours/' . $file_name);
-            }
-            $tour->images()->delete();
-            foreach ($request->images as $image) {
-                $newImage = $image;
-                $resized = Gallery::make($newImage)
-                    // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
-                    ->fit(1280, 1024)
-                    ->encode('jpg', 100);
-                $newImageName = Str::random(10) . '-' . $tour->id . '.' . $newImage->getClientOriginalExtension();
-                Storage::put('public/tours/' . $newImageName, (string) $resized);
-                Image::create(['name' => $newImageName, 'imageable_id' => $tour->id, 'imageable_type' => 'App\Models\Tour']);
-            }
-        }else{return "could not save";}
-
-        return redirect()->back();
+        if ($request->hasFile('images')) {
+            $this->tourService->syncAdditionalImages($tour, $request->file('images'));
+            return redirect()->back()->with('success', 'Additional images updated.');
+        }
+        return redirect()->back()->withErrors(['error' => 'No images provided.']);
     }
 
     public function putNotes(Request $request, $tour_id)
     {
-        $included = $request->included;
-        $non_included = $request->non_included;
         $tour = Tour::findOrFail($tour_id);
-        $tour->included()->syncWithPivotValues($request->included, ['status' => 'included']);
-        $tour->non_included()->syncWithPivotValues($request->non_included, ['status' => 'non included']);
-        return redirect()->back();
+        $this->tourService->syncNotes($tour, $request->input('included'), $request->input('non_included'));
+        return redirect()->back()->with('success', 'Notes updated.');
     }
 
     public function putPrices(Request $request, $tour_id)
     {
-        
+        $request->validate(['detailedPrices' => 'required|array']);
         $tour = Tour::findOrFail($tour_id);
-        if ($request->has('detailedPrices')) {
-            DB::transaction(function () use ($request, $tour) {
-                $tour->prices()->delete();
-                foreach ($request->detailedPrices as $price) {
-                    Price::create(['name' => $price['name'],'name_cn' => $price['name_cn'], 'price' => $price['price'], 'priceable_id' => $tour->id, 'priceable_type' => 'App\Models\Tour']);
-                }
-            });
-        }else{return 'false';}
-
-        return redirect()->back();
+        $this->tourService->syncPricesForPublicTour($tour, $request->input('detailedPrices'));
+        return redirect()->back()->with('success', 'Detailed prices updated.');
     }
 
     public function putDays(Request $request, $tour_id)
     {
+        $request->validate(['days' => 'required|array']);
         $tour = Tour::findOrFail($tour_id);
-        DB::transaction(function () use ($tour, $request) {
-            $tour->days()->delete();
-            foreach ($request->days as $day) {
-                $newDay = new Day();
-                $newDay->day_number = $day['day_number'];
-                $newDay->title = $day['title'];
-                $newDay->body = $day['body'];
-                $newDay->body_cn = array_key_exists( 'body_cn', $day)?$day['body_cn']:null;
-                $newDay->tour_id = $tour->id;
-                $newDay->save();
-                if (collect($day['places'])->count()>=1) {
-                    $newDay->places()->attach($day['places']?:[]);
-                }
-                if (collect($day['hotels'])->count()>=1) {
-    
-                    $newDay->hotels()->attach($day['hotels']);
-                }
-            }
-        });
-
-        return redirect()->back();
+        $this->tourService->syncDaysForPublicTour($tour, $request->input('days'));
+        return redirect()->back()->with('success', 'Days updated.');
     }
 
     public function putMap(Request $request, $tour_id){
         $tour = Tour::findOrFail($tour_id);
-        $tour->map = $request->map;
-        $tour->update();
-
-        return redirect()->back();
-
+        $this->tourService->updateAttribute($tour, 'map', $request->map);
+        return redirect()->back()->with('success', 'Map updated.');
     }
 }
