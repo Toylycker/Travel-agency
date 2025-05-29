@@ -548,7 +548,7 @@ function submit() {
     // and ensure files are correctly appended.
     // Inertia automatically handles this if main_image or images are File objects.
     form.post(route('admin.private_tours.update', props.tour.id), {
-        //_method: 'put', // Important for Laravel to route to update method
+        // _method: 'PUT', // Important for Laravel to route to update method
         forceFormData: true, // Ensures a FormData request is made, good for files
         onError: (pageErrors) => {
             console.error('Form submission error:', pageErrors);

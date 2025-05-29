@@ -250,6 +250,7 @@ class PrivateTourController extends Controller
 
     public function update(Request $request, Tour $tour)
     {
+        return $request->all();
         $validatedData = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'name_cn' => 'nullable|string|max:255',
