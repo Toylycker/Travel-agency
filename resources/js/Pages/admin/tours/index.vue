@@ -1,262 +1,148 @@
-<template >
-  <div class="row m-3">
-    <div class="col-10">
-      <h3>Tours</h3>
-    </div>
-    <div class="col-2 d-grid gap-2">
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Create Tour
-      </button>
-      <Link :href="route('admin.private_tours.create')" as="button" class="btn btn-info">
-        Create Private Tour
-      </Link>
-
-      <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Create Tour</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form @submit.prevent="form.post(route('admin.tours.store'), {onSuccess: () => form.reset()})">
-                <label for="exampleInputEmail1" class="form-label">name</label>
-                <input class="form-control" type="text" v-model="form.name">
-                <label for="exampleInputEmail1" class="form-label">name_cn</label>
-                <input class="form-control" type="text" v-model="form.name_cn">
-                <div class="bg-danger rounded mt-2" v-if="form.errors.name">{{ form.errors.name }}</div>
-                <div class="bg-danger rounded mt-2" v-if="form.errors.name">{{ form.errors.name_cn }}</div>
-                <label for="exampleInputEmail1" class="form-label">main image</label>
-                <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-                  {{ form.progress.percentage }}%
-                </progress>
-                <input class="form-control" type="file" @input="form.main_image = $event.target.files[0]">
-
-                <div class="container border border-success rounded mt-2">
-                  <label for="exampleInputEmail1" class="form-label">images</label>
-                  <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-                    {{ form.progress.percentage }}%
-                  </progress>
-                  <input class="form-control mb-1" multiple type="file" @input="form.images = $event.target.files">
-                  <div class="bg-danger rounded mt-2" v-if="form.errors.images">{{ form.errors.images }}</div>
-                </div>
-                <div class="bg-danger rounded mt-2" v-if="form.errors.password">{{ form.errors.main_image }}</div>
-                <label for="exampleInputEmail1" class="form-label">body</label>
-                <input class="form-control" type="text" v-model="form.body">
-                <div class="bg-danger rounded mt-2" v-if="form.errors.body">{{ form.errors.body }}</div>
-                <label for="exampleInputEmail1" class="form-label">body_cn</label>
-                <input class="form-control" type="text" v-model="form.body_cn">
-                <div class="bg-danger rounded mt-2" v-if="form.errors.body">{{ form.errors.body_cn }}</div>
-                <label for="exampleInputEmail1" class="form-label">map</label>
-                <input class="form-control" type="text" v-model="form.map">
-                <div class="bg-danger rounded mt-2" v-if="form.errors.map">{{ form.errors.map }}</div>
-                <label for="exampleInputEmail1" class="form-label">total days</label>
-                <input class="form-control" type="number" v-model="form.total_days">
-                <div class="bg-danger rounded mt-2" v-if="form.errors.total_days">{{ form.errors.total_days }}</div>
-                <label for="exampleInputEmail1" class="form-label">Prices</label>
-                <input class="form-control" type="text" v-model="form.prices">
-                <div class="bg-danger rounded mt-2" v-if="form.errors.prices">{{ form.errors.prices }}</div>
-                <label for="exampleInputEmail1" class="form-label">discount_percent</label>
-                <input class="form-control" type="number" v-model="form.discount_percent">
-                <div class="bg-danger rounded mt-2" v-if="form.errors.discount_percent">{{
-                form.errors.discount_percent}}</div>
-                <label for="exampleInputEmail1" class="form-label">discount_datetime_start</label>
-                <input class="form-control" type="date" v-model="form.discount_datetime_start">
-                <div class="bg-danger rounded mt-2" v-if="form.errors.discount_datetime_start">{{
-                form.errors.discount_datetime_start }}</div>
-                <label for="exampleInputEmail1" class="form-label">discount_datetime_end</label>
-                <input class="form-control" type="date" v-model="form.discount_datetime_end">
-                <div class="bg-danger rounded mt-2" v-if="form.errors.discount_datetime_end">{{
-                form.errors.discount_datetime_end }}</div>
-                <label for="exampleInputEmail1" class="form-label">viewed</label>
-                <input class="form-control" type="number" v-model="form.viewed">
-                <!-- included and non_included start  -->
-                <label for="exampleInputEmail1" class="form-label">included</label>
-                <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.included" multiple
-                  filterable placeholder="Please Select Places" :options="notes" />
-                <div class="bg-danger rounded mt-2" v-if="form.errors.included">{{
-                form.errors.included }}</div>
-
-                <label for="exampleInputEmail1" class="form-label">non included</label>
-                <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.non_included" multiple
-                  filterable placeholder="Please Select Places" :options="notes" />
-                  <div class="bg-danger rounded mt-2" v-if="form.errors.non_included">{{
-                form.errors.non_included }}</div>
-                <!-- included and non_included end  -->
-                <div class="bg-danger rounded mt-2" v-if="form.errors.viewed">{{ form.errors.viewed }}</div>
-                <label for="exampleInputEmail1" class="form-label">recommended</label>
-                <input class="form-check-input" type="checkbox" v-model="form.recommended">
-                <div class="bg-danger rounded mt-2" v-if="form.errors.recommended">{{ form.errors.recommended }}</div>
-
-                <!-- Places start  -->
-                <div class="container border rounded border-warning">
-                  <div class="bg-danger rounded mt-2" v-if="form.errors.days">{{
-                  form.errors.days }}</div>
-                  <label for="exampleInputEmail1" class="form-label col-12">Days <div @click="add_day"
-                      class="btn btn-primary mx-2 btn-sm w-25 mt-1">+</div> </label>
-                  <div class="border container rounded my-2" v-for="(day, index) in form.days" :key="index"
-                    data:index="index">
-                    <div @click="remove_day(index)" class=" col-12 btn btn-danger my-3">-</div>
-                    <label for="exampleInputEmail1" class="form-label">day_number</label>
-                    <input class="form-control" type="number" v-model="form.days[index].day_number">
-                    <!-- <div class="bg-danger rounded mt-2" v-if="form.errors.days[index].day_number">{{
-                    form.errors.days[index].day_number }}</div> -->
-                    <label for="exampleInputEmail1" class="form-label">title</label>
-                    <input class="form-control" type="text" v-model="form.days[index].title">
-                    <!-- <div class="bg-danger rounded mt-2" v-if="form.errors.days[index].title">{{
-                    form.errors.days[index].title }}</div> -->
-                    <label for="exampleInputEmail1" class="form-label">body</label>
-                    <input class="form-control" type="text" v-model="form.days[index].body">
-                    <!-- <div class="bg-danger rounded mt-2" v-if="form.errors.days[index].body">{{
-                    form.errors.days[index].body }}</div> -->
-                    <label for="exampleInputEmail1" class="form-label">body_cn</label>
-                    <input class="form-control" type="text" v-model="form.days[index].body_cn">
-                    <!-- <div class="bg-danger rounded mt-2" v-if="form.errors.days[index].body">{{
-                    form.errors.days[index].body }}</div> -->
-                    <label for="exampleInputEmail1" class="form-label">places</label>
-                    <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.days[index].places"
-                      multiple filterable placeholder="Please Select Places" :options="places" />
-                    <label for="exampleInputEmail1" class="form-label">hotels</label>
-                    <n-select class="mb-2" label-field="name" value-field="id" v-model:value="form.days[index].hotels"
-                      multiple filterable placeholder="Please Select Places" :options="hotels" />
-                  </div>
-                </div>
-                <!-- Places end  -->
-
-
-                <!-- Prices start  -->
-                <div class="container border border-success rounded my-2">
-                  <div class="bg-danger rounded mt-2" v-if="form.errors.detailedPrices">{{
-                  form.errors.detailedPrices }}</div>
-                  <label for="exampleInputEmail1" class="form-label col-12">prices <div @click="add_price"
-                      class="btn btn-primary mx-2 btn-sm w-25 mt-1">+</div> </label>
-
-                  <div class="border container rounded my-2" v-for="(price, index) in form.detailedPrices" :key="index"
-                    data:index="index">
-                    <div @click="remove_price(index)" class=" col-12 btn btn-danger my-3">-</div>
-                    <label for="exampleInputEmail1" class="form-label">name</label>
-                    <input class="form-control" type="text" v-model="form.detailedPrices[index].name">
-                    <label for="exampleInputEmail1" class="form-label">price</label>
-                    <input class="form-control mb-2" type="number" v-model="form.detailedPrices[index].price">
-                    <label for="exampleInputEmail1" class="form-label">name_cn</label>
-                    <input class="form-control" type="text" v-model="form.detailedPrices[index].name_cn">
-                    <label for="exampleInputEmail1" class="form-label">price_cn</label>
-                    <input class="form-control mb-2" type="number" v-model="form.detailedPrices[index].price_cn">
-                  </div>
-                </div>
-                <!-- Prices end  -->
-
-                <button type="submit" class=" col-12 btn btn-primary my-3">submit</button>
-                <div v-if="form.recentlySuccessful == true" class="container w-100 bg-success rounded">
-                  <h2 class="">Successfully saved</h2>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
+<template>
+  <div class="m-3">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">Tours Management</h2>
+      <div class="space-x-2">
+        <Link :href="route('admin.tours.create')">
+          <n-button type="primary" class="bg-blue-500">Create Public Tour</n-button>
+        </Link>
+        <Link :href="route('admin.private_tours.create')">
+          <n-button type="info" class="bg-teal-500">Create Private Tour</n-button>
+        </Link>
       </div>
-
     </div>
+
+    <n-card>
+      <n-data-table
+        :columns="columns"
+        :data="props.tours.data"
+        :pagination="tablePagination"
+        :remote="true" 
+        :bordered="false"
+        striped
+      />
+    </n-card>
   </div>
-  <n-table :bordered="true" :single-line="false" striped>
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>main_image</th>
-        <th>body</th>
-        <th>total_days</th>
-        <th>prices</th>
-        <th>discount_percent</th>
-        <th>discount_datetime_start</th>
-        <th>discount_datetime_end</th>
-        <th>viewed</th>
-        <th>recommended</th>
-        <th>meta_title</th>
-        <th>meta_keywords</th>
-        <th>meta_description</th>
-        <th>actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="tour in tours.data" :key="tour.id">
-        <td>{{tour.id}}</td>
-        <td>{{tour.name}}</td>
-        <td>{{tour.main_image}}</td>
-        <td>{{tour.body}}</td>
-        <td>
-          <n-dropdown trigger="hover" :options="tour.days" @select="handleSelect" key-field="id" label-field="title">
-            {{tour.total_days}}</n-dropdown>
-        </td>
-        <td>{{tour.prices}}</td>
-        <td>{{tour.discount_percent}}</td>
-        <td>{{tour.discount_datetime_start}}</td>
-        <td>{{tour.discount_datetime_end}}</td>
-        <td>{{tour.viewed}}</td>
-        <td>{{tour.recommended}}</td>
-        <td>{{tour.meta_title}}</td>
-        <td>{{tour.meta_keywords}}</td>
-        <td>{{tour.meta_description}}</td>
-        <td>
-          <Link @click="$inertia.delete(route('admin.tours.destroy', tour.id))" as="button"
-            class="btn btn-danger btn-sm w-100 my-2">Delete</Link>
-          
-          <Link 
-            :href="tour.isPublic === 0 ? route('admin.private_tours.edit', tour.id) : route('admin.tours.edit', tour.id)" 
-            as="button"
-            class="btn btn-warning btn-sm w-100 my-2">
-            Edit
-          </Link>
-        </td>
-      </tr>
-    </tbody>
-  </n-table>
-  <Pagination :links='tours.links' />
-
-
 </template>
 
 <script setup>
+import { h, computed } from 'vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
-import { NTag, NButton, NTable, NDropdown, NSelect } from 'naive-ui'
-import Pagination from '@/Shared/Pagination.vue';
-import { useForm } from '@inertiajs/inertia-vue3'
-const props = defineProps(['tours', 'places', 'hotels', 'notes']);
+import { NButton, NDataTable, NTag, NSpace, NPopconfirm, NCard } from 'naive-ui';
+import { Inertia } from '@inertiajs/inertia';
 
-const form = useForm({
-  name: null,
-  name_cn: null,
-  main_image: null,
-  body: null,
-  body_cn: null,
-  map: null,
-  total_days: null,
-  prices: null,
-  discount_percent: null,
-  discount_datetime_start: null,
-  discount_datetime_end: null,
-  viewed: null,
-  recommended: null,
-  images: [],
-  included: [],
-  non_included: [],
-  detailedPrices: [{ 'name': null, 'price': null,  'name_cn': null, 'price_cn': null }],
-  days: [{ 'day_number': null, 'title': null, 'body': null, 'body_cn': null,'places': [], 'hotels': [] }]
-})
-let handleSelect = (key) => { console.log(key); }
-let add_day = () => { form.days.push({ 'day_number': null, 'title': null, 'body': null,'body_cn': null, 'places': [] }) }
-let add_price = () => { form.detailedPrices.push({ 'name': null, 'price': null, 'name_cn': null, 'price_cn': null }) }
-let remove_day = (index) => { form.days.splice(index, 1) }
-let remove_price = (index) => { form.detailedPrices.splice(index, 1) }
+const props = defineProps({
+  tours: Object, 
+});
+
+const tablePagination = computed(() => ({
+  page: props.tours.current_page,
+  pageSize: props.tours.per_page,
+  itemCount: props.tours.total,
+  pageSlot: 7,
+  showSizePicker: true,
+  pageSizes: [5, 10, 20, 50].map(size => ({ label: String(size), value: size })),
+  // For remote pagination, you would handle these events:
+  // onUpdatePage: (page) => { Inertia.get(props.tours.path, { page: page, perPage: props.tours.per_page }, { preserveState: true, replace: true }); },
+  // onUpdatePageSize: (pageSize) => { Inertia.get(props.tours.path, { page: 1, perPage: pageSize }, { preserveState: true, replace: true }); }
+}));
+
+const columns = [
+  { title: 'ID', key: 'id', sorter: true, width: 60 },
+  { title: 'Name', key: 'name', sorter: true },
+  {
+    title: 'Type',
+    key: 'isPublic',
+    render(row) {
+      return h(
+        NTag,
+        { type: row.isPublic ? 'success' : 'info', size: 'small' },
+        { default: () => (row.isPublic ? 'Public' : 'Private') }
+      );
+    },
+    filterOptions: [
+        { label: 'Public', value: 1 },
+        { label: 'Private', value: 0 },
+    ],
+    filter (value, row) {
+        return row.isPublic == value;
+    }
+  },
+  { title: 'Total Days', key: 'total_days', width: 100, sorter: true },
+  { 
+    title: 'Recommended', 
+    key: 'recommended', 
+    render(row) {
+        return h(NTag, {type: row.recommended ? 'warning' : 'default', size: 'small'}, {default: () => row.recommended ? 'Yes' : 'No'})
+    },
+    width: 120
+  },
+  {
+    title: 'Active',
+    key: 'active',
+    render(row) {
+        return h(NTag, {type: row.active ? 'success' : 'error', size: 'small'}, {default: () => row.active ? 'Active' : 'Inactive'})
+    },
+    width: 100
+  },
+  { title: 'Viewed', key: 'viewed', width: 80, sorter: true },
+  {
+    title: 'Actions',
+    key: 'actions',
+    width: 150,
+    render(row) {
+      return h(NSpace, null, {
+        default: () => [
+          h(
+            Link,
+            {
+              href: row.isPublic ? route('admin.tours.edit', row.id) : route('admin.private_tours.edit', row.id),
+            },
+            {
+              default: () =>
+                h(NButton, { type: 'primary', size: 'small', class: 'bg-blue-500' }, { default: () => 'Edit' }),
+            }
+          ),
+          h(
+            NPopconfirm,
+            {
+              onPositiveClick: () => handleDelete(row.id),
+              positiveButtonProps: { type: 'error', class: 'bg-red-600' }
+            },
+            {
+              default: () => 'Are you sure you want to delete this tour?',
+              trigger: () =>
+                h(NButton, { type: 'error', size: 'small', class: 'bg-red-500' }, { default: () => 'Delete' }),
+            }
+          ),
+        ],
+      });
+    },
+  },
+];
+
+// Handle sorting and pagination changes for remote data
+// This part would be needed if you want NDataTable to control server-side sorting/pagination
+// Inertia.on('navigate', (event) => {
+//   if (event.detail.page.component === 'admin/Tours/index') {
+//     const urlParams = new URLSearchParams(window.location.search);
+//     tablePagination.value.page = parseInt(urlParams.get('page') || '1');
+//     tablePagination.value.pageSize = parseInt(urlParams.get('perPage') || props.tours.per_page);
+//     // Add sorting state if needed
+//   }
+// });
+
+const handleDelete = (tourId) => {
+  Inertia.delete(route('admin.tours.destroy', tourId), {
+    onFinish: () => {
+      // Optional: show notification or refresh data if needed
+    },
+  });
+};
+
 </script>
 
 <script>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { ref } from '@vue/runtime-core';
 export default { layout: AdminLayout }
 </script>

@@ -1,318 +1,415 @@
 <template>
-  <div class="container">
-    <h1>{{ tour.recommended }}</h1>
-    <form>
-      <div v-if="
-      formname.recentlySuccessful == true ||
-      formname_cn.recentlySuccessful == true ||
-        formmain_image.recentlySuccessful == true ||
-        formbody.recentlySuccessful == true ||
-        formbody_cn.recentlySuccessful == true ||
-        formtotal_days.recentlySuccessful == true ||
-        formtour_prices.recentlySuccessful == true ||
-        formviewed.recentlySuccessful == true ||
-        formrecommended.recentlySuccessful == true ||
-        formimages.recentlySuccessful == true ||
-        formnotes.recentlySuccessful == true ||
-        formprices.recentlySuccessful == true ||
-        formdays.recentlySuccessful == true
-        " class="container w-100 bg-success rounded fixed-top">
-        <h2 class="">Successfully saved</h2>
-      </div>
-      <!-- NAME INPUT STARTs  -->
-      <label for="exampleInputEmail1" class="form-label">name</label>
-      <div class="container g-0 d-flex">
-        <input class="form-control" type="text" v-model="formname.name">
-        <div @click="formname.put(route('admin.tours.edit.name', [tour.id]))" class="btn btn-success ml-1"> save name
-        </div>
-      </div>
-      <div class="bg-danger rounded mt-2" v-if="formname.errors.name">{{ formname.errors.name }}</div>
-      <!-- NAME INPUT ends  -->
+  <div class="container mx-auto p-4">
+    <Head :title="'Edit Tour: ' + tour.name" />
+    <h1 class="text-2xl font-bold mb-6">Edit Tour: {{ tour.name }}</h1>
 
-      <!-- NAME INPUT STARTs  -->
-      <label for="exampleInputEmail1" class="form-label">name_cn</label>
-      <div class="container g-0 d-flex">
-        <input class="form-control" type="text" v-model="formname_cn.name_cn">
-        <div @click="formname_cn.put(route('admin.tours.edit.name_cn', [tour.id]))" class="btn btn-success ml-1"> save
-          name_cn
-        </div>
-      </div>
-      <div class="bg-danger rounded mt-2" v-if="formname.errors.name_cn">{{ formname.errors.name_cn }}</div>
-      <!-- NAME INPUT ends  -->
+    <!-- Global Success Message Area -->
+    <n-alert v-if="
+      formname.recentlySuccessful ||
+      formname_cn.recentlySuccessful ||
+      formmain_image.recentlySuccessful ||
+      formbody.recentlySuccessful ||
+      formbody_cn.recentlySuccessful ||
+      formtotal_days.recentlySuccessful ||
+      formtour_prices.recentlySuccessful ||
+      formviewed.recentlySuccessful ||
+      formrecommended.recentlySuccessful ||
+      formimages.recentlySuccessful ||
+      formnotes.recentlySuccessful ||
+      formprices.recentlySuccessful ||
+      formdays.recentlySuccessful ||
+      formmap.recentlySuccessful // Added formmap
+    " title="Success" type="success" class="mb-4" closable>
+      Field updated successfully.
+    </n-alert>
 
-      <!-- Main_IMage INPUT STARTs  -->
-      <label for="exampleInputEmail1" class="form-label">main image</label>
-      <img class="img img-fluid w-50 my-1" style="object-fit: cover;" v-if="tour.main_image"
-        :src="'/storage/tours/' + tour.main_image" alt="">
-      <div class="container" v-else>no image</div>
-      <!-- <progress v-if="formmain_image.progress" :value="formmain_image.progress.percentage" max="100">
-        {{ formmain_image.progress.percentage }}%
-      </progress> -->
-      <!-- ----------------/ -->
-      <div class="container g-0 d-flex">
-        <input class="form-control" type="file" @input="formmain_image.main_image = $event.target.files[0]">
-        <div @click="formmain_image.post(route('admin.tours.edit.main_image', tour.id), { _method: 'put' })"
-          class="btn btn-success ml-1">
-          save main image</div>
-      </div>
-      <div class="bg-danger rounded mt-2" v-if="formmain_image.errors.main_image">{{ formmain_image.errors.main_image }}
-      </div>
-      <!-- MAIN_IMAGE ENDS  -->
-
-      <!-- IMAGES FOR TOUR ITSELF STARTS -->
-      <div class="container border border-success rounded mt-2">
-        <label for="exampleInputEmail1" class="form-label">images</label>
-        <div v-if="tour.images.length > 0" class="col-md-4 mb-3 m-md-2 img-fluid img h-25">
-          <div :id="'text_image' + tour.id" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-              <div v-for="imag in tour.images" :key="imag.id" class="carousel-item active">
-                <!-- <img src="..." class="d-block w-100" alt="..."> -->
-                <img :src="'/storage/tours/' + imag.name" class="img-fluid d-block rounded w-100">
-              </div>
+    <div class="space-y-6">
+      <!-- Basic Info Card -->
+      <n-card title="Basic Information">
+        <n-grid cols="1 md:2" :x-gap="12" :y-gap="8">
+          <n-gi>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <div class="flex items-center space-x-2">
+              <n-input v-model:value="formname.name" placeholder="Tour name" />
+              <n-button @click="formname.put(route('admin.tours.edit.name', [tour.id]))" type="primary" :loading="formname.processing">Save</n-button>
             </div>
-            <button class="carousel-control-prev" type="button" :data-bs-target="'#text_image' + tour.id"
-              data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" :data-bs-target="'#text_image' + tour.id"
-              data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
+            <div v-if="formname.errors.name" class="text-red-500 text-xs mt-1">{{ formname.errors.name }}</div>
+          </n-gi>
+          <n-gi>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Name (Chinese)</label>
+            <div class="flex items-center space-x-2">
+              <n-input v-model:value="formname_cn.name_cn" placeholder="Tour name in Chinese" />
+              <n-button @click="formname_cn.put(route('admin.tours.edit.name_cn', [tour.id]))" type="primary" :loading="formname_cn.processing">Save</n-button>
+            </div>
+            <div v-if="formname_cn.errors.name_cn" class="text-red-500 text-xs mt-1">{{ formname_cn.errors.name_cn }}</div>
+          </n-gi>
+        </n-grid>
+      </n-card>
+
+      <!-- Main Image Card -->
+      <n-card title="Main Image">
+        <n-grid cols="1" :y-gap="8">
+          <n-gi>
+            <div v-if="tour.main_image_url" class="mb-2">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Current Main Image</label>
+              <n-image width="200" :src="tour.main_image_url" :alt="tour.name" class="rounded" />
+            </div>
+            <div v-else class="mb-2 text-gray-500">No current main image.</div>
+            
+            <label class="block text-sm font-medium text-gray-700 mb-1">Upload New Main Image</label>
+            <div class="flex items-center space-x-2">
+              <n-upload
+                :default-upload="false"
+                :max="1"
+                @change="handleMainImageChange"
+                list-type="image"
+              >
+                <n-button>Select Image</n-button>
+              </n-upload>
+              <n-button 
+                @click="formmain_image.post(route('admin.tours.edit.main_image', tour.id), { _method: 'put' })" 
+                type="primary" 
+                :loading="formmain_image.processing"
+                :disabled="!formmain_image.main_image"
+              >Save Main Image</n-button>
+            </div>
+            <div v-if="formmain_image.progress" class="mt-1">
+              <n-progress type="line" :percentage="formmain_image.progress.percentage" status="info" />
+            </div>
+            <div v-if="formmain_image.errors.main_image" class="text-red-500 text-xs mt-1">{{ formmain_image.errors.main_image }}</div>
+          </n-gi>
+        </n-grid>
+      </n-card>
+
+      <!-- Additional Images Card -->
+      <n-card title="Additional Images">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Current Additional Images</label>
+        <div v-if="tour.additional_images_urls && tour.additional_images_urls.length > 0" class="mb-2 flex flex-wrap gap-2">
+          <n-image-group>
+            <n-image v-for="img in tour.additional_images_urls" :key="img.id" width="100" :src="img.url" class="rounded object-cover" />
+          </n-image-group>
+        </div>
+        <div v-else class="mb-2 text-gray-500">No current additional images.</div>
+
+        <label class="block text-sm font-medium text-gray-700 mb-1">Upload New Additional Images</label>
+         <div class="flex items-center space-x-2">
+            <n-upload
+              multiple
+              :default-upload="false"
+              @change="handleAdditionalImagesChange"
+              list-type="image-card"
+            >
+               <n-button>Select Images</n-button>
+            </n-upload>
+            <n-button 
+              @click="formimages.post(route('admin.tours.edit.images', [tour.id]), { _method: 'put' })" 
+              type="primary" 
+              :loading="formimages.processing"
+              :disabled="!formimages.images || formimages.images.length === 0"
+            >Save Additional Images</n-button>
+          </div>
+          <div v-if="formimages.progress" class="mt-1">
+            <n-progress type="line" :percentage="formimages.progress.percentage" status="info" />
+          </div>
+          <div v-if="formimages.errors.images" class="text-red-500 text-xs mt-1">{{ formimages.errors.images }}</div>
+      </n-card>
+
+      <!-- Descriptions Card -->
+      <n-card title="Descriptions & Map">
+         <n-grid cols="1" :y-gap="12">
+            <n-gi>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Body</label>
+              <div class="flex items-center space-x-2">
+                <n-input type="textarea" v-model:value="formbody.body" placeholder="Tour description" :autosize="{minRows: 3}"/>
+                <n-button @click="formbody.put(route('admin.tours.edit.body', [tour.id]))" type="primary" :loading="formbody.processing">Save</n-button>
+              </div>
+              <div v-if="formbody.errors.body" class="text-red-500 text-xs mt-1">{{ formbody.errors.body }}</div>
+            </n-gi>
+            <n-gi>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Body (Chinese)</label>
+              <div class="flex items-center space-x-2">
+                <n-input type="textarea" v-model:value="formbody_cn.body_cn" placeholder="Tour description in Chinese" :autosize="{minRows: 3}"/>
+                <n-button @click="formbody_cn.put(route('admin.tours.edit.body_cn', [tour.id]))" type="primary" :loading="formbody_cn.processing">Save</n-button>
+              </div>
+              <div v-if="formbody_cn.errors.body_cn" class="text-red-500 text-xs mt-1">{{ formbody_cn.errors.body_cn }}</div>
+            </n-gi>
+            <n-gi>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Map Embed URL</label>
+              <div class="flex items-center space-x-2">
+                <n-input type="textarea" v-model:value="formmap.map" placeholder="Paste map embed URL" :autosize="{minRows: 2}"/>
+                <n-button @click="formmap.put(route('admin.tours.edit.map', [tour.id]))" type="primary" :loading="formmap.processing">Save</n-button>
+              </div>
+              <div v-if="formmap.errors.map" class="text-red-500 text-xs mt-1">{{ formmap.errors.map }}</div>
+            </n-gi>
+         </n-grid>
+      </n-card>
+      
+      <!-- Details Card -->
+      <n-card title="Tour Details">
+        <n-grid cols="1 md:2" :x-gap="12" :y-gap="8">
+          <n-gi>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Total Days</label>
+            <div class="flex items-center space-x-2">
+              <n-input-number v-model:value="formtotal_days.total_days" :min="1" class="w-full"/>
+              <n-button @click="formtotal_days.put(route('admin.tours.edit.total_days', [tour.id]))" type="primary" :loading="formtotal_days.processing">Save</n-button>
+            </div>
+            <div v-if="formtotal_days.errors.total_days" class="text-red-500 text-xs mt-1">{{ formtotal_days.errors.total_days }}</div>
+          </n-gi>
+          <n-gi>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Base Price (Text)</label>
+            <div class="flex items-center space-x-2">
+              <n-input v-model:value="formtour_prices.tour_prices" placeholder="e.g., $500 per person"/>
+              <n-button @click="formtour_prices.put(route('admin.tours.edit.tour_prices', [tour.id]))" type="primary" :loading="formtour_prices.processing">Save</n-button>
+            </div>
+            <div v-if="formtour_prices.errors.tour_prices" class="text-red-500 text-xs mt-1">{{ formtour_prices.errors.tour_prices }}</div>
+          </n-gi>
+          <n-gi>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Viewed Count</label>
+            <div class="flex items-center space-x-2">
+              <n-input-number v-model:value="formviewed.viewed" :min="0" class="w-full"/>
+              <n-button @click="formviewed.put(route('admin.tours.edit.viewed', [tour.id]))" type="primary" :loading="formviewed.processing">Save</n-button>
+            </div>
+            <div v-if="formviewed.errors.viewed" class="text-red-500 text-xs mt-1">{{ formviewed.errors.viewed }}</div>
+          </n-gi>
+           <n-gi class="flex items-end"> <!-- Aligns checkbox with button line -->
+            <div class="flex items-center space-x-2">
+              <n-checkbox v-model:checked="formrecommended.recommended">Recommended</n-checkbox>
+              <n-button @click="formrecommended.put(route('admin.tours.edit.recommended', [tour.id]))" type="primary" :loading="formrecommended.processing">Update Recommendation</n-button>
+            </div>
+            <div v-if="formrecommended.errors.recommended" class="text-red-500 text-xs mt-1 w-full">{{ formrecommended.errors.recommended }}</div>
+          </n-gi>
+        </n-grid>
+      </n-card>
+
+      <!-- Notes Card -->
+      <n-card title="Included / Not Included Notes">
+        <n-grid cols="1 md:2" :x-gap="12" :y-gap="8">
+          <n-gi>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Included Notes</label>
+            <n-select 
+              multiple 
+              filterable 
+              :options="notes" 
+              label-field="name" 
+              value-field="id" 
+              v-model:value="formnotes.included" 
+              placeholder="Select included notes" 
+            />
+            <div v-if="formnotes.errors.included" class="text-red-500 text-xs mt-1">{{ formnotes.errors.included }}</div>
+          </n-gi>
+          <n-gi>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Not Included Notes</label>
+            <n-select 
+              multiple 
+              filterable 
+              :options="notes" 
+              label-field="name" 
+              value-field="id" 
+              v-model:value="formnotes.non_included" 
+              placeholder="Select not included notes" 
+            />
+             <div v-if="formnotes.errors.non_included" class="text-red-500 text-xs mt-1">{{ formnotes.errors.non_included }}</div>
+          </n-gi>
+        </n-grid>
+        <div class="mt-4 flex justify-end">
+           <n-button @click="formnotes.put(route('admin.tours.edit.notes', [tour.id]))" type="primary" :loading="formnotes.processing">Save Notes</n-button>
+        </div>
+      </n-card>
+
+      <!-- Days Card -->
+      <n-card title="Days Setup">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium text-gray-700">Manage individual days</span>
+          <div>
+            <n-button @click="add_day" type="info" size="small" class="mr-2">Add Day</n-button>
+            <n-button @click="formdays.put(route('admin.tours.edit.days', [tour.id]))" type="primary" size="small" :loading="formdays.processing">Save All Day Changes</n-button>
           </div>
         </div>
-        <progress v-if="formimages.progress" :value="formimages.progress.percentage" max="100">
-          {{ formimages.progress.percentage }}%
-        </progress>
-        <div class="container g-0 d-flex">
-          <input class="form-control mb-1" multiple type="file" @input="formimages.images = $event.target.files">
-          <div @click="formimages.post(route('admin.tours.edit.images', [tour.id]), { _method: 'put' })"
-            class="btn btn-success m-1"> save images</div>
+         <div v-if="formdays.errors.days && typeof formdays.errors.days === 'string'" class="text-red-500 text-xs mb-2">{{ formdays.errors.days }}</div>
+
+        <div class="space-y-4">
+          <div v-for="(day, index) in formdays.days" :key="index" class="p-4 border rounded-md bg-gray-50">
+            <div class="flex justify-between items-center mb-3">
+               <h3 class="text-lg font-semibold">Day {{ day.day_number || (index + 1) }}</h3>
+               <n-button @click="remove_day(index)" type="error" size="small" ghost>Remove Day</n-button>
+            </div>
+            <n-grid cols="1" :y-gap="8">
+              <n-gi>
+                <label class="block text-xs font-medium text-gray-600">Day Number</label>
+                <n-input-number v-model:value="day.day_number" :min="1" placeholder="Day number" class="w-full"/>
+                <div v-if="formdays.errors[`days.${index}.day_number`]" class="text-red-500 text-xs mt-1">{{ formdays.errors[`days.${index}.day_number`] }}</div>
+              </n-gi>
+              <n-gi>
+                <label class="block text-xs font-medium text-gray-600">Title</label>
+                <n-input v-model:value="day.title" placeholder="Day title" />
+                <div v-if="formdays.errors[`days.${index}.title`]" class="text-red-500 text-xs mt-1">{{ formdays.errors[`days.${index}.title`] }}</div>
+              </n-gi>
+              <n-gi>
+                <label class="block text-xs font-medium text-gray-600">Body</label>
+                <n-input type="textarea" v-model:value="day.body" placeholder="Day description" :autosize="{minRows: 2}" />
+                <div v-if="formdays.errors[`days.${index}.body`]" class="text-red-500 text-xs mt-1">{{ formdays.errors[`days.${index}.body`] }}</div>
+              </n-gi>
+              <n-gi>
+                <label class="block text-xs font-medium text-gray-600">Body (Chinese)</label>
+                <n-input type="textarea" v-model:value="day.body_cn" placeholder="Day description in Chinese" :autosize="{minRows: 2}" />
+                 <div v-if="formdays.errors[`days.${index}.body_cn`]" class="text-red-500 text-xs mt-1">{{ formdays.errors[`days.${index}.body_cn`] }}</div>
+              </n-gi>
+              <n-gi>
+                <label class="block text-xs font-medium text-gray-600">Places</label>
+                <n-select multiple filterable :options="places" label-field="name" value-field="id" v-model:value="day.places" placeholder="Select places" />
+                <div v-if="formdays.errors[`days.${index}.places`]" class="text-red-500 text-xs mt-1">{{ formdays.errors[`days.${index}.places`] }}</div>
+              </n-gi>
+              <n-gi>
+                <label class="block text-xs font-medium text-gray-600">Hotels</label>
+                <n-select multiple filterable :options="hotels" label-field="name" value-field="id" v-model:value="day.hotels" placeholder="Select hotels" />
+                <div v-if="formdays.errors[`days.${index}.hotels`]" class="text-red-500 text-xs mt-1">{{ formdays.errors[`days.${index}.hotels`] }}</div>
+              </n-gi>
+            </n-grid>
+          </div>
         </div>
-        <div class="bg-danger rounded mt-2" v-if="formimages.errors.images">{{ formimages.errors.images }}</div>
-      </div>
-      <!-- IMAGES FOR TOUR ITSELF ENDS  -->
+      </n-card>
 
-      <!-- BODY INPUT STARTS  -->
-      <label for="exampleInputEmail1" class="form-label">body</label>
-      <div class="container g-0 d-flex">
-        <input class="form-control" type="text" v-model="formbody.body">
-        <div @click="formbody.put(route('admin.tours.edit.body', [tour.id]))" class="btn btn-success ml-1"> save body
+      <!-- Detailed Prices Card -->
+      <n-card title="Detailed Prices">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium text-gray-700">Manage individual price entries</span>
+          <div>
+            <n-button @click="add_price" type="info" size="small" class="mr-2">Add Price</n-button>
+            <n-button @click="formprices.put(route('admin.tours.edit.prices', [tour.id]))" type="primary" size="small" :loading="formprices.processing">Save All Price Changes</n-button>
+          </div>
         </div>
-      </div>
-      <div class="bg-danger rounded mt-2" v-if="formbody.errors.body">{{ formbody.errors.body }}</div>
-      <!-- BODY INPUT ENDS  -->
-
-      <!-- BODY INPUT STARTS  -->
-      <label for="exampleInputEmail1" class="form-label">body_cn</label>
-      <div class="container g-0 d-flex">
-        <input class="form-control" type="text" v-model="formbody_cn.body_cn">
-        <div @click="formbody_cn.put(route('admin.tours.edit.body_cn', [tour.id]))" class="btn btn-success ml-1"> save body_cn
+        <div v-if="formprices.errors.detailedPrices && typeof formprices.errors.detailedPrices === 'string'" class="text-red-500 text-xs mb-2">{{ formprices.errors.detailedPrices }}</div>
+        
+        <div class="space-y-3">
+          <div v-for="(price, index) in formprices.detailedPrices" :key="index" class="p-3 border rounded-md bg-gray-50">
+             <div class="flex justify-end items-center mb-2">
+                <n-button @click="remove_price(index)" type="error" size="small" ghost>Remove Price</n-button>
+              </div>
+              <n-grid cols="1 md:2" :x-gap="12" :y-gap="8">
+                <n-gi>
+                  <label class="block text-xs font-medium text-gray-600">Name</label>
+                  <n-input v-model:value="price.name" placeholder="Price name (e.g., Adult)"/>
+                  <div v-if="formprices.errors[`detailedPrices.${index}.name`]" class="text-red-500 text-xs mt-1">{{ formprices.errors[`detailedPrices.${index}.name`] }}</div>
+                </n-gi>
+                 <n-gi>
+                  <label class="block text-xs font-medium text-gray-600">Price</label>
+                  <n-input-number v-model:value="price.price" placeholder="0.00" :step="0.01" class="w-full"/>
+                  <div v-if="formprices.errors[`detailedPrices.${index}.price`]" class="text-red-500 text-xs mt-1">{{ formprices.errors[`detailedPrices.${index}.price`] }}</div>
+                </n-gi>
+                <n-gi>
+                  <label class="block text-xs font-medium text-gray-600">Name (Chinese)</label>
+                  <n-input v-model:value="price.name_cn" placeholder="Price name in Chinese"/>
+                   <div v-if="formprices.errors[`detailedPrices.${index}.name_cn`]" class="text-red-500 text-xs mt-1">{{ formprices.errors[`detailedPrices.${index}.name_cn`] }}</div>
+                </n-gi>
+               <n-gi>
+                  <label class="block text-xs font-medium text-gray-600">Price (Chinese Currency)</label>
+                  <n-input-number v-model:value="price.price_cn" placeholder="0.00" :step="0.01" class="w-full"/>
+                   <div v-if="formprices.errors[`detailedPrices.${index}.price_cn`]" class="text-red-500 text-xs mt-1">{{ formprices.errors[`detailedPrices.${index}.price_cn`] }}</div>
+                </n-gi>
+              </n-grid>
+          </div>
         </div>
-      </div>
-      <div class="bg-danger rounded mt-2" v-if="formbody.errors.body">{{ formbody_cn.errors.body_cn }}</div>
-      <!-- BODY INPUT ENDS  -->
+      </n-card>
+      
+      <!-- Discount fields are currently not part of any specific form submission in original logic -->
+      <!-- Consider adding them to a general "Tour Details" save or a dedicated discount save button -->
 
-      <!-- BODY INPUT STARTS  -->
-      <label for="exampleInputEmail1" class="form-label">map</label>
-      <div class="container g-0 d-flex">
-        <input class="form-control" type="text" v-model="formmap.map">
-        <div @click="formmap.put(route('admin.tours.edit.map', [tour.id]))" class="btn btn-success ml-1"> save map
-        </div>
-      </div>
-      <div class="bg-danger rounded mt-2" v-if="formmap.errors.map">{{ formmap.errors.map }}</div>map
-      <!-- map INPUT ENDS  -->
-
-      <!-- TOTAL DAYS INPUT STARTS  -->
-      <label for="exampleInputEmail1" class="form-label">total days</label>
-      <div class="container g-0 d-flex">
-        <input class="form-control" type="number" v-model="formtotal_days.total_days">
-        <div @click="formtotal_days.put(route('admin.tours.edit.total_days', [tour.id]))" class="btn btn-success ml-1">
-          save total days</div>
-      </div>
-      <div class="bg-danger rounded mt-2" v-if="formtotal_days.errors.total_days">{{ formtotal_days.errors.total_days }}
-      </div>
-      <!-- TOTAL DAYS INPUT ENDS  -->
-
-      <!-- MAIN PRICES FROM CHEAP TO EXPENSIVE INPUT STARTS  -->
-      <label for="exampleInputEmail1" class="form-label">Tour Main Prices In General</label>
-
-      <div class="container g-0 d-flex">
-        <input class="form-control" type="text" v-model="formtour_prices.tour_prices">
-        <div @click="formtour_prices.put(route('admin.tours.edit.tour_prices', [tour.id]))" class="btn btn-success ml-1">
-          save main prices</div>
-      </div>
-      <div class="bg-danger rounded mt-2" v-if="formtour_prices.errors.tour_prices">{{
-        formtour_prices.errors.tour_prices
-      }}</div>
-      <!-- MAIN PRICES FROM CHEAP TO EXPENSIVE INPUT ENDS  -->
-
-      <!-- NOT added to system YET STARTS -->
-      <!-- <label for="exampleInputEmail1" class="form-label">discount_percent</label>
-                <input class="form-control" type="number" v-model="form.discount_percent">
-                <div class="bg-danger rounded mt-2" v-if="form.errors.discount_percent">{{
-                form.errors.discount_percent}}</div>
-                <label for="exampleInputEmail1" class="form-label">discount_datetime_start</label>
-                <input class="form-control" type="date" v-model="form.discount_datetime_start">
-                <div class="bg-danger rounded mt-2" v-if="form.errors.discount_datetime_start">{{
-                form.errors.discount_datetime_start }}</div>
-                <label for="exampleInputEmail1" class="form-label">discount_datetime_end</label>
-                <input class="form-control" type="date" v-model="form.discount_datetime_end">
-                <div class="bg-danger rounded mt-2" v-if="form.errors.discount_datetime_end">{{
-                form.errors.discount_datetime_end }}</div> -->
-      <!-- NOT added to system YET ENDS  -->
-
-      <!-- VIEWED INPUT STARTS  -->
-      <label for="exampleInputEmail1" class="form-label">viewed</label>
-      <div class="container g-0 d-flex">
-        <input class="form-control" type="number" v-model="formviewed.viewed">
-        <div @click="formviewed.put(route('admin.tours.edit.viewed', [tour.id]))" class="btn btn-success ml-1">
-          save view</div>
-      </div>
-      <div class="bg-danger rounded mt-2" v-if="formviewed.errors.viewed">{{ formviewed.errors.viewed }}</div>
-      <!-- VIEWED INPUT ENDS  -->
-
-      <!-- included and non_included start  -->
-      <label for="exampleInputEmail1" class="form-label">included</label>
-      <div class="container g-0 d-flex">
-        <n-select class="mb-2" label-field="name" value-field="id" v-model:value='formnotes.included' multiple filterable
-          placeholder="Please Select Places" :options="notes" />
-      </div>
-      <div class="bg-danger rounded mt-2" v-if="formnotes.errors.included">{{
-        formnotes.errors.included
-      }}</div>
-      <!-- --------------------------------------------------------------------------------- -->
-      <label for="exampleInputEmail1" class="form-label">non included</label>
-
-      <div class="container g-0 d-flex">
-        <n-select class="mb-2" label-field="name" value-field="id" v-model:value="formnotes.non_included" multiple
-          filterable placeholder="Please Select Places" :options="notes" />
-      </div>
-      <div @click="formnotes.put(route('admin.tours.edit.notes', [tour.id]))" class="btn btn-success m-2">
-        save notes</div>
-      <br>
-      <div class="bg-danger rounded mt-2" v-if="formnotes.errors.non_included">{{
-        formnotes.errors.non_included
-      }}</div>
-      <!-- included and non_included end  -->
-
-      <!-- RECOMMENDED STARTS  -->
-      <label for="exampleInputEmail1" class="form-label">recommended</label>
-      <div class="container g-0 d-flex">
-        <n-checkbox v-model:checked="formrecommended.recommended">
-          recommended
-        </n-checkbox>
-        <div @click="formrecommended.put(route('admin.tours.edit.recommended', [tour.id]))" class="btn btn-success m-2">
-          make recommended</div>
-      </div>
-      <div class="bg-danger rounded mt-2" v-if="formrecommended.errors.recommended">{{
-        formrecommended.errors.recommended
-      }}</div>
-      <!-- RECOMMENDED ENDS  -->
-
-      <!-- Days start  -->
-      <div class="container border rounded border-warning">
-        <div class="bg-danger rounded mt-2" v-if="formdays.errors.days">{{
-          formdays.errors.days
-        }}</div>
-        <div class="d-flex">
-          <label for="exampleInputEmail1" class="form-label">Days </label>
-          <div @click="add_day" class="btn btn-primary mx-2 btn-sm w-25 mt-1">+ add a day</div>
-          <div @click="formdays.put(route('admin.tours.edit.days', [tour.id]))" class="btn btn-success btn-sm w-25 mt-1">
-            save changes</div>
-        </div>
-
-        <div class="border container rounded my-2" v-for="(day, index) in formdays.days" :key="index" data:index="index">
-          <div @click="remove_day(index)" class=" col-12 btn btn-danger my-3">-</div>
-          <label for="exampleInputEmail1" class="form-label">day_number</label>
-          <input class="form-control" type="number" v-model="formdays.days[index].day_number">
-          <!-- <div class="bg-danger rounded mt-2" v-if="form.errors.days[index].day_number">{{
-                    form.errors.days[index].day_number }}</div> -->
-          <label for="exampleInputEmail1" class="form-label">title</label>
-          <input class="form-control" type="text" v-model="formdays.days[index].title">
-          <!-- <div class="bg-danger rounded mt-2" v-if="form.errors.days[index].title">{{
-                    form.errors.days[index].title }}</div> -->
-          <label for="exampleInputEmail1" class="form-label">body</label>
-          <textarea class="form-control" type="text" v-model="formdays.days[index].body"></textarea>
-          <!-- <div class="bg-danger rounded mt-2" v-if="form.errors.days[index].body">{{
-                    form.errors.days[index].body }}</div> -->
-          <label for="exampleInputEmail1" class="form-label">body_cn</label>
-          <textarea class="form-control" type="text" v-model="formdays.days[index].body_cn"></textarea>
-          <!-- <div class="bg-danger rounded mt-2" v-if="form.errors.days[index].body_cn">{{
-                    form.errors.days[index].body }}</div> -->
-          <label for="exampleInputEmail1" class="form-label">places</label>
-          <n-select class="mb-2" label-field="name" value-field="id" v-model:value="formdays.days[index].places" multiple
-            filterable placeholder="Please Select Places" :options="places" />
-          <label for="exampleInputEmail1" class="form-label">hotels</label>
-          <n-select class="mb-2" label-field="name" value-field="id" v-model:value="formdays.days[index].hotels" multiple
-            filterable placeholder="Please Select Places" :options="hotels" />
-        </div>
-      </div>
-      <!-- Days end  -->
-
-
-      <!-- Prices start  -->
-      <div class="container border border-success rounded my-2">
-        <div class="bg-danger rounded mt-2" v-if="formprices.errors.detailedPrices">{{
-          formprices.errors.detailedPrices
-        }}</div>
-        <div class="d-flex">
-          <label for="exampleInputEmail1" class="form-label m-1">prices </label>
-          <div @click="add_price" class="btn btn-primary mx-2 btn-sm w-25 mt-1">+ add a price</div>
-          <div @click="formprices.put(route('admin.tours.edit.prices', [tour.id]))"
-            class="btn btn-success btn-sm w-25 mt-1">
-            save changes</div>
-        </div>
-        <div class="border container rounded my-2" v-for="(price, index) in formprices.detailedPrices" :key="index"
-          data:index="index">
-          <div @click="remove_price(index)" class=" col-12 btn btn-danger my-3">-</div>
-          <label for="exampleInputEmail1" class="form-label">name</label>
-          <input class="form-control" type="text" v-model="formprices.detailedPrices[index].name"><label
-            for="exampleInputEmail1" class="form-label">name_cn</label>
-          <input class="form-control" type="text" v-model="formprices.detailedPrices[index].name_cn">
-          <label for="exampleInputEmail1" class="form-label">price</label>
-          <input class="form-control mb-2" type="number" v-model="formprices.detailedPrices[index].price">
-        </div>
-      </div>
-      <!-- Prices end  -->
-    </form>
+    </div>
   </div>
 </template>
+
 <script setup>
-import { Head, Link } from '@inertiajs/inertia-vue3';
-import { NTag, NButton, NTable, NDropdown, NSelect, NCheckbox } from 'naive-ui'
-import Pagination from '@/Shared/Pagination.vue';
-import { useForm } from '@inertiajs/inertia-vue3'
+import { Head, useForm } from '@inertiajs/inertia-vue3';
+import { 
+  NInput, NInputNumber, NButton, NCheckbox, NSelect, NProgress,
+  NCard, NGrid, NGi, NImage, NImageGroup, NUpload, NAlert
+} from 'naive-ui'; // Added NProgress, NCard, NGrid, NGi, NImage, NImageGroup, NUpload, NAlert
+import { ref } from 'vue'; // Added ref for file handling
 
-const props = defineProps(['tour', 'places', 'hotels', 'notes', 'days', 'included', 'non_included']);
+const props = defineProps({
+  tour: Object, 
+  places: Array, 
+  hotels: Array, 
+  notes: Array, // This is form_notes in controller
+  days: Object, // Expects { data: [...] } from DayResource::collection
+  included: Array, 
+  non_included: Array,
+  // Add main_image_url and additional_images_urls if they are not part of tour object directly
+});
 
+// Initialize forms based on props
 const formname = useForm({ name: props.tour.name });
 const formname_cn = useForm({ name_cn: props.tour.name_cn });
+
 const formmain_image = useForm({ main_image: null });
+const handleMainImageChange = (options) => {
+  if (options.fileList.length > 0) {
+    formmain_image.main_image = options.fileList[0].file;
+  } else {
+    formmain_image.main_image = null;
+  }
+};
+
+const formimages = useForm({ images: [] }); // Use an array for multiple files
+const handleAdditionalImagesChange = (options) => {
+  formimages.images = options.fileList.map(f => f.file);
+};
+
+
 const formbody = useForm({ body: props.tour.body });
 const formbody_cn = useForm({ body_cn: props.tour.body_cn });
 const formmap = useForm({ map: props.tour.map });
 const formtotal_days = useForm({ total_days: props.tour.total_days });
-const formtour_prices = useForm({ tour_prices: props.tour.tour_prices });
-const formdiscount_percent = useForm({ discount_percent: props.tour.discount_percent });
-const formdiscount_datetime_start = useForm({ discount_datetime_start: props.tour.discount_datetime_start });
-const formdiscount_datetime_end = useForm({ discount_datetime_end: props.tour.discount_datetime_end });
+const formtour_prices = useForm({ tour_prices: props.tour.tour_prices }); // This is the general price text field
+// const formdiscount_percent = useForm({ discount_percent: props.tour.discount_percent }); // Not used by individual save
+// const formdiscount_datetime_start = useForm({ discount_datetime_start: props.tour.discount_datetime_start }); // Not used
+// const formdiscount_datetime_end = useForm({ discount_datetime_end: props.tour.discount_datetime_end }); // Not used
 const formviewed = useForm({ viewed: props.tour.viewed });
 const formrecommended = useForm({ recommended: props.tour.recommended ? true : false });
-const formimages = useForm({ images: props.tour.images });
-const formnotes = useForm({ included: props.included, non_included: props.non_included });
-const formprices = useForm({ detailedPrices: props.tour.prices });
-const formdays = useForm({ days: props.days.data });
 
-let add_day = () => { formdays.days.push({ 'day_number': null, 'title': null, 'body': null, 'body_cn': null, 'places': [] }) }
-let add_price = () => { formprices.detailedPrices.push({ 'name': null, 'name_cn': null, 'price': null,}) }
+
+const formnotes = useForm({ 
+  included: props.included || [], 
+  non_included: props.non_included || [] 
+});
+
+// Prepare days for the form. props.days.data should be the array from DayResource::collection
+const initialDays = props.days?.data?.map(day => ({
+  id: day.id, // Important for backend to identify existing days
+  day_number: day.day_number,
+  title: day.title,
+  body: day.body,
+  body_cn: day.body_cn,
+  places: day.places || [], // Assuming DayResource returns place IDs
+  hotels: day.hotels || [], // Assuming DayResource returns hotel IDs
+})) || [];
+
+const formdays = useForm({ days: initialDays.length > 0 ? initialDays : [{ day_number: 1, title: '', body: '', body_cn: '', places: [], hotels: [] }] });
+
+let add_day = () => { 
+  const newDayNum = formdays.days.length > 0 ? Math.max(...formdays.days.map(d => d.day_number || 0)) + 1 : 1;
+  formdays.days.push({ id: null, day_number: newDayNum, title: '', body: '', body_cn: '', places: [], hotels: [] });
+}
 let remove_day = (index) => { formdays.days.splice(index, 1) }
+
+
+// Prepare prices for the form. tour.prices should be the array of detailed price objects
+const initialPrices = props.tour.prices?.map(price => ({
+  id: price.id, // Important for backend to identify existing prices
+  name: price.name,
+  price: parseFloat(price.price),
+  name_cn: price.name_cn,
+  price_cn: price.price_cn ? parseFloat(price.price_cn) : null, // Handle if price_cn is null
+})) || [];
+
+const formprices = useForm({ detailedPrices: initialPrices.length > 0 ? initialPrices : [{ name: '', price: null, name_cn: '', price_cn: null}] });
+
+let add_price = () => { formprices.detailedPrices.push({ id: null, name: '', price: null, name_cn: '', price_cn: null }) }
 let remove_price = (index) => { formprices.detailedPrices.splice(index, 1) }
+
 </script>
 
 <script>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { computed } from '@vue/runtime-core';
 export default { layout: AdminLayout }
 </script>

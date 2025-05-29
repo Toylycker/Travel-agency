@@ -41,6 +41,19 @@ class TourController extends Controller
         return Inertia::render('admin/Tours/index', ['tours' => $tours, 'places' => $places, 'hotels' => $hotels, 'notes' => $notes]);
     }
 
+    public function create()
+    {
+        $places = Place::select(['id', 'name'])->get();
+        $hotels = Hotel::select(['id', 'name'])->get();
+        $notes = Note::select(['id', 'name'])->get();
+
+        return Inertia::render('admin/Tours/Create', [
+            'places' => $places,
+            'hotels' => $hotels,
+            'form_notes' => $notes, // Match prop name in Create.vue
+        ]);
+    }
+
     private function getPublicTourValidationRules(bool $isUpdate = false): array
     {
         $rules = [
@@ -108,14 +121,20 @@ class TourController extends Controller
         $places = Place::all('name', 'id');
         $hotels = Hotel::all('name', 'id');
         $notes = Note::all('name', 'id');
-        $days = $tour->days()->with(['places:id', 'hotels:id'])->get();
+        $days = $tour->days()->with(['places:id,name', 'hotels:id,name'])->orderBy('day_number')->get();
         $tour->load(['notes', 'prices', 'images']);
+
+        $tourData = $tour->toArray();
+        $tourData['main_image_url'] = $tour->main_image ? Storage::url('public/tours/' . $tour->main_image) : null;
+        $tourData['additional_images_urls'] = $tour->images->map(function ($image) {
+            return ['id' => $image->id, 'url' => Storage::url('public/tours/' . $image->name)];
+        });
         
         return Inertia::render('admin/Tours/edit', [
-            'tour' => $tour,
+            'tour' => $tourData,
             'places' => $places,
             'hotels' => $hotels,
-            'notes' => $notes,
+            'form_notes' => $notes,
             'days' => DayResource::collection($days),
             'included' => $tour->notes()->wherePivot('status', 'included')->pluck('notes.id'),
             'non_included' => $tour->notes()->wherePivot('status', 'non included')->pluck('notes.id'),
