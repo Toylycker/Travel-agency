@@ -161,9 +161,9 @@ class TourController extends Controller
         $tour->load(['notes', 'prices', 'images']);
 
         $tourData = $tour->toArray();
-        $tourData['main_image_url'] = $tour->main_image ? Storage::url('public/tours/' . $tour->main_image) : null;
+        $tourData['main_image_url'] = $tour->main_image ? Storage::url('tours/' . $tour->main_image) : null;
         $tourData['additional_images_urls'] = $tour->images->map(function ($image) {
-            return ['id' => $image->id, 'url' => Storage::url('public/tours/' . $image->name)];
+            return ['id' => $image->id, 'url' => Storage::url('tours/' . $image->name)];
         });
         
         return Inertia::render('admin/Tours/edit', [
