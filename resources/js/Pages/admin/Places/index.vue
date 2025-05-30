@@ -98,7 +98,7 @@
           <n-divider title-placement="left">Texts</n-divider>
           <div v-for="(text, index) in formModel.texts" :key="index" class="border p-3 mb-3 rounded">
             <div class="flex justify-end mb-2">
-              <n-button type="error" size="small" @click="removeText(index)">Remove Text</n-button>
+              <n-button class="bg-danger" type="error" size="small" @click="removeText(index)">Remove Text</n-button>
             </div>
             <n-form-item :path="`texts[${index}].text_number`" label="Text Number">
               <n-input-number v-model:value="text.text_number" placeholder="Order" />
@@ -114,11 +114,11 @@
               <!-- TODO: Display existing images for this text item during edit -->
             </n-form-item>
           </div>
-          <n-button type="dashed" @click="addText" class="w-full mb-4">Add Text</n-button>
+          <n-button type="dashed" @click="addText" class="w-full mb-4 bg-info">Add Text</n-button>
         </n-form>
         <template #footer>
-          <n-button @click="showDrawer = false" class="mr-2">Cancel</n-button>
-          <n-button type="primary" @click="handleFormSubmit" :loading="formModel.processing">Submit</n-button>
+          <n-button @click="showDrawer = false" class="mr-2 bg-danger">Cancel</n-button>
+          <n-button type="primary" @click="handleFormSubmit" class="bg-info" :loading="formModel.processing">Submit</n-button>
         </template>
       </n-drawer-content>
     </n-drawer>
@@ -157,10 +157,10 @@
             </td>
             <td>
               <n-space>
-                <n-button type="primary" size="small" @click="openEditDrawer(place)">Edit</n-button>
+                <n-button type="primary" class="bg-info" size="small" @click="openEditDrawer(place)">Edit</n-button>
                 <n-popconfirm @positive-click="handleDelete(place.id)">
                   <template #trigger>
-                    <n-button type="error" size="small">Delete</n-button>
+                    <n-button type="error" class="bg-danger" size="small">Delete</n-button>
                   </template>
                   Are you sure you want to delete this place?
                 </n-popconfirm>
