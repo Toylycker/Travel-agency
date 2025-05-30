@@ -1,223 +1,179 @@
-<template >
-    <div class="row">
-
-        <div class="col-10">
-            <h1>Places</h1>
-        </div>
-        <div class="col-2">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Create place
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <span>{{ form.errors }}</span>
-                            <form action="" method="post"
-                                @submit.prevent="form.post(route('admin.places.store'), {onSuccess: () => form.reset()})">
-                                <div class="container border rounded my-1">
-                                    <label for="" class="form-label">name</label>
-                                    <input type="text" class="form-control my-1" v-model="form.name">
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.name">{{ form.errors.name }}
-                                    </div>
-                                </div>
-                                <div class="container border rounded my-1">
-                                    <label for="exampleInputEmail1" class="form-label">location</label>
-                                    <n-select class="mb-2" label-field="name" value-field="id"
-                                        v-model:value="form.location" filterable placeholder="Please Select location"
-                                        :options="locations" />
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.location">{{
-                                    form.errors.location }}</div>
-                                </div>
-                                <div class="container border rounded my-1">
-                                    <label for="exampleInputEmail1" class="form-label">categories</label>
-                                    <n-select multiple class="mb-2" label-field="name" value-field="id"
-                                        v-model:value="form.categories" filterable postholder="Please Select categories"
-                                        :options="categories" />
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.categories">{{
-                                    form.errors.categories }}</div>
-                                </div>
-                                <div class="container border rounded my-1">
-                                    <label for="" class="form-label">body</label>
-                                    <textarea type="text" class="form-control my-1" v-model="form.body"></textarea>
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.body">{{ form.errors.body }}
-                                    </div>
-                                </div>
-                                <div class="container border rounded my-1">
-                                    <label for="" class="form-label">map</label>
-                                    <input type="text" class="form-control my-1" v-model="form.map">
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.map">{{ form.errors.map }}
-                                    </div>
-                                </div>
-                                <div class="container border rounded my-1">
-                                    <label for="" class="form-label">viewed</label>
-                                    <input type="number" class="form-control my-1" v-model="form.viewed">
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.viewed">{{ form.errors.viewed
-                                    }}
-                                    </div>
-                                </div>
-                                <div class="container border border-info rounded mt-2">
-                                    <label for="exampleInputEmail1" class="form-label">images for place</label>
-                                    <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-                                        {{ form.progress.percentage }}%
-                                    </progress>
-                                    <input class="form-control mb-1" multiple type="file"
-                                        @input="form.images = $event.target.files">
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.images">{{ form.errors.images
-                                    }}</div>
-                                </div>
-                                <div class="container border rounded my-1">
-                                    <label for="" class="form-label">recommended</label>
-                                    <input type="checkbox" class="form-check-input mx-2" v-model="form.recommended">
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.recommended">{{
-                                    form.errors.recommended }}</div>
-                                </div>
-                                <div class="container border rounded my-1">
-                                    <div class="container d-flex">
-
-                                        <h4>Texts</h4><div class="btn btn-primary w-25 mb-2 mx-2"
-                                            @click="add_text">+</div>
-                                    </div>
-                                    <div class="container border rounded border-warning my-2"
-                                        v-for="(text, index) in form.texts" data:index="index" :key="index">
-                                        <div class="btn btn-danger col-12 my-1" @click="remove_text(index)">-</div>
-                                        <label for="" class="form-label">text_number</label>
-                                        <input type="number" class="form-control my-2"
-                                            v-model="form.texts[index].text_number">
-
-                                        <label for="" class="form-label">title</label>
-                                        <input type="text" class="form-control my-2" v-model="form.texts[index].title">
-
-                                        <label for="" class="form-label">body</label>
-                                        <textarea type="text" class="form-control my-2" v-model="form.texts[index].body"></textarea>
-
-                                        <div class="container border border-success my-1 rounded mt-2">
-                                            <label for="exampleInputEmail1" class="form-label">images for text</label>
-                                            <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-                                                {{ form.progress.percentage }}%
-                                            </progress>
-                                            <input class="form-control mb-1" multiple type="file"
-                                                @input="form.texts[index].images = $event.target.files">
-                                            <div class="bg-danger rounded mt-2" v-if="form.errors.texts">{{
-                                            form.errors.texts
-                                            }}</div>
-                                        </div>
-
-                                        <div class="bg-danger rounded mt-2" v-if="form.errors.texts">{{ form.texts}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-success col-12 my-3" type="submit">Submit</button>
-                                <div v-if="form.recentlySuccessful == true" class="container w-100 bg-success rounded">
-                                    <h2 class="">Successfully saved</h2>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+<template>
+  <div class="m-3">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">Places Management</h2>
+      <Link :href="route('admin.places.create')">
+        <n-button type="primary" class="bg-blue-500 hover:bg-blue-600">Create Place</n-button>
+      </Link>
     </div>
-    <n-table :bordered="true" :single-line="false" striped>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>body</th>
-                <th>viewed</th>
-                <th>recommended</th>
-                <th>location</th>
-                <th>categories</th>
-                <th>texts</th>
-                <th>meta_title</th>
-                <th>meta_keywords</th>
-                <th>meta_description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="place in places.data" :key="place.id">
-                <td>{{place.id}}</td>
-                <td>{{place.name}}</td>
-                <td>{{place.body}}</td>
-                <td>{{place.viewed}}</td>
-                <td>{{place.recommended}}</td>
-                <td>{{place.location.name}}</td>
-                <td>
-                    <div class="overflow-auto container" style="height:200px;">
-                        <div class="container border border-warning my-1" v-for="category in place.categories" :key="category.id">
-                            <h6>{{category.name}}</h6>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="overflow-auto container" style="height:200px;">
-                        <div class="container border border-warning my-1" v-for="text in place.texts" :key="text.id">
-                            <h6>{{text.title}}</h6>
-                            <p>{{text.body}}</p>
-                        </div>
-                    </div>
-                </td>
-                <!-- <td>
-          <n-dropdown trigger="hover" :options="place.days" @select="handleSelect" key-field="id" label-field="title">
-            {{place.total_days}}</n-dropdown>
-        </td> -->
-        <td>{{place.meta_title}}</td>
-        <td>{{place.meta_keywords}}</td>
-        <td>{{place.meta_description}}</td>
-                <td>
-                    <Link @click="$inertia.delete(route('admin.places.destroy', place.id))" as="button"
-                        class="btn btn-danger btn-sm w-100 my-2">Delete</Link>
-                    <button @click="$inertia.get(route('admin.places.edit', place.id))" as="button"
-                        class="btn btn-success w-100 btn-sm">Edit</button>
-                </td>
-            </tr>
-        </tbody>
-    </n-table>
-    <Pagination :links='places.links' />
+
+    <n-card>
+      <n-data-table
+        :columns="columns"
+        :data="props.places.data"
+        :pagination="paginationProps"
+        :loading="loading"
+        :remote="true"
+        :bordered="false"
+        striped
+        :scroll-x="1800"
+        @update:page="handlePageChange"
+        @update:page-size="handlePageSizeChange"
+        @update:sorter="handleSortChange"
+      />
+    </n-card>
+  </div>
 </template>
 
-
 <script setup>
-import { Head, Link } from '@inertiajs/inertia-vue3';
-import { NTag, NButton, NTable, NDropdown, NSelect } from 'naive-ui'
-import Pagination from '@/Shared/Pagination.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
-const props = defineProps(['places', 'locations', 'categories']);
+import { h, ref, computed, watch } from 'vue';
+import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import { Inertia } from '@inertiajs/inertia';
+import { NDataTable, NButton, NSpace, NCard, NPopconfirm, NIcon, NTag, NTooltip } from 'naive-ui';
+import { TrashOutline as DeleteIcon, PencilOutline as EditIcon } from '@vicons/ionicons5';
 
-const form = useForm(
-    {
-        'name': null,
-        'location': null,
-        'categories': null,
-        'body': null,
-        'map': null,
-        'viewed': null,
-        'recommended': null,
-        'images': [],
-        'texts': [{ 'text_number': null, 'title': null, 'body': null, 'images': [] }],
+const props = defineProps({
+  places: Object,
+  filters: Object,
+});
 
+const loading = ref(false);
+
+const currentSortBy = ref(props.filters?.sort_by || 'id');
+const currentSortOrder = ref(props.filters?.sort_order || 'desc');
+
+const columns = computed(() => [
+  { title: 'ID', key: 'id', width: 60, sorter: true, sortOrder: currentSortBy.value === 'id' ? currentSortOrder.value : false },
+  { title: 'Name', key: 'name', width: 200, sorter: true, sortOrder: currentSortBy.value === 'name' ? currentSortOrder.value : false, ellipsis: { tooltip: true } },
+  {
+    title: 'Location',
+    key: 'location.name',
+    width: 150,
+    sorter: true,
+    sortOrder: currentSortBy.value === 'location.name' ? currentSortOrder.value : false,
+    render: (row) => row.location?.name || 'N/A',
+    ellipsis: { tooltip: true }
+  },
+  {
+    title: 'Categories',
+    key: 'categories',
+    width: 200,
+    render(row) {
+      if (!row.categories || row.categories.length === 0) return 'N/A';
+      return h(NSpace, { vertical: true, size: 'small' }, {
+        default: () => row.categories.map(cat => h(NTag, { type: 'info', size: 'small', bordered: true }, { default: () => cat.name }))
+      });
     }
-);
+  },
+  { title: 'Body', key: 'body', width: 250, ellipsis: { tooltip: true } }, 
+  { title: 'Viewed', key: 'viewed', width: 80, sorter: true, sortOrder: currentSortBy.value === 'viewed' ? currentSortOrder.value : false },
+  {
+    title: 'Recommended',
+    key: 'recommended',
+    width: 120,
+    sorter: true,
+    sortOrder: currentSortBy.value === 'recommended' ? currentSortOrder.value : false,
+    render(row) {
+      return h(NTag, { type: row.recommended ? 'success' : 'error', size: 'small' }, { default: () => (row.recommended ? 'Yes' : 'No') });
+    }
+  },
+  { title: 'Meta Title', key: 'meta_title', width: 200, ellipsis: { tooltip: true } },
+  {
+    title: 'Actions',
+    key: 'actions',
+    width: 150,
+    fixed: 'right',
+    render(row) {
+      return h(NSpace, null, {
+        default: () => [
+          h(
+            Link,
+            { href: route('admin.places.edit', row.id) }, 
+            { default: () => h(NButton, { type: 'primary', size: 'small', class:'bg-yellow-500 hover:bg-yellow-600' }, { icon: () => h(NIcon, null, {default: () => h(EditIcon)}), default: () => 'Edit' }) }
+          ),
+          h(
+            NPopconfirm,
+            { 
+              onPositiveClick: () => handleDelete(row.id),
+              positiveButtonProps: { type: 'error', class: 'bg-red-600 hover:bg-red-700' }
+            },
+            {
+              trigger: () => h(NButton, { type: 'error', size: 'small', class:'bg-red-500 hover:bg-red-600' }, { icon: () => h(NIcon, null, { default: () => h(DeleteIcon) }), default: () => 'Delete' }),
+              default: () => 'Are you sure you want to delete this place?',
+            }
+          ),
+        ],
+      });
+    },
+  },
+]);
 
-let add_text = () => { form.texts.push({ 'text_number': null, 'title': null, 'body': null, 'images': [] }); }
-let remove_text = (index) => { form.texts.splice(index, 1); }
+const paginationProps = computed(() => ({
+  page: props.places.current_page,
+  pageSize: props.places.per_page,
+  itemCount: props.places.total,
+  pageSlot: 7,
+  showSizePicker: true,
+  pageSizes: [10, 20, 50, 100].map(size => ({ label: String(size), value: size })),
+  prefix: ({ itemCount }) => `${itemCount} total places`,
+}));
+
+const getQueryParams = (page, pageSize, sortBy, sortOrder, activeFilters = props.filters) => {
+  let params = { page: page, perPage: pageSize };
+  if (sortBy) {
+    params.sort_by = sortBy;
+    if (sortOrder === 'ascend' || sortOrder === 'asc') params.sort_order = 'asc';
+    else if (sortOrder === 'descend' || sortOrder === 'desc') params.sort_order = 'desc';
+    else if (params.sort_by) params.sort_order = 'asc';
+  }
+  return params;
+};
+
+const fetchData = (page, pageSize, sortBy, sortOrder, activeFilters) => {
+  const queryParams = getQueryParams(page, pageSize, sortBy, sortOrder, activeFilters);
+  loading.value = true;
+  Inertia.get(route('admin.places.index'), queryParams, {
+    preserveState: true,
+    replace: true,
+    preserveScroll: true,
+    onFinish: () => { loading.value = false; }
+  });
+};
+
+const handlePageChange = (page) => {
+  fetchData(page, paginationProps.value.pageSize, currentSortBy.value, currentSortOrder.value, props.filters);
+};
+
+const handlePageSizeChange = (pageSize) => {
+  fetchData(1, pageSize, currentSortBy.value, currentSortOrder.value, props.filters);
+};
+
+const handleSortChange = (sorter) => {
+  currentSortBy.value = sorter.columnKey;
+  currentSortOrder.value = sorter.order || false;
+  fetchData(1, paginationProps.value.pageSize, currentSortBy.value, currentSortOrder.value, props.filters);
+};
+
+const handleDelete = (id) => {
+  Inertia.delete(route('admin.places.destroy', id), {
+    preserveScroll: true,
+    onStart: () => { loading.value = true; },
+    onFinish: () => { loading.value = false; },
+  });
+};
+
+watch(() => props.filters, (newFilters) => {
+  currentSortBy.value = newFilters?.sort_by || 'id';
+  currentSortOrder.value = newFilters?.sort_order || 'desc';
+}, { deep: true, immediate: true });
+
 </script>
 
 <script>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 export default { layout: AdminLayout }
 </script>
+
+<style scoped>
+/* Add any specific styles if needed */
+</style>

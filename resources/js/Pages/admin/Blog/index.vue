@@ -1,213 +1,198 @@
-<template >
-    <div class="row">
-        <div class="col-10">
-            <h1>Blog</h1>
-        </div>
-        <div class="col-2">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Create post
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Create post</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" method="post"
-                                @submit.prevent="form.post(route('admin.posts.store'), {onSuccess: () => form.reset()})">
-                                <div class="container border rounded my-1">
-                                    <label for="" class="form-label">title</label>
-                                    <input type="text" class="form-control my-1" v-model="form.title">
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.name">{{ form.errors.title }}
-                                    </div>
-                                </div>
-                                <div class="container border rounded my-1">
-
-                                    <label for="exampleInputEmail1" class="form-label">main image</label>
-                                    <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-                                        {{ form.progress.percentage }}%
-                                    </progress>
-                                    <input class="form-control" type="file"
-                                        @input="form.main_image = $event.target.files[0]">
-                                </div>
-                                <div class="container border rounded my-1">
-                                    <label for="exampleInputEmail1" class="form-label">subjects</label>
-                                    <n-select multiple class="mb-2" label-field="name" value-field="id"
-                                        v-model:value="form.subjects" filterable postholder="Please Select subjects"
-                                        :options="subjects" />
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.subjects">{{
-                                    form.errors.subjects }}</div>
-                                </div>
-                                <div class="container border rounded my-1">
-                                    <label for="" class="form-label">body</label>
-                                    <input type="text" class="form-control my-1" v-model="form.body">
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.body">{{ form.errors.body }}
-                                    </div>
-                                </div>
-                                <div class="container border rounded my-1">
-                                    <label for="" class="form-label">viewed</label>
-                                    <input type="number" class="form-control my-1" v-model="form.viewed">
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.viewed">{{ form.errors.viewed
-                                    }}
-                                    </div>
-                                </div>
-                                <div class="container border border-info rounded mt-2">
-                                    <label for="exampleInputEmail1" class="form-label">images for post</label>
-                                    <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-                                        {{ form.progress.percentage }}%
-                                    </progress>
-                                    <input class="form-control mb-1" multiple type="file"
-                                        @input="form.images = $event.target.files">
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.images">{{ form.errors.images
-                                    }}</div>
-                                </div>
-                                <div class="container border rounded my-1">
-                                    <label for="" class="form-label">recommended</label>
-                                    <input type="checkbox" class="form-check-input mx-2" v-model="form.recommended">
-                                    <div class="bg-danger rounded mt-2" v-if="form.errors.recommended">{{
-                                    form.errors.recommended }}</div>
-                                </div>
-                                <div class="container border rounded my-1">
-                                    <div class="container d-flex">
-
-                                        <h4>Texts</h4>
-                                        <div class="btn btn-primary w-25 mb-2 mx-2" @click="add_text">+</div>
-                                    </div>
-                                    <div class="container border rounded border-warning my-2"
-                                        v-for="(text, index) in form.texts" data:index="index" :key="index">
-                                        <div class="btn btn-danger col-12 my-1" @click="remove_text(index)">-</div>
-                                        <label for="" class="form-label">text_number</label>
-                                        <input type="number" class="form-control my-2"
-                                            v-model="form.texts[index].text_number">
-
-                                        <label for="" class="form-label">title</label>
-                                        <input type="text" class="form-control my-2" v-model="form.texts[index].title">
-
-                                        <label for="" class="form-label">body</label>
-                                        <input type="text" class="form-control my-2" v-model="form.texts[index].body">
-
-                                        <div class="container border border-success my-1 rounded mt-2">
-                                            <label for="exampleInputEmail1" class="form-label">images for text</label>
-                                            <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-                                                {{ form.progress.percentage }}%
-                                            </progress>
-                                            <input class="form-control mb-1" multiple type="file"
-                                                @input="form.texts[index].images = $event.target.files">
-                                            <div class="bg-danger rounded mt-2" v-if="form.errors.texts">{{
-                                            form.errors.texts
-                                            }}</div>
-                                        </div>
-
-                                        <div class="bg-danger rounded mt-2" v-if="form.errors.texts">{{ form.texts}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-success col-12 my-3" type="submit">Submit</button>
-                                <div v-if="form.recentlySuccessful == true" class="container w-100 bg-success rounded">
-                                    <h2 class="">Successfully saved</h2>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <div class="container">{{form.errors}}</div>
-                            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+<template>
+  <div class="m-3">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">Blog Posts Management</h2>
+      <Link :href="route('admin.posts.create')">
+        <n-button type="primary" class="bg-blue-500 hover:bg-blue-600">Create Post</n-button>
+      </Link>
     </div>
-    <n-table :bordered="true" :single-line="false" striped>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>main_image</th>
-                <th>title</th>
-                <th>body</th>
-                <th>viewed</th>
-                <th>recommended</th>
-                <th>subjects</th>
-                <th>texts</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="post in posts.data" :key="post.id">
-                <td>{{post.id}}</td>
-                <td>
-                    <div class="container w-25 h-25">
 
-                        <img class="img img-fluid" style="object-fit: cover;" v-if="post.main_image" :src="'/storage/blog/'+post.main_image" alt="">
-                        <div class="container" v-else>no image</div>
-                    </div>
-                </td>
-                <td>{{post.title}}</td>
-                <td>{{post.body}}</td>
-                <td>{{post.viewed}}</td>
-                <td>0</td>
-                <td>
-                    <n-dropdown trigger="hover" :options="post.subjects" key-field="id" label-field="name">
-                        {{ post.subjects.length}}</n-dropdown>
-                </td>
-                <td>
-                    <div v-if="post.texts.length" class="overflow-auto container" style="height:200px;">
-                        <div class="container border border-warning my-1" v-for="text in post.texts" :key="text.id">
-                            <h6>{{text.title}}</h6>
-                            <p>{{text.body}}</p>
-                        </div>
-                    </div>
-                    <div v-else class="overflow-auto container">no texts
-                    </div>
-                </td>
-                <!-- <td>
-              <n-dropdown trigger="hover" :options="post.days" @select="handleSelect" key-field="id" label-field="title">
-                {{post.total_days}}</n-dropdown>
-            </td> -->splice
-                <td>
-                    <Link @click="Inertia.delete(route('admin.posts.destroy', post.id))" as="button"
-                        class="btn btn-danger btn-sm w-100 my-2">Delete</Link>
-                </td>
-            </tr>
-        </tbody>
-    </n-table>
-
-    <Pagination :links='posts.links' />
+    <n-card>
+      <n-data-table
+        :columns="columns"
+        :data="props.posts.data"
+        :pagination="paginationProps"
+        :loading="loading"
+        :remote="true"
+        :bordered="false"
+        striped
+        :scroll-x="1800"
+        @update:page="handlePageChange"
+        @update:page-size="handlePageSizeChange"
+        @update:sorter="handleSortChange"
+      />
+    </n-card>
+  </div>
 </template>
 
-
 <script setup>
-import { Head, Link } from '@inertiajs/inertia-vue3';
-import { NTag, NButton, NTable, NDropdown, NSelect } from 'naive-ui'
-import Pagination from '@/Shared/Pagination.vue';
-import { useForm } from '@inertiajs/inertia-vue3';
+import { h, ref, computed, watch } from 'vue';
+import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
-const props = defineProps(['posts', 'subjects']);
-const form = useForm(
-    {
-        'title': null,
-        'main_image': null,
-        'body': null,
-        'viewed': null,
-        'recommended': null,
-        'images': [],
-        'subjects': [],
-        'texts': [{ 'text_number': null, 'title': null, 'body': null, 'images': [] }],
+import { NDataTable, NButton, NSpace, NCard, NPopconfirm, NIcon, NTag, NAvatar, NTooltip } from 'naive-ui';
+import { TrashOutline as DeleteIcon, PencilOutline as EditIcon } from '@vicons/ionicons5';
 
+const props = defineProps({
+  posts: Object,
+  filters: Object, 
+  errors: Object,
+});
+
+const loading = ref(false);
+
+const currentSortBy = ref(props.filters?.sort_by || 'id');
+const currentSortOrder = ref(props.filters?.sort_order || 'desc');
+
+const columns = computed(() => [
+  { title: 'ID', key: 'id', width: 60, sorter: true, sortOrder: currentSortBy.value === 'id' ? currentSortOrder.value : false },
+  {
+    title: 'Main Image',
+    key: 'main_image',
+    width: 100,
+    render(row) {
+      return row.main_image
+        ? h(NAvatar, { src: '/storage/blog/' + row.main_image, size: 'medium', objectFit: 'cover', style: 'width: 60px; height: 40px;' })
+        : 'N/A';
     }
-);
-let add_text = () => { form.texts.push({ 'text_number': null, 'title': null, 'body': null, 'images': [] }); }
-let remove_text = (index) => { form.texts.splice(index, 1); }
+  },
+  { title: 'Title', key: 'title', width: 300, sorter: true, sortOrder: currentSortBy.value === 'title' ? currentSortOrder.value : false, ellipsis: { tooltip: true } },
+  { title: 'Body Snippet', key: 'body', width: 300, ellipsis: { tooltip: true }, 
+    render: (row) => row.body ? row.body.substring(0, 100) + (row.body.length > 100 ? '...' : '') : 'N/A' 
+  },
+  { title: 'Viewed', key: 'viewed', width: 80, sorter: true, sortOrder: currentSortBy.value === 'viewed' ? currentSortOrder.value : false },
+  {
+    title: 'Recommended',
+    key: 'recommended',
+    width: 120,
+    sorter: true, 
+    sortOrder: currentSortBy.value === 'recommended' ? currentSortOrder.value : false,
+    render(row) {
+      return h(NTag, { type: row.recommended ? 'success' : 'error', size: 'small' }, { default: () => (row.recommended ? 'Yes' : 'No') });
+    }
+  },
+  {
+    title: 'Subjects',
+    key: 'subjects',
+    width: 200,
+    render(row) {
+      if (!row.subjects || row.subjects.length === 0) return 'N/A';
+      return h(NSpace, { vertical: true, size: 'small' }, {
+        default: () => row.subjects.map(sub => h(NTag, { type: 'info', size: 'small', bordered: true }, { default: () => sub.name }))
+      });
+    }
+  },
+   {
+    title: 'Created At',
+    key: 'created_at',
+    width: 180,
+    sorter: true,
+    sortOrder: currentSortBy.value === 'created_at' ? currentSortOrder.value : false,
+    render: (row) => row.created_at ? new Date(row.created_at).toLocaleString() : 'N/A'
+  },
+  {
+    title: 'Actions',
+    key: 'actions',
+    width: 180,
+    fixed: 'right',
+    render(row) {
+      return h(NSpace, null, {
+        default: () => [
+          h(
+            Link,
+            { href: route('admin.posts.edit', row.id) }, 
+            { default: () => h(NButton, { type: 'primary', size: 'small', class:'bg-yellow-500 hover:bg-yellow-600' }, { icon: () => h(NIcon, null, {default: () => h(EditIcon)}), default: () => 'Edit' }) }
+          ),
+          h(
+            NPopconfirm,
+            { 
+              onPositiveClick: () => handleDelete(row.id),
+              positiveButtonProps: { type: 'error', class: 'bg-red-600 hover:bg-red-700' }
+            },
+            {
+              trigger: () => h(NButton, { type: 'error', size: 'small', class:'bg-red-500 hover:bg-red-600' }, { icon: () => h(NIcon, null, { default: () => h(DeleteIcon) }), default: () => 'Delete' }),
+              default: () => 'Are you sure you want to delete this post?',
+            }
+          ),
+        ],
+      });
+    },
+  },
+]);
+
+const paginationProps = computed(() => ({
+  page: props.posts.current_page,
+  pageSize: props.posts.per_page,
+  itemCount: props.posts.total,
+  pageSlot: 7,
+  showSizePicker: true,
+  pageSizes: [10, 20, 50, 100].map(size => ({ label: String(size), value: size })),
+  prefix: ({ itemCount }) => `${itemCount} total posts`,
+}));
+
+const getQueryParams = (page, pageSize, sortBy, sortOrder, activeFilters = props.filters) => {
+  let params = { page: page, perPage: pageSize };
+  if (sortBy) {
+    params.sort_by = sortBy;
+    if (sortOrder === 'ascend' || sortOrder === 'asc') params.sort_order = 'asc';
+    else if (sortOrder === 'descend' || sortOrder === 'desc') params.sort_order = 'desc';
+    else if (params.sort_by) params.sort_order = 'asc';
+  }
+  return params;
+};
+
+const fetchData = (page, pageSize, sortBy, sortOrder, activeFilters) => {
+  const queryParams = getQueryParams(page, pageSize, sortBy, sortOrder, activeFilters);
+  loading.value = true;
+  Inertia.get(route('admin.posts.index'), queryParams, {
+    preserveState: true,
+    replace: true,
+    preserveScroll: true,
+    onFinish: () => { loading.value = false; }
+  });
+};
+
+const handlePageChange = (page) => {
+  fetchData(page, paginationProps.value.pageSize, currentSortBy.value, currentSortOrder.value, props.filters);
+};
+
+const handlePageSizeChange = (pageSize) => {
+  fetchData(1, pageSize, currentSortBy.value, currentSortOrder.value, props.filters);
+};
+
+const handleSortChange = (sorter) => {
+  currentSortBy.value = sorter.columnKey;
+  currentSortOrder.value = sorter.order || false;
+  fetchData(1, paginationProps.value.pageSize, currentSortBy.value, currentSortOrder.value, props.filters);
+};
+
+const handleDelete = (id) => {
+  Inertia.delete(route('admin.posts.destroy', id), {
+    preserveScroll: true,
+    onStart: () => { loading.value = true; },
+    onSuccess: () => { alert('Post deleted successfully!'); },
+    onError: () => { alert('Failed to delete post.'); },
+    onFinish: () => { loading.value = false; },
+  });
+};
+
+watch(() => props.filters, (newFilters) => {
+  currentSortBy.value = newFilters?.sort_by || 'id';
+  currentSortOrder.value = newFilters?.sort_order || 'desc';
+}, { deep: true, immediate: true });
+
+watch(() => props.errors, (newErrors) => {
+  if (newErrors && Object.keys(newErrors).length > 0) {
+    alert('There were errors with your submission.');
+  }
+}, { immediate: true });
+
 </script>
 
 <script>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 export default { layout: AdminLayout }
 </script>
+
+<style scoped>
+/* Add any specific styles if needed */
+</style>
