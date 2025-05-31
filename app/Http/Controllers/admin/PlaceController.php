@@ -21,7 +21,7 @@ class PlaceController extends Controller
     
     public function index()
     {
-        $places = Place::with(['texts' => function ($query) {
+        $places = Place::with(['texts.images' => function ($query) {
             $query->orderBy('id');
         }, 'images', 'location', 'categories'])->orderBy('id')->paginate(15)->withQueryString();
         $locations = Location::all('name', 'id');

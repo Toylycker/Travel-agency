@@ -83,12 +83,21 @@
         <n-form-item label="Place Images">
           <input type="file" multiple @input="formModel.images = $event.target.files" class="mb-2" />
           <div v-if="formModel.errors.images" class="text-red-500 text-xs">{{ formModel.errors.images }}</div>
-          <!-- TODO: Display existing images for edit -->
+          <!-- Display existing main images -->
+          <div v-if="isEdit && placeData && placeData.images && placeData.images.length > 0" class="mt-2">
+            <h4 class="font-semibold mb-1">Existing Main Images:</h4>
+            <div class="flex flex-wrap gap-2">
+              <div v-for="image in placeData.images" :key="image.id" class="relative">
+                <img :src="'/storage/places/' + image.name" :alt="image.name || 'Place Image'" class="w-24 h-24 object-cover rounded border" />
+                <!-- Optional: Add a delete button for individual existing images -->
+              </div>
+            </div>
+          </div>
         </n-form-item>
 
         <!-- Dynamic Texts Section -->
         <n-divider title-placement="left">Texts</n-divider>
-        <div v-for="(text, index) in formModel.texts" :key="index" class="border p-3 mb-3 rounded">
+        <div v-for="(text, index) in formModel.texts" :key="text.id || `new-${index}`" class="border p-3 mb-3 rounded">
           <div class="flex justify-end mb-2">
             <n-button class="bg-danger" type="error" size="small" @click="removeText(index)">Remove Text</n-button>
           </div>
@@ -103,7 +112,16 @@
           </n-form-item>
           <n-form-item label="Text Images">
             <input type="file" multiple @input="text.images = $event.target.files" />
-            <!-- TODO: Display existing images for this text item during edit -->
+             <!-- Display existing images for this text item -->
+            <div v-if="isEdit && text.existing_images && text.existing_images.length > 0" class="mt-2">
+                <h5 class="font-semibold mb-1 text-sm">Existing Text Images:</h5>
+                <div class="flex flex-wrap gap-2">
+                    <div v-for="image in text.existing_images" :key="image.id" class="relative">
+                        <img :src="'/storage/texts/' + image.name" :alt="image.name || 'Text Image'" class="w-20 h-20 object-cover rounded border" />
+                        <!-- Optional: Add a delete button for individual existing text images -->
+                    </div>
+                </div>
+            </div>
           </n-form-item>
         </div>
         <n-button type="dashed" @click="addText" class="w-full mb-4 bg-info">Add Text</n-button>
@@ -126,7 +144,7 @@ import {
 const props = defineProps({
   show: Boolean,
   isEdit: Boolean,
-  placeData: Object, // For pre-filling the edit form
+  placeData: Object, // For pre-filling the edit form, expected to have placeData.images and placeData.texts[].images with {id, url, name?}
   locations: Array,
   categories: Array,
   errors: Object,
@@ -145,7 +163,7 @@ const defaultFormValues = {
   map: null,
   viewed: 0,
   recommended: false,
-  images: [],
+  images: [], // For new image uploads
   texts: [],
   meta_title: null,
   meta_keywords: null,
@@ -175,7 +193,8 @@ const addText = () => {
     text_number: formModel.texts.length + 1,
     title: '',
     body: '',
-    images: [],
+    images: [], // For new image uploads for this text item
+    existing_images: [], // To hold URLs of existing images for this text item
   });
 };
 
@@ -184,8 +203,9 @@ const removeText = (index) => {
 };
 
 const resetAndPopulateForm = () => {
-  formModel.reset();
+  formModel.reset(); // Resets to defaultFormValues, including images: []
   formModel.texts = [];
+
   if (props.isEdit && props.placeData) {
     formModel.id = props.placeData.id;
     formModel.name = props.placeData.name;
@@ -198,13 +218,17 @@ const resetAndPopulateForm = () => {
     formModel.meta_title = props.placeData.meta_title;
     formModel.meta_keywords = props.placeData.meta_keywords;
     formModel.meta_description = props.placeData.meta_description;
-    formModel.images = []; // Clear main images
+    
+    // formModel.images is for new uploads, it should be empty initially for edit
+    // Existing main images are displayed via props.placeData.images in the template
+
     formModel.texts = props.placeData.texts ? props.placeData.texts.map(text => ({
       id: text.id,
       text_number: text.text_number,
       title: text.title,
       body: text.body,
-      images: [],
+      images: [], // For new uploads for this text item
+      existing_images: text.images || [] // Populate with existing images for display
     })) : [];
     formModel._method = 'PUT';
   } else {
@@ -231,7 +255,21 @@ const closeDrawer = () => {
 };
 
 const submitForm = () => {
-  emit('submit', { ...formModel, _method: props.isEdit ? 'PUT' : 'POST' });
+  // When submitting, you might need to handle deletion of existing images
+  // or only send new images. This example sends all text data including existing_images for reference
+  // but the backend should only process `images` fields (File objects) for new uploads and handle updates to texts.
+  const formDataToSubmit = {
+    ...formModel,
+    texts: formModel.texts.map(text => ({
+        id: text.id,
+        text_number: text.text_number,
+        title: text.title,
+        body: text.body,
+        images: text.images, // This will be the FileList for new uploads
+        // existing_images are not typically sent back unless you have a specific mechanism to handle them (e.g., for deletion)
+    }))
+  };
+  emit('submit', { ...formDataToSubmit, _method: props.isEdit ? 'PUT' : 'POST' });
 };
 
 </script> 

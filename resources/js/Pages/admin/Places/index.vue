@@ -153,6 +153,23 @@ const createColumns = () => [
   { title: 'Id', key: 'id', sorter: 'default' },
   { title: 'Name', key: 'name', sorter: 'default' },
   {
+    title: 'Main Images',
+    key: 'images',
+    width: 120,
+    render(row) {
+      if (!row.images || row.images.length === 0) return 'N/A';
+      // Display first image as a thumbnail or count
+      return h('div', { class: 'flex items-center' }, [
+        h('img', {
+          src: '/storage/places/' + row.images[0].name, 
+          alt: 'Place Image',
+          class: 'w-10 h-10 object-cover rounded mr-2 border'
+        }),
+        h(NTag, { size: 'small' }, { default: () => `${row.images.length} img(s)` })
+      ]);
+    }
+  },
+  {
     title: 'Location',
     key: 'location.name',
     render(row) {
@@ -176,16 +193,19 @@ const createColumns = () => [
     }
   },
   {
-    title: 'Body',
-    key: 'body',
-    ellipsis: { tooltip: true }, 
-    width: 150 
-  },
-  {
     title: 'Texts Count',
-    key: 'texts',
+    key: 'texts_count',
     render(row) {
       return row.texts ? row.texts.length : 0;
+    }
+  },
+  {
+    title: 'Text Images',
+    key: 'text_images_count',
+    render(row) {
+        if (!row.texts) return 0;
+        const totalTextImages = row.texts.reduce((acc, text) => acc + (text.images ? text.images.length : 0), 0);
+        return totalTextImages;
     }
   },
   { title: 'Meta Title', key: 'meta_title', ellipsis: { tooltip: true }, width: 150 },
