@@ -112,7 +112,6 @@ const handleFormSubmit = (formData) => {
     },
     onError: (pageErrors) => {
       currentFormErrors.value = pageErrors;
-      alert('Failed to submit place. Please check errors.');
     },
     forceFormData: true, // Crucial for file uploads
   };

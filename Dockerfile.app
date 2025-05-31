@@ -37,6 +37,9 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
 # Fix permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN echo "memory_limit=512M" > /usr/local/etc/php/conf.d/memlimit.ini
+RUN echo "upload_max_filesize = 50M" > /usr/local/etc/php/conf.d/uploads.ini
+RUN echo "post_max_size = 100M" >> /usr/local/etc/php/conf.d/uploads.ini
 
 # Expose port 80
 EXPOSE 80
