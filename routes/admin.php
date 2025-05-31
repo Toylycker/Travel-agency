@@ -19,6 +19,7 @@ use App\Http\Controllers\admin\GuideController;
 use App\Http\Controllers\admin\MealController;
 use App\Http\Controllers\Admin\CustomCostController;
 use App\Models\Text;
+use App\Http\Controllers\admin\ImageController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')
@@ -78,4 +79,6 @@ Route::prefix('admin')
     Route::delete('/notes/destroy/{note}', [NoteController::class, 'destroy'])->name('notes.destroy');
 
     Route::resource('custom-costs', CustomCostController::class);
+
+    Route::delete('images/{image}', [ImageController::class, 'destroy'])->name('images.destroy');
 });
