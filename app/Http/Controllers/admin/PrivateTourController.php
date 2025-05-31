@@ -136,7 +136,7 @@ class PrivateTourController extends Controller
         return [
             'name' => 'required|string|max:255',
             'name_cn' => 'nullable|string|max:255',
-            'main_image' => 'nullable|image|max:2048', // For file input
+            'main_image' => 'nullable|image', // For file input
             'body' => 'required|string',
             'body_cn' => 'nullable|string',
             'map' => 'nullable|string',
@@ -149,7 +149,7 @@ class PrivateTourController extends Controller
             'recommended' => 'boolean',
             'active' => 'boolean',
             'sort_order' => 'nullable|integer',
-            'images.*' => 'nullable|image|max:2048', // For file inputs
+            'images.*' => 'nullable|image', // For file inputs
             'included' => 'nullable|array',
             'included.*' => 'integer|exists:notes,id',
             'non_included' => 'nullable|array',

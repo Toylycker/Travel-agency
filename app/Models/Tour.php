@@ -10,6 +10,11 @@ class Tour extends BaseModel
     use HasFactory;
     protected $guarded = ['id'];
     public $timestamps = false;
+    protected $casts = [
+        'isPublic' => 'boolean',
+        'active' => 'boolean',
+        'recommended' => 'boolean',
+    ];
 
 
     /**

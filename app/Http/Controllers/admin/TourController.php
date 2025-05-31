@@ -95,7 +95,7 @@ class TourController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             'name_cn' => 'nullable|string|max:255',
-            'main_image' => ($isUpdate ? 'nullable' : 'required') . '|image|max:2048',
+            'main_image' => ($isUpdate ? 'nullable' : 'required') . '|image',
             'body' => 'required|string',
             'body_cn' => 'nullable|string',
             'map' => 'nullable|string',
@@ -123,7 +123,7 @@ class TourController extends Controller
             'detailedPrices.*.name_cn' => 'nullable|string',
             'detailedPrices.*.price_cn' => 'nullable|numeric',
             'images' => ($isUpdate ? 'nullable' : 'required') . '|array',
-            'images.*' => 'image|max:2048',
+            'images.*' => 'image',
             'included' => 'nullable|array',
             'included.*' => 'integer|exists:notes,id',
             'non_included' => 'nullable|array',
