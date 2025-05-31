@@ -124,39 +124,103 @@ class PlaceController extends Controller
     {
         $request->validate([
             'name' => 'string|required',
-            'name_cn' => 'string|nullable',
             'location_id' => 'numeric|required',
-            'categories' => 'array|required',
-            'categories.*' => 'numeric|required',
+            'category_ids' => 'array|required',
+            'category_ids.*' => 'numeric|required',
             'body' => 'string|required',
-            'body_cn' => 'string|nullable',
             'map' => 'string|nullable',
-            'viewed' => 'nullable',
-            'recommended' => 'nullable',
+            'viewed' => 'numeric|nullable',
+            'recommended' => 'boolean|nullable',
             'images' => 'array|nullable',
-            'images.*' => 'Image|nullable',
+            'images.*' => 'image|nullable',
+            'meta_title' => 'string|nullable',
+            'meta_keywords' => 'string|nullable',
+            'meta_description' => 'string|nullable',
+            'texts' => 'array|nullable',
+            'texts.*.id' => 'nullable|numeric',
+            'texts.*.text_number' => 'required_with:texts|numeric',
+            'texts.*.title' => 'required_with:texts|string|nullable',
+            'texts.*.body' => 'required_with:texts|string|nullable',
+            'texts.*.images' => 'array|nullable',
+            'texts.*.images.*' => 'image|nullable',
         ]);
+        
+        try {
+            return DB::transaction(function() use ($request, $place) {
+                $location = Location::findOrFail($request->location_id);
+                $categories = Category::whereIn('id', $request->category_ids)->get();
 
-        $location = Location::findOrFail($request->location_id);
-        $categories = Category::wherein('id', $request->categories);
-        $place->update(['name' => $request->name, 'name_cn' => $request->name_cn, 'location_id' => $location->id, 'body' => $request->body, 'body_cn' => $request->body_cn, 'map' => $request->map, 'viewed' => $request->viewed, 'recommended' => $request->recommended == 'true' ? 1 : 0]);
+                $place->update([
+                    'name' => $request->name,
+                    'location_id' => $location->id,
+                    'body' => $request->body,
+                    'map' => $request->map,
+                    'viewed' => $request->viewed,
+                    'recommended' => $request->recommended ?? false,
+                    'meta_title' => $request->meta_title,
+                    'meta_keywords' => $request->meta_keywords,
+                    'meta_description' => $request->meta_description,
+                ]);
 
-        $place->categories()->sync($categories->pluck('id'));
+                $place->categories()->sync($categories->pluck('id'));
 
-        if ($request->hasFile('images')) {
-            foreach ($request->images as $image) {
-                $newImage = $image;
-                $resized = Gallery::make($newImage)
-                    // ->resize( null, 700, function ($constraint) { $constraint->aspectRatio(); } )
-                    ->fit(1280, 1024)
-                    ->encode('jpg', 100);
-                $newImageName = Str::random(10) . '-' . $place->id . '.' . $newImage->getClientOriginalExtension();
-                Storage::put('public/places/' . $newImageName, (string) $resized);
-                Image::create(['name' => $newImageName, 'imageable_id' => $place->id, 'imageable_type' => 'App\Models\Place']);
-            }
+                if ($request->hasFile('images')) {
+                    foreach ($request->file('images') as $imageFile) {
+                        $resized = Gallery::make($imageFile)
+                            ->fit(1280, 1024)
+                            ->encode('jpg', 100);
+                        $newImageName = Str::random(10) . '-' . $place->id . '.' . $imageFile->getClientOriginalExtension();
+                        Storage::put('public/places/' . $newImageName, (string) $resized);
+                        $place->images()->create(['name' => $newImageName]);
+                    }
+                }
+
+                if ($request->has('texts')) {
+                    $existingTextIds = [];
+                    foreach ($request->texts as $textData) {
+                        $textModel = null;
+                        if (!empty($textData['id'])) {
+                            $textModel = $place->texts()->find($textData['id']);
+                        }
+                        
+                        if ($textModel) {
+                            $textModel->update([
+                                'title' => $textData['title'],
+                                'text_number' => $textData['text_number'],
+                                'body' => $textData['body'],
+                            ]);
+                        } else {
+                            $textModel = $place->texts()->create([
+                                'title' => $textData['title'],
+                                'text_number' => $textData['text_number'],
+                                'body' => $textData['body'],
+                            ]);
+                        }
+                        $existingTextIds[] = $textModel->id;
+
+                        if (isset($textData['images']) && is_array($textData['images'])) {
+                            foreach ($textData['images'] as $imageFile) {
+                                if ($imageFile instanceof \Illuminate\Http\UploadedFile) {
+                                    $resized = Gallery::make($imageFile)
+                                        ->fit(1280, 1024)
+                                        ->encode('jpg', 100);
+                                    $newImageName = Str::random(10) . '-' . $textModel->id . '.' . $imageFile->getClientOriginalExtension();
+                                    Storage::put('public/texts/' . $newImageName, (string) $resized);
+                                    $textModel->images()->create(['name' => $newImageName]);
+                                }
+                            }
+                        }
+                    }
+                    $place->texts()->whereNotIn('id', $existingTextIds)->delete();
+                }
+
+                return redirect()->route('admin.places.index')->with('success', 'Place updated successfully.');
+            });
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to update place: ' . $e->getMessage()])->withInput();
         }
-
-        return redirect()->back();
     }
 
     /**

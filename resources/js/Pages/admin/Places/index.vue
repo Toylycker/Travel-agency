@@ -152,6 +152,7 @@ watch(() => props.errors, (newErrors) => {
 const createColumns = () => [
   { title: 'Id', key: 'id', sorter: 'default' },
   { title: 'Name', key: 'name', sorter: 'default' },
+  { title: 'Body', key: 'body', width: 250, sorter: 'default', ellipsis: { tooltip: true } },
   {
     title: 'Main Images',
     key: 'images',

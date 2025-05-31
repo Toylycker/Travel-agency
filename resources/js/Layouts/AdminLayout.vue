@@ -213,6 +213,7 @@
       </div>
     </div>
     <div class="m-3 container-fluid">
+      <ValidationErrorShower />
       <slot></slot>
     </div>
   </main>
@@ -222,8 +223,8 @@
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import { ref, watch } from '@vue/runtime-core';
 import '@splidejs/vue-splide/css';
-import Pagination from '@/Shared/Pagination.vue';
 import { Inertia } from '@inertiajs/inertia';
+import ValidationErrorShower from '@/Shared/ValidationErrorShower.vue';
 
 </script>
   
