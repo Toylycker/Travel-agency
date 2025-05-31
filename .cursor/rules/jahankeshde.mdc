@@ -65,7 +65,6 @@ require __DIR__.'/admin.php';
 - Keep route names clear and consistent, using dot notation:
   - `tours.edit.name`
   - `texts.store`
-  - `places.update.this`
 - Use parameter binding in routes as needed:
   - Example: `/subjects/update/{subject}`
 - Use dedicated routes for each action instead of overloading controller methods.

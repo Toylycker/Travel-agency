@@ -88,38 +88,6 @@ class PlaceController extends Controller
         return Redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Place  $place
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Place $place)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Place  $place
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Place $place)
-    {
-        $locations = Location::all('name', 'id');
-        $categories = Category::all('name', 'id');
-        return Inertia::render(
-            'admin/Places/edit',
-            [
-                'place' => $place->load('images', 'texts.images', 'categories'),
-                'placeCategories' => $place->categories->pluck('id'),
-                'locations' => $locations,
-                'categories' => $categories
-            ]
-        );
-    }
-
     public function update(Request $request, Place $place)
     {
         $request->validate([
