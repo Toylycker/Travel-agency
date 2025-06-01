@@ -19,7 +19,6 @@
         require-mark-placement="right-hanging"
         @submit.prevent="handleSubmit"
       >
-        <ValidationErrorsShower :errors="form.errors" />
 
         <n-grid :cols="2" :x-gap="24">
           <n-form-item-gi label="Type" path="type">
@@ -194,7 +193,6 @@ import {
   NGrid,
   NDivider
 } from 'naive-ui'
-import ValidationErrorsShower from '@/Components/ValidationErrorsShower.vue'
 import { formatDate } from '@/lib/dateUtils'
 
 const props = defineProps({

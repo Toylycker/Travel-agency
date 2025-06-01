@@ -20,7 +20,6 @@
         require-mark-placement="right-hanging"
         @submit.prevent="handleSubmit"
       >
-        <ValidationErrorsShower :errors="form.errors" />
 
         <n-grid :cols="2" :x-gap="24">
           <n-form-item-gi label="Name" path="name">
@@ -127,7 +126,6 @@
 <script setup>
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
-import ValidationErrorsShower from '@/Components/ValidationErrorsShower.vue'
 import {
   NButton,
   NCard,

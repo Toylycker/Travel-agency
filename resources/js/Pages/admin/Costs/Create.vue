@@ -20,22 +20,20 @@
         require-mark-placement="right-hanging"
         @submit.prevent="handleSubmit"
       >
-        <ValidationErrorsShower :errors="form.errors" />
-
         <n-grid :cols="2" :x-gap="24">
           <n-form-item-gi label="Name" path="name">
             <n-input v-model:value="form.name" placeholder="Enter cost name" />
           </n-form-item-gi>
 
-          <n-form-item label="Cost" path="cost">
+          <n-form-item-gi label="Cost" path="cost">
             <n-input-number v-model:value="form.cost" placeholder="Enter cost" :min="0" :step="0.01" />
             <div v-if="form.errors.cost" class="text-red-500 text-sm">{{ form.errors.cost }}</div>
-          </n-form-item>
+          </n-form-item-gi>
 
-          <n-form-item label="Self Cost" path="self_cost">
+          <n-form-item-gi label="Self Cost" path="self_cost">
             <n-input-number v-model:value="form.self_cost" placeholder="Enter self cost" :min="0" :step="0.01" />
             <div v-if="form.errors.self_cost" class="text-red-500 text-sm">{{ form.errors.self_cost }}</div>
-          </n-form-item>
+          </n-form-item-gi>
 
           <n-form-item-gi label="Number of People" path="number_of_people">
             <n-input-number
@@ -96,7 +94,6 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
-import ValidationErrorsShower from '@/Components/ValidationErrorsShower.vue'
 import {
   NButton,
   NCard,

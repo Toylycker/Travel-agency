@@ -1,22 +1,10 @@
 <template>
-  <div v-if="Object.keys($page.props.errors).length" class="container">
-      <n-alert
-          class="my-1"
-          v-for="(messages, field) in $page.props.errors" 
-          :key="field"  
-          :title="`Error in ${field}`" 
-          type="error"
-      >
-          <ul v-if="Array.isArray(messages)">
-              <li v-for="(message, index) in messages" :key="index">
-                  {{ message }}
-              </li>
-          </ul>
-          <p v-else>{{ messages }}</p> <!-- Handles case where message is a string -->
-      </n-alert>
-  </div>
+    <div v-if="Object.keys($page.props.errors).length > 0" class="mb-4 p-4 bg-red-50 border border-red-200 rounded">
+      <p class="text-red-600 font-medium">Please correct the following errors:</p>
+      <ul class="mt-2 list-disc list-inside">
+        <li v-for="(error, key) in $page.props.errors" :key="key" class="text-red-500">
+          {{ error }}
+        </li>
+      </ul>
+    </div>
 </template>
-
-<script setup>
-import { NAlert } from 'naive-ui';
-</script>

@@ -14,7 +14,6 @@
       :rules="rules"
       @submit.prevent="handleSubmit"
     >
-    <ValidationErrorsShower :errors="form.errors" />
       <div class="grid grid-cols-2 gap-6">
         <n-form-item label="Name" path="name">
           <n-input v-model:value="form.name" placeholder="Enter name" />
@@ -103,7 +102,6 @@
 <script setup>
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
-import ValidationErrorsShower from '@/Components/ValidationErrorsShower.vue';
 import {
   NButton,
   NCard,

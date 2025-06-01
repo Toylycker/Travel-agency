@@ -95,7 +95,7 @@ class CostFactory extends Factory
     /**
      * Configure the factory for group costs.
      */
-    public function forGroup(int $size = null): static
+    public function forGroup(?int $size = null): static
     {
         return $this->state(fn (array $attributes) => [
             'number_of_people' => $size ?? $this->faker->numberBetween(2, 50),
