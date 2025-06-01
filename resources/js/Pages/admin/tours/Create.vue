@@ -3,16 +3,6 @@
         <Head title="Create Public Tour" />
         <h1 class="text-2xl font-bold mb-6">Create Public Tour</h1>
 
-        <div v-if="$page.props?.flash?.success" class="mb-4 p-4 bg-green-100 text-green-700 rounded">
-            {{ $page.props.flash.success }}
-        </div>
-        <div v-if="form.hasErrors" class="mb-4 p-4 bg-red-100 text-red-700 rounded">
-            <p class="font-bold">Please correct the following errors:</p>
-            <ul>
-                <li v-for="(error, key) in form.errors" :key="key">- {{ error }}</li>
-            </ul>
-        </div>
-
         <form @submit.prevent="submit" class="space-y-6">
             <!-- Tour Details Section -->
             <div class="p-6 bg-white shadow rounded-lg">
