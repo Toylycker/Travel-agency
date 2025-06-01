@@ -78,6 +78,14 @@ const columns = [
     }
   },
   {
+    title: 'Self Cost',
+    key: 'self_cost',
+    width: 120,
+    render(row) {
+      return formatCurrency(row.self_cost)
+    }
+  },
+  {
     title: 'Linked To',
     key: 'costable',
     width: 150,
@@ -204,6 +212,12 @@ const handleCreate = () => {
 
 const handleDelete = (id) => {
   Inertia.delete(route('admin.costs.destroy', id))
+}
+
+function formatCostableType(typeString) {
+  if (!typeString) return 'N/A';
+  const parts = typeString.split('\\'); // Split by backslash
+  return parts.pop(); // Get the last part (model name)
 }
 </script>
 

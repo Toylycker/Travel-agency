@@ -51,6 +51,7 @@ class CostController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'cost' => 'required|numeric|min:0',
+            'self_cost' => 'required|numeric|min:0|lte:cost',
             'number_of_people' => 'required|integer|min:1',
             'description' => 'nullable|string',
             'is_active' => 'boolean',
@@ -82,6 +83,7 @@ class CostController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'cost' => 'required|numeric|min:0',
+            'self_cost' => 'required|numeric|min:0|lte:cost',
             'number_of_people' => 'required|integer|min:1',
             'description' => 'nullable|string',
             'is_active' => 'boolean',
