@@ -20,6 +20,7 @@ use App\Http\Controllers\admin\MealController;
 use App\Http\Controllers\Admin\CustomCostController;
 use App\Models\Text;
 use App\Http\Controllers\admin\ImageController;
+use App\Http\Controllers\Admin\RoomController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')
@@ -58,6 +59,7 @@ Route::prefix('admin')
     'costs' => CostController::class,
     'guides' => GuideController::class,
     'meals' => MealController::class,
+    'rooms' => RoomController::class,
     ]);
     Route::get('/applications/index', [ApplicationController::class, 'index'])->name('applications.index');
     Route::get('/customTour/index', [CustomTourController::class, 'index'])->name('customTour.index');
