@@ -17,24 +17,21 @@ class RoomController extends Controller
 
     public function index(Request $request)
     {
-        $rooms = $this->roomService->getModel()
-            ->with('hotel:id,name') // Eager load hotel for sorting and display
-            ->when($request->input('sort'), function ($query, $sort) use ($request) {
-                $direction = $request->input('direction', 'asc');
-                if ($sort === 'hotel') {
-                    return $query->orderBy(Hotel::select('name')->whereColumn('hotels.id', 'rooms.hotel_id'), $direction);
-                }
-                return $query->orderBy($sort, $direction);
-            })
-            ->paginate($request->input('per_page', 10))
-            ->withQueryString();
+        $rooms = $this->roomService->getPaginatedRooms($request);
+        // Fetch hotels for the filter dropdown, ordered by name
+        $hotels = Hotel::select('id', 'name')->orderBy('name')->get();
 
-        return Inertia::render('admin/Rooms/Index', compact('rooms'));
+        return Inertia::render('admin/Rooms/Index', [
+            'rooms' => $rooms,
+            'hotels' => $hotels,
+            // Pass current filters from request back to the view to preserve state
+            // Inertia's $page.props.ziggy.query can also be used in Vue for this
+        ]);
     }
 
     public function create()
     {
-        $hotels = Hotel::select('id', 'name')->get();
+        $hotels = Hotel::select('id', 'name')->orderBy('name')->get();
         return Inertia::render('admin/Rooms/Create', compact('hotels'));
     }
 
@@ -61,7 +58,9 @@ class RoomController extends Controller
 
     public function edit(Room $room)
     {
-        $hotels = Hotel::select('id', 'name')->get();
+        $hotels = Hotel::select('id', 'name')->orderBy('name')->get();
+        // Eager load hotel for the room being edited, if needed by the form.
+        // $room->load('hotel:id,name'); 
         return Inertia::render('admin/Rooms/Edit', [
             'room' => $room,
             'hotels' => $hotels,
