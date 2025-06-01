@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Transportation::factory(10)->create();
         // \App\Models\CustomCost::factory(5)->create();
         \App\Models\Cost::factory(50)->create();
+        \App\Models\User::factory(50)->create(['email' => 'admin@admin.com', 'isAdmin' => true]);
 
     }
 }
