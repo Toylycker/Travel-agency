@@ -11,7 +11,7 @@ class Tour extends BaseModel
     protected $guarded = ['id'];
     public $timestamps = false;
     protected $casts = [
-        'isPublic' => 'boolean',
+        'is_public' => 'boolean',
         'active' => 'boolean',
         'recommended' => 'boolean',
     ];

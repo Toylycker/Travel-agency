@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('costs', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->decimal('self_cost', 10, 2)->nullable();
             $table->decimal('cost', 10, 2);
             $table->integer('number_of_people')->default(1);//number of people that item can be applies to for example car that can contain 3 people, meal that can feed 3 people
             $table->morphs('costable');

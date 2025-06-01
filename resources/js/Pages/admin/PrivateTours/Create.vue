@@ -104,7 +104,7 @@
                 <div class="flex items-center space-x-6 mt-6">
                     <n-checkbox v-model:checked="form.active">Active</n-checkbox>
                     <n-checkbox v-model:checked="form.recommended">Recommended</n-checkbox>
-                    <n-checkbox v-model:checked="form.isPublic" :disabled="true">Is Public (Private tours are not public)</n-checkbox>
+                    <n-checkbox v-model:checked="form.is_public" :disabled="true">Is Public (Private tours are not public)</n-checkbox>
                 </div>
             </div>
 
@@ -275,7 +275,7 @@ const form = useForm({
     discount_datetime_end: null,
     viewed: 0,
     recommended: false,
-    isPublic: false,
+    is_public: false,
     active: true,
     sort_order: null,
     images: [],

@@ -17,9 +17,7 @@ use Inertia\Inertia;
 
 class CostController extends Controller
 {
-    public function __construct(protected CostService $costService)
-    {
-    }
+    public function __construct(protected CostService $costService){}
 
     public function index()
     {

@@ -82,18 +82,18 @@ const columns = ref([
   },
   {
     title: 'Type',
-    key: 'isPublic',
+    key: 'is_public',
     width: 90,
     render(row) {
       return h(
         NTag,
-        { type: row.isPublic ? 'success' : 'info', size: 'small' },
-        { default: () => (row.isPublic ? 'Public' : 'Private') }
+        { type: row.is_public ? 'success' : 'info', size: 'small' },
+        { default: () => (row.is_public ? 'Public' : 'Private') }
       );
     },
     filterOptions: booleanFilterOptions,
     filter: true,
-    filterOptionValue: props.filters?.isPublic !== undefined && props.filters?.isPublic !== null ? Number(props.filters.isPublic) : null,
+    filterOptionValue: props.filters?.is_public !== undefined && props.filters?.is_public !== null ? Number(props.filters.is_public) : null,
   },
   {
     title: 'Active',
@@ -159,7 +159,7 @@ const columns = ref([
           h(
             Link,
             {
-              href: row.isPublic ? route('admin.tours.edit', row.id) : route('admin.private_tours.edit', row.id),
+              href: row.is_public ? route('admin.tours.edit', row.id) : route('admin.private_tours.edit', row.id),
             },
             {
               default: () =>
@@ -199,7 +199,7 @@ const getQueryParams = (page, pageSize, sortBy, sortOrder, activeFiltersFromProp
             if (key === 'page' || key === 'perPage' || key === 'sort_by' || key === 'sort_order') continue;
 
             const value = activeFiltersFromProps[key];
-            const isBooleanLikeFilter = ['isPublic', 'active', 'recommended'].includes(key);
+            const isBooleanLikeFilter = ['is_public', 'active', 'recommended'].includes(key);
 
             // Add filter if value is not null/undefined.
             // For boolean-like filters, 0 is a valid value.

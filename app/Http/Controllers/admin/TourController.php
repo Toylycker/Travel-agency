@@ -35,8 +35,8 @@ class TourController extends Controller
         $query = Tour::query();
 
         // Filtering
-        if ($request->filled('isPublic') && $request->input('isPublic') !== null) {
-            $query->where('isPublic', filter_var($request->input('isPublic'), FILTER_VALIDATE_BOOLEAN));
+        if ($request->filled('is_public') && $request->input('is_public') !== null) {
+            $query->where('is_public', filter_var($request->input('is_public'), FILTER_VALIDATE_BOOLEAN));
         }
         if ($request->filled('name')) {
             $query->where('name', 'like', '%' . $request->input('name') . '%');
@@ -54,7 +54,7 @@ class TourController extends Controller
             $sortOrderInput = strtolower((string) $request->input('sort_order'));
             $sortOrder = in_array($sortOrderInput, ['asc', 'desc']) ? $sortOrderInput : 'asc';
             
-            $allowedSorts = ['id', 'name', 'total_days', 'viewed', 'isPublic', 'active', 'recommended', 'sort_order', 'created_at', 'updated_at'];
+            $allowedSorts = ['id', 'name', 'total_days', 'viewed', 'is_public', 'active', 'recommended', 'sort_order', 'created_at', 'updated_at'];
             if (in_array($sortBy, $allowedSorts)) {
                 $query->orderBy($sortBy, $sortOrder);
             } else {
@@ -73,7 +73,7 @@ class TourController extends Controller
 
         return Inertia::render('admin/Tours/index', [
             'tours' => $tours,
-            'filters' => $request->only(['isPublic', 'name', 'active', 'recommended', 'sort_by', 'sort_order', 'perPage'])
+            'filters' => $request->only(['is_public', 'name', 'active', 'recommended', 'sort_by', 'sort_order', 'perPage'])
         ]);
     }
 
@@ -139,7 +139,7 @@ class TourController extends Controller
         $serviceData = array_merge($validatedData, [
             'main_image_file' => $request->file('main_image'),
             'additional_images_files' => $request->file('images'),
-            'isPublic' => true,
+            'is_public' => true,
             'recommended' => $request->boolean('recommended'),
             'active' => $request->boolean('active', true),
         ]);
@@ -184,7 +184,7 @@ class TourController extends Controller
         $serviceData = array_merge($validatedData, [
             'main_image_file' => $request->file('main_image'),
             'additional_images_files' => $request->file('images'),
-            'isPublic' => true,
+            'is_public' => true,
             'recommended' => $request->boolean('recommended'),
             'active' => $request->boolean('active'),
             'additional_images_sync_strategy' => 'sync'

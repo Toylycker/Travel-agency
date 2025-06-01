@@ -225,7 +225,7 @@ const form = useForm({
     viewed: 0,
     recommended: false,
     active: true, // Default active to true for new tours
-    isPublic: true, // Explicitly true for public tours
+    is_public: true, // Explicitly true for public tours
     sort_order: null, // You might want to add a field for this if needed
     images: [], // For additional images
     included: [],

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tours', function (Blueprint $table) {
-            $table->boolean('isPublic')->default(true);
+            $table->boolean('is_public')->default(true);
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tours', function (Blueprint $table) {
-            $table->dropColumn('isPublic');
+            $table->dropColumn('is_public');
         });
     }
 };

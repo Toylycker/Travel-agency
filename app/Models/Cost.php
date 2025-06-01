@@ -15,6 +15,7 @@ class Cost extends BaseModel
 
     protected $casts = [
         'cost' => 'decimal:2',
+        'self_cost' => 'decimal:2',
         'number_of_people' => 'integer',
         'is_active' => 'boolean',
     ];

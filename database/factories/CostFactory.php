@@ -36,6 +36,7 @@ class CostFactory extends Factory
         return [
             'name' => $this->faker->words(3, true),
             'cost' => $this->faker->randomFloat(2, 10, 1000),
+            'self_cost' => $this->faker->randomFloat(2, 5, 400),
             'number_of_people' => $this->faker->numberBetween(1, 10),
             'costable_type' => $selectedCostableClass, // Use the FQCN string
             'costable_id' => $costable->id,

@@ -174,7 +174,7 @@ class PrivateTourController extends Controller
         $serviceData = array_merge($validatedData, [
             'main_image_file' => $request->file('main_image'),
             'additional_images_files' => $request->file('images'),
-            'isPublic' => false, // Explicitly set for private tours
+            'is_public' => false, // Explicitly set for private tours
         ]);
 
         try {
@@ -192,7 +192,7 @@ class PrivateTourController extends Controller
         $serviceData = array_merge($validatedData, [
             'main_image_file' => $request->file('main_image'),
             'additional_images_files' => $request->file('images'),
-            'isPublic' => false, // Ensure it remains a private tour
+            'is_public' => false, // Ensure it remains a private tour
             // For additional images, PrivateTourController's original logic appended images.
             // TourService defaults to append. If sync (replace all) is needed, pass strategy:
             // 'additional_images_sync_strategy' => 'sync'

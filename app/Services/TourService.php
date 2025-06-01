@@ -38,7 +38,7 @@ class TourService extends BaseService
             $this->syncNotes($tour, $data['included'] ?? null, $data['non_included'] ?? null);
 
             if (isset($data['days']) && is_array($data['days'])) {
-                if ($data['isPublic']) {
+                if ($data['is_public']) {
                     $this->syncDaysForPublicTour($tour, $data['days']);
                     if (isset($data['detailedPrices'])) {
                         $this->syncPricesForPublicTour($tour, $data['detailedPrices']);
@@ -83,7 +83,7 @@ class TourService extends BaseService
             $this->syncNotes($tour, $data['included'] ?? null, $data['non_included'] ?? null);
 
             if (isset($data['days']) && is_array($data['days'])){
-                if ($data['isPublic']) {
+                if ($data['is_public']) {
                     $this->syncDaysForPublicTour($tour, $data['days']);
                     if (isset($data['detailedPrices'])) {
                         $this->syncPricesForPublicTour($tour, $data['detailedPrices']);
@@ -113,7 +113,7 @@ class TourService extends BaseService
             'recommended' => $data['recommended'] ?? false,
             'active' => $data['active'] ?? true,
             'sort_order' => $data['sort_order'] ?? null,
-            'isPublic' => $data['isPublic'] ?? true,
+            'is_public' => $data['is_public'] ?? true,
         ];
     }
 
