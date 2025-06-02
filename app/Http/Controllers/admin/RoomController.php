@@ -11,9 +11,7 @@ use Inertia\Inertia;
 
 class RoomController extends Controller
 {
-    public function __construct(protected RoomService $roomService)
-    {
-    }
+    public function __construct(protected RoomService $roomService){}
 
     public function index(Request $request)
     {

@@ -44,9 +44,9 @@
 
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import {Link, usePage, useForm } from '@inertiajs/inertia-vue3';
+import { Link, usePage } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
-import { NDataTable, NSelect, NFormItem } from 'naive-ui';
+import { NDataTable, NSelect, NFormItem, NButton } from 'naive-ui';
 import { ref, h, computed, watch } from 'vue';
 
 const props = defineProps({
@@ -103,6 +103,22 @@ const columns = ref([
                   { href: route('admin.rooms.edit', row.id), class: 'px-2 py-1 text-sm text-white bg-yellow-500 rounded hover:bg-yellow-600' },
                   { default: () => 'Edit' }
                 ),
+                h(Link,
+                    {
+                    href: route('admin.costs.create', { costable_type: 'App\\Models\\Room', costable_id: row.id }),
+                    class: 'no-underline'
+                    },
+                    {default: () =>
+                        h(
+                        NButton,
+                        {
+                            type: 'primary',
+                            size: 'small',
+                            class: 'bg-info'
+                        },
+                        { default: () => 'add cost' }
+                        )
+                    }),
                 h('button',
                   { onClick: () => deleteRoom(row.id), class: 'px-2 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600' },
                   { default: () => 'Delete' }

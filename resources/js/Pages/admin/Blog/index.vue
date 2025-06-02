@@ -48,12 +48,83 @@
           <n-form-item label="Recommended">
             <n-switch v-model:value="formModel.recommended" />
           </n-form-item>
-          <n-form-item path="main_image" label="Main Image">
-            <input type="file" @change="handleMainImageUpload" accept="image/*" />
-            <NAvatar v-if="formModel.main_image_url" :src="formModel.main_image_url" size="medium" class="ml-2" />
-            <span v-else-if="isEditing && formModel.id && props.posts.data.find(p=>p.id === formModel.id)?.main_image_url" class="ml-2">
-                <NAvatar :src="props.posts.data.find(p=>p.id === formModel.id)?.main_image_url" size="medium" />
-            </span>
+          
+          <!-- Post Images Section -->
+          <n-form-item label="Post Images">
+            <div class="space-y-3">
+              <input type="file" @change="handleImagesUpload" accept="image/*" multiple class="block" />
+              
+              <!-- Display new images to be uploaded -->
+              <div v-if="formModel.images.length > 0" class="space-y-2">
+                <h4 class="text-sm font-medium">New Images:</h4>
+                <div class="flex flex-wrap gap-2">
+                  <div v-for="(image, index) in formModel.images" :key="'new-' + index" class="relative">
+                    <NAvatar :src="URL.createObjectURL(image)" size="large" class="border" />
+                    <n-button size="tiny" type="error" @click="removeNewImage(index)" class="absolute -top-1 -right-1 rounded-full w-5 h-5 p-0">×</n-button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Display existing images -->
+              <div v-if="formModel.existing_images.length > 0" class="space-y-2">
+                <h4 class="text-sm font-medium">Existing Images:</h4>
+                <div class="flex flex-wrap gap-2">
+                  <div v-for="(image, index) in formModel.existing_images" :key="'existing-' + index" class="relative">
+                    <NAvatar :src="image.url" size="large" class="border" />
+                    <n-button size="tiny" type="error" @click="removeExistingImage(index)" class="absolute -top-1 -right-1 rounded-full w-5 h-5 p-0">×</n-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </n-form-item>
+          
+          <!-- Texts Section -->
+          <n-form-item label="Additional Texts">
+            <div class="space-y-4">
+              <n-button type="primary" @click="addNewText" size="small">Add New Text</n-button>
+              
+              <div v-for="(text, textIndex) in formModel.texts" :key="'text-' + textIndex" class="border p-4 rounded space-y-3">
+                <div class="flex justify-between items-center">
+                  <h4 class="font-medium">Text #{{ textIndex + 1 }}</h4>
+                  <n-button size="small" type="error" @click="removeText(textIndex)">Remove Text</n-button>
+                </div>
+                
+                <n-input
+                  type="textarea"
+                  v-model:value="text.body"
+                  placeholder="Enter text content"
+                  :autosize="{ minRows: 3 }"
+                />
+                
+                <!-- Text Images -->
+                <div class="space-y-2">
+                  <label class="text-sm font-medium">Text Images:</label>
+                  <input type="file" @change="handleTextImagesUpload(textIndex, $event)" accept="image/*" multiple class="block text-sm" />
+                  
+                  <!-- New text images -->
+                  <div v-if="text.images.length > 0" class="space-y-1">
+                    <span class="text-xs text-gray-600">New Images:</span>
+                    <div class="flex flex-wrap gap-1">
+                      <div v-for="(image, imageIndex) in text.images" :key="'text-new-' + imageIndex" class="relative">
+                        <NAvatar :src="URL.createObjectURL(image)" size="medium" class="border" />
+                        <n-button size="tiny" type="error" @click="removeTextNewImage(textIndex, imageIndex)" class="absolute -top-1 -right-1 rounded-full w-4 h-4 p-0 text-xs">×</n-button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Existing text images -->
+                  <div v-if="text.existing_images.length > 0" class="space-y-1">
+                    <span class="text-xs text-gray-600">Existing Images:</span>
+                    <div class="flex flex-wrap gap-1">
+                      <div v-for="(image, imageIndex) in text.existing_images" :key="'text-existing-' + imageIndex" class="relative">
+                        <NAvatar :src="image.url" size="medium" class="border" />
+                        <n-button size="tiny" type="error" @click="removeTextExistingImage(textIndex, imageIndex)" class="absolute -top-1 -right-1 rounded-full w-4 h-4 p-0 text-xs">×</n-button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </n-form-item>
         </n-form>
         <template #footer>
@@ -96,9 +167,10 @@ const defaultFormValues = {
   recommended: false,
   meta_title: null,
   meta_description: null,
-  main_image: null, // This will hold the File object
-  main_image_url: null, // For previewing new uploads
-  _method: 'POST', // For handling PUT in Inertia form helper
+  images: [], // Array to hold new image files
+  existing_images: [], // Array to hold existing image data
+  texts: [], // Array to hold text objects
+  _method: 'POST',
 };
 
 const formModel = useForm({ ...defaultFormValues });
@@ -114,20 +186,51 @@ const formRules = {
   body: [{ required: true, message: 'Body is required', trigger: 'blur' }],
 };
 
-const handleMainImageUpload = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    formModel.main_image = file;
-    formModel.main_image_url = URL.createObjectURL(file);
-  } else {
-    formModel.main_image = null;
-    formModel.main_image_url = null;
-  }
+const handleImagesUpload = (event) => {
+  const files = Array.from(event.target.files);
+  formModel.images = [...formModel.images, ...files];
+};
+
+const removeNewImage = (index) => {
+  formModel.images.splice(index, 1);
+};
+
+const removeExistingImage = (index) => {
+  formModel.existing_images.splice(index, 1);
+};
+
+const addNewText = () => {
+  formModel.texts.push({
+    id: null,
+    body: '',
+    images: [],
+    existing_images: []
+  });
+};
+
+const removeText = (index) => {
+  formModel.texts.splice(index, 1);
+};
+
+const handleTextImagesUpload = (textIndex, event) => {
+  const files = Array.from(event.target.files);
+  formModel.texts[textIndex].images = [...formModel.texts[textIndex].images, ...files];
+};
+
+const removeTextNewImage = (textIndex, imageIndex) => {
+  formModel.texts[textIndex].images.splice(imageIndex, 1);
+};
+
+const removeTextExistingImage = (textIndex, imageIndex) => {
+  formModel.texts[textIndex].existing_images.splice(imageIndex, 1);
 };
 
 const openCreateDrawer = () => {
   isEditing.value = false;
   formModel.reset();
+  formModel.images = [];
+  formModel.existing_images = [];
+  formModel.texts = [];
   formModel._method = 'POST';
   showDrawer.value = true;
 };
@@ -142,8 +245,14 @@ const openEditDrawer = (post) => {
   formModel.recommended = !!post.recommended;
   formModel.meta_title = post.meta_title;
   formModel.meta_description = post.meta_description;
-  formModel.main_image = null; // Clear previous file object
-  formModel.main_image_url = post.main_image_url || null; // Keep existing image URL for preview
+  formModel.images = []; // Clear new images
+  formModel.existing_images = post.images ? [...post.images] : []; // Populate existing images
+  formModel.texts = post.texts ? post.texts.map(text => ({
+    id: text.id,
+    body: text.body,
+    images: [], // Clear new images for this text
+    existing_images: text.images ? [...text.images] : [] // Populate existing images for this text
+  })) : [];
   formModel._method = 'PUT';
   showDrawer.value = true;
 };
@@ -152,29 +261,78 @@ const handleFormSubmit = async () => {
   formRef.value?.validate(errors => {
     if (!errors) {
       const submissionRoute = isEditing.value ? route('admin.posts.update', formModel.id) : route('admin.posts.store');
+      
+      // Prepare form data for submission
+      const formData = new FormData();
+      
+      // Add basic fields
+      formData.append('title', formModel.title || '');
+      formData.append('body', formModel.body || '');
+      formData.append('meta_title', formModel.meta_title || '');
+      formData.append('meta_description', formModel.meta_description || '');
+      formData.append('recommended', formModel.recommended ? '1' : '0');
+      
+      // Add subject IDs
+      if (formModel.subject_ids && formModel.subject_ids.length > 0) {
+        formModel.subject_ids.forEach((subjectId, index) => {
+          formData.append(`subject_ids[${index}]`, subjectId);
+        });
+      }
+      
+      // Add new post images
+      if (formModel.images && formModel.images.length > 0) {
+        formModel.images.forEach((image, index) => {
+          formData.append(`images[${index}]`, image);
+        });
+      }
+      
+      // Add existing post images to keep (send their IDs)
+      if (formModel.existing_images && formModel.existing_images.length > 0) {
+        formModel.existing_images.forEach((image, index) => {
+          formData.append(`existing_images[${index}]`, image.id);
+        });
+      }
+      
+      // Add texts data
+      if (formModel.texts && formModel.texts.length > 0) {
+        formModel.texts.forEach((text, textIndex) => {
+          formData.append(`texts[${textIndex}][id]`, text.id || '');
+          formData.append(`texts[${textIndex}][body]`, text.body || '');
+          
+          // Add new text images
+          if (text.images && text.images.length > 0) {
+            text.images.forEach((image, imageIndex) => {
+              formData.append(`texts[${textIndex}][images][${imageIndex}]`, image);
+            });
+          }
+          
+          // Add existing text images to keep
+          if (text.existing_images && text.existing_images.length > 0) {
+            text.existing_images.forEach((image, imageIndex) => {
+              formData.append(`texts[${textIndex}][existing_images][${imageIndex}]`, image.id);
+            });
+          }
+        });
+      }
+      
+      if (isEditing.value) {
+        formData.append('_method', 'PUT');
+      }
+      
       const options = {
         preserveScroll: true,
         onSuccess: () => {
           showDrawer.value = false;
           alert(isEditing.value ? 'Post updated successfully!' : 'Post created successfully!');
-          formModel.reset(); // Reset form after successful submission
-          // Inertia.reload({ only: ['posts'] });
+          formModel.reset();
         },
         onError: (pageErrors) => {
-          // Errors are in pageErrors.props.errors
-          // formModel.errors = pageErrors; // if you want to use form helper's error handling
           alert('Failed to submit post. Please check errors.');
+          console.log('Submission errors:', pageErrors);
         },
-        forceFormData: true, // Important for file uploads
       };
       
-      if(isEditing.value) {
-          // Inertia's form helper with PUT for file uploads needs special handling
-          // We use `post` with `_method: 'PUT'`
-          Inertia.post(submissionRoute, { ...formModel, _method: 'PUT' }, options);
-      } else {
-          formModel.post(submissionRoute, options);
-      }
+      Inertia.post(submissionRoute, formData, options);
 
     } else {
       console.log('Form validation failed:', errors);
@@ -202,6 +360,42 @@ const columns = computed(() => [
   { title: 'Title', key: 'title', width: 300, sorter: true, sortOrder: currentSortBy.value === 'title' ? currentSortOrder.value : false, ellipsis: { tooltip: true } },
   { title: 'Body Snippet', key: 'body', width: 300, ellipsis: { tooltip: true },
     render: (row) => row.body ? row.body.substring(0, 100) + (row.body.length > 100 ? '...' : '') : 'N/A'
+  },
+  {
+    title: 'Post Images',
+    key: 'images',
+    width: 120,
+    render(row) {
+      if (!row.images || row.images.length === 0) return 'N/A';
+      return h('div', { class: 'flex items-center' }, [
+        h(NAvatar, {
+          src: row.images[0].url || `/storage/posts/${row.images[0].name}`,
+          alt: 'Post Image',
+          size: 'medium',
+          objectFit: 'cover',
+          style: 'width: 60px; height: 40px; margin-right: 8px;'
+        }),
+        h(NTag, { size: 'small' }, { default: () => `${row.images.length} img(s)` })
+      ]);
+    }
+  },
+  {
+    title: 'Texts Count',
+    key: 'texts_count',
+    width: 100,
+    render(row) {
+      return row.texts ? row.texts.length : 0;
+    }
+  },
+  {
+    title: 'Text Images Count',
+    key: 'text_images_count',
+    width: 150,
+    render(row) {
+        if (!row.texts) return 0;
+        const totalTextImages = row.texts.reduce((acc, text) => acc + (text.images ? text.images.length : 0), 0);
+        return totalTextImages;
+    }
   },
   { title: 'Viewed', key: 'viewed', width: 80, sorter: true, sortOrder: currentSortBy.value === 'viewed' ? currentSortOrder.value : false },
   {
